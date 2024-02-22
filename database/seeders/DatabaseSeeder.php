@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\FederationSeeder;
+use Database\Seeders\CreateUsersSeeder;
+use Database\Seeders\AssociationSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +21,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call([
+            FederationSeeder::class,
+            CreateUsersSeeder::class,
+            AssociationSeeder::class,
+        ]);
     }
 }

@@ -4,8 +4,9 @@
 <div class="container">
     <x-table
     :headers="$headers"
-    :columns="[]"
-    :entity="'a'"
+    :columns="$columns"
+    :entity="$entity"
+    :order="$order"
     />
 
 </div>

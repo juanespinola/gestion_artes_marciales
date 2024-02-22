@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FederationController;
+use App\Http\Controllers\AssociationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +19,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::get('/tabla1', [FederationController::class, 'index']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes();
+  
+
+/*--------------------------------------------------------------------------------------
+All Normal Users Routes List
+----------------------------------------------------------------------------------------*/
+
+Route::middleware(['auth', 'user-access:user'])->group(function () {
+    Route::get('/user/home', [HomeController::class, 'userHome'])->name('user.home');
+});
+
+  
+
+/*--------------------------------------------------------------------------------------
+All Admin Routes List
+----------------------------------------------------------------------------------------*/
+
+Route::middleware(['auth', 'user-access:admin'])->group(function () {
+    Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
+});
+
+
+
+
+
+
