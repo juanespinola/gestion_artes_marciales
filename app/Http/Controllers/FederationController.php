@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Federation;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class FederationController extends Controller
 {
@@ -34,7 +35,7 @@ class FederationController extends Controller
 
         try {
             // Obtén los parámetros de la solicitud
-            $limit = $request->input('limit', 5); // Valor predeterminado de 10 si no se proporciona
+            $limit = $request->input('limit', 10); // Valor predeterminado de 10 si no se proporciona
             $page = $request->input('page', 1);   // Página predeterminada de 1 si no se proporciona
             $sortBy = $request->input('sortBy', 'id'); // Campo de orden predeterminado si no se proporciona
             $order = $request->input('order', 'asc'); // Dirección de orden predeterminada si no se proporciona
@@ -45,10 +46,13 @@ class FederationController extends Controller
             $query->orderBy($sortBy, $order);
 
             // Aplica límite
-            $query->take($limit);
+            if($limit){
+                $query->take($limit);
+            }
 
             // Realiza la paginación
-            $data = $query->paginate($limit, ['*'], 'page', $page);
+            $data = $query->paginate($limit, ['*'], 'page', $page)->onEachSide(0);
+            // $data = $this->paginate($query->get(), 2, 1)->onEachSide(0);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;
@@ -103,4 +107,25 @@ class FederationController extends Controller
     {
         //
     }
+
+    private function paginate($data, $page, $limit) {
+        // Puedes ajustar la cantidad de elementos por página según tus necesidades
+        // $page = LengthAwarePaginator::resolveCurrentPage();
+
+        
+        $currentItems = $data->slice(($page - 1) * $limit, $limit)->all();
+
+        $options = [
+            // 'path' => ''
+        ];
+        
+        
+        return new LengthAwarePaginator(
+            $currentItems, 
+            $data->count(), 
+            $limit, 
+            $page, 
+            $options);
+    }
+
 }

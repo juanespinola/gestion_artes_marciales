@@ -24,6 +24,16 @@ class FederationSeeder extends Seeder
             ['description' => 'federacion 8'],
             ['description' => 'federacion 9'],
             ['description' => 'federacion 10'],
+            ['description' => 'federacion 11'],
+            ['description' => 'federacion 12'],
+            ['description' => 'federacion 13'],
+            ['description' => 'federacion 14'],
+            ['description' => 'federacion 15'],
+            ['description' => 'federacion 16'],
+            ['description' => 'federacion 17'],
+            ['description' => 'federacion 18'],
+            ['description' => 'federacion 19'],
+            ['description' => 'federacion 20'],
         ];
 
         foreach ($data as $key => $item) {
