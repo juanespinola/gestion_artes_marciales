@@ -37,13 +37,13 @@ class FederationController extends Controller
             // Obtén los parámetros de la solicitud
             $limit = $request->input('limit', 10); // Valor predeterminado de 10 si no se proporciona
             $page = $request->input('page', 1);   // Página predeterminada de 1 si no se proporciona
-            $sortBy = $request->input('sortBy', 'id'); // Campo de orden predeterminado si no se proporciona
+            $orderby = $request->input('orderby', 'id'); // Campo de orden predeterminado si no se proporciona
             $order = $request->input('order', 'asc'); // Dirección de orden predeterminada si no se proporciona
 
             // Construye la consulta
             $query = Federation::query();
             // Aplica orden
-            $query->orderBy($sortBy, $order);
+            $query->orderBy($orderby, $order);
 
             // Aplica límite
             if($limit){
