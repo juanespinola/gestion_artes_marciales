@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Federation;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Validator;
 
 class FederationController extends Controller
 {
@@ -33,30 +34,36 @@ class FederationController extends Controller
         // $order = true;
         // return view('tabla', compact(['headers', 'columns', 'entity', 'order']));
 
+        // try {
+        //     // Obtén los parámetros de la solicitud
+        //     $limit = $request->input('limit', 10); // Valor predeterminado de 10 si no se proporciona
+        //     $page = $request->input('page', 1);   // Página predeterminada de 1 si no se proporciona
+        //     $orderby = $request->input('orderby', 'id'); // Campo de orden predeterminado si no se proporciona
+        //     $order = $request->input('order', 'asc'); // Dirección de orden predeterminada si no se proporciona
+
+        //     // Construye la consulta
+        //     $query = Federation::query();
+        //     // Aplica orden
+        //     $query->orderBy($orderby, $order);
+
+        //     // Aplica límite
+        //     if($limit){
+        //         $query->take($limit);
+        //     }
+
+        //     // Realiza la paginación
+        //     $data = $query->paginate($limit, ['*'], 'page', $page)->onEachSide(0);
+        //     // $data = $this->paginate($query->get(), 2, 1)->onEachSide(0);
+        //     return response()->json($data, 200);
+        // } catch (\Throwable $th) {
+        //     throw $th;
+        //     return response()->json($th, 400);
+        // }
         try {
-            // Obtén los parámetros de la solicitud
-            $limit = $request->input('limit', 10); // Valor predeterminado de 10 si no se proporciona
-            $page = $request->input('page', 1);   // Página predeterminada de 1 si no se proporciona
-            $orderby = $request->input('orderby', 'id'); // Campo de orden predeterminado si no se proporciona
-            $order = $request->input('order', 'asc'); // Dirección de orden predeterminada si no se proporciona
-
-            // Construye la consulta
-            $query = Federation::query();
-            // Aplica orden
-            $query->orderBy($orderby, $order);
-
-            // Aplica límite
-            if($limit){
-                $query->take($limit);
-            }
-
-            // Realiza la paginación
-            $data = $query->paginate($limit, ['*'], 'page', $page)->onEachSide(0);
-            // $data = $this->paginate($query->get(), 2, 1)->onEachSide(0);
+            $data = Federation::all();
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;
-            return response()->json($th, 400);
         }
     }
 
@@ -73,7 +80,31 @@ class FederationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+        
+            $validation = Validator::make(
+                $request->all(), 
+                [
+                    'description' => 'required|string',
+                ],
+                [
+                    'description.required' => ':attribute: is Required',
+                ]
+            );
+
+            if($validation->fails()){
+                return response()->json(["messages" => $validation->errors()], 400);
+            }
+
+            
+            $obj = Federation::create([
+                'description' => $request->input('description'),
+            ]);
+
+            return response()->json($obj, 201);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -95,17 +126,50 @@ class FederationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Federation $federation)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+        
+            $validation = Validator::make(
+                $request->all(), 
+                [
+                    'description' => 'required|string',
+                ],
+                [
+                    'description.required' => ':attribute: is Required',
+                ]
+            );
+
+            if($validation->fails()){
+                return response()->json(["messages" => $validation->errors()], 400);
+            }
+
+            $obj = Federation::findOrFail($id);
+            $obj->update([
+                'description' => $request->input('description'),
+            ]);
+
+            return response()->json($obj, 201);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Federation $federation)
+    public function destroy($id)
     {
-        //
+        try {
+        
+            $obj = Federation::findOrFail($id);
+            $obj->delete();
+    
+            return response()->json($obj, 200);
+            
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     private function paginate($data, $page, $limit) {
