@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\FederationSeeder;
 use Database\Seeders\CreateUsersSeeder;
 use Database\Seeders\AssociationSeeder;
+use Database\Seeders\PermissionsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             FederationSeeder::class,
             CreateUsersSeeder::class,
             AssociationSeeder::class,
+            PermissionsSeeder::class,
         ]);
     }
 }

@@ -8,11 +8,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\UserType;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use HasRoles, HasApiTokens, HasFactory, Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'type'
+        // 'type'
     ];
 
     /**
@@ -43,13 +45,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'type' => UserType::class
+        // 'type' => UserType::class
     ];
+    
+    // protected $with = ['roles', 'permissions'];
 
-    protected function type(): Attribute {
-        return new Attribute(
-            get: fn ($value) =>  ["admin","user"][$value],
-        );
+    // public function roles(){
+    //     // return $this->hasMany(Role::class);
+    //     // return $this->getRoleNames()[0];
+    // }
+    // public function permissions(){
+    //     // return $this->getPermissionsViaRoles()->pluck("name");
+    //     // return $this->hasMany(Permission::class);
+    // }
 
-    }
+
+    // protected function type(): Attribute {
+    //     return new Attribute(
+    //         get: fn ($value) =>  ["admin","user"][$value],
+    //     );
+
+    // }
 }

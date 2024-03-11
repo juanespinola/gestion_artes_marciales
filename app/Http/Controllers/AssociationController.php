@@ -5,17 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Association;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AssociationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        
         try {
-            $data = Association::all();
-            return response()->json($data, 200);
+            if($request->BearerToken()){
+                if (Auth::user()->cannot('access posts')) {
+                    return response()->json(['Unauthorized, you don\'t have access.'],400);
+                }
+                $data = Association::all();
+                return response()->json([$data], 200);
+            }
         } catch (\Throwable $th) {
             throw $th;
         }

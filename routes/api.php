@@ -16,19 +16,11 @@ use App\Http\Controllers\AssociationController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::group(['prefix'=>'federation'], function () {
-    $idInThePath = '/{id}';
-    Route::get("/", [FederationController::class, 'index']);
-    Route::get($idInThePath, [FederationController::class, 'show']);
-    Route::post("/", [FederationController::class, 'store']);
-    Route::put($idInThePath, [FederationController::class, 'update']);
-    Route::delete($idInThePath, [FederationController::class, 'destroy']);
-});
 
-Route::group(['prefix'=>'association'], function () {
+Route::post("/login", [App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post("/register", [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+
+Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
     Route::get("/", [AssociationController::class, 'index']);
     Route::get($idInThePath, [AssociationController::class, 'show']);
@@ -36,6 +28,24 @@ Route::group(['prefix'=>'association'], function () {
     Route::put($idInThePath, [AssociationController::class, 'update']);
     Route::delete($idInThePath, [AssociationController::class, 'destroy']);
 });
+
+// Route::group(['prefix'=>'federation'], function () {
+//     $idInThePath = '/{id}';
+//     Route::get("/", [FederationController::class, 'index']);
+//     Route::get($idInThePath, [FederationController::class, 'show']);
+//     Route::post("/", [FederationController::class, 'store']);
+//     Route::put($idInThePath, [FederationController::class, 'update']);
+//     Route::delete($idInThePath, [FederationController::class, 'destroy']);
+// });
+
+// Route::group(['prefix'=>'association'], function () {
+//     $idInThePath = '/{id}';
+//     Route::get("/", [AssociationController::class, 'index']);
+//     Route::get($idInThePath, [AssociationController::class, 'show']);
+//     Route::post("/", [AssociationController::class, 'store']);
+//     Route::put($idInThePath, [AssociationController::class, 'update']);
+//     Route::delete($idInThePath, [AssociationController::class, 'destroy']);
+// });
 
 // Route::group(['prefix'=>'player'], function () {
 //     $idInThePath = '/{id}';

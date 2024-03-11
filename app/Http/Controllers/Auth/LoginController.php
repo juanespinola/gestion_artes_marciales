@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
 
 class LoginController extends Controller
 {
@@ -39,27 +41,36 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request): RedirectResponse {   
+    public function login(Request $request) {   
 
-        $input = $request->all();
+        try {
+        
+            $input = $request->all();
 
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+            $this->validate($request, [
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
 
-     
-
-        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
+        
+            if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
+                        
+                $user = Auth::user();
+                
+                $token = $user->createToken('my-app-token')->plainTextToken;
+                $response = [
+                    'user' => new UserResource($user),
+                    // 'user' => $user,
+                    'token' => $token,
+                ];
+                return response()->json($response, 200);
+            } else {
+                return response()->json(['message' => ' E-mail o Contraseña no correcta'], 400);
             
-            if (auth()->user()->type->value == 'admin') {
-                return redirect()->route('admin.home');
-            }else if (auth()->user()->type->value == 'user') {
-                return redirect()->route('user.home');
             }
-        }else{
-            return redirect()->route('login')
-                ->with('error','Email-Address And Password Are Wrong.');
+        
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }

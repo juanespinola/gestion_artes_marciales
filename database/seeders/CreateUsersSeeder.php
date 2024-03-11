@@ -18,13 +18,13 @@ class CreateUsersSeeder extends Seeder
             [
                'name'=>'Admin User',
                'email'=>'admin@gmail.com',
-               'type'=> UserType::ADMIN,
+            //    'type'=> UserType::ADMIN,
                'password'=> bcrypt('123456'),
             ],
             [
                'name'=>'User',
                'email'=>'user@gmail.com',
-               'type'=>UserType::USER,
+            //    'type'=>UserType::USER,
                'password'=> bcrypt('123456'),
             ],
         ];
