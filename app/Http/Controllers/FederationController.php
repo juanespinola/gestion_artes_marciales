@@ -110,9 +110,15 @@ class FederationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Federation $federation)
+    public function show($id)
     {
-        //
+        try {
+            $data = Federation::findOrFail($id);
+            return response()->json($data, 200);
+        // }
+    } catch (\Throwable $th) {
+        throw $th;
+    }
     }
 
     /**

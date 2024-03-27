@@ -2,27 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Association;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
-class AssociationController extends Controller
+class PermissionController extends Controller
 {
-    /**
+   /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        
         try {
-            // if($request->BearerToken()){
-                // if (Auth::user()->cannot('access posts')) {
-                //     return response()->json(['Unauthorized, you don\'t have access.'],400);
-                // }
-                $data = Association::all();
+            if($request->BearerToken()){
+                $data = Permission::all();
                 return response()->json($data, 200);
-            // }
+            }
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -46,10 +40,10 @@ class AssociationController extends Controller
             $validation = Validator::make(
                 $request->all(), 
                 [
-                    'description' => 'required|string',
+                    'name' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: is Required',
                 ]
             );
 
@@ -58,8 +52,9 @@ class AssociationController extends Controller
             }
 
             
-            $obj = Association::create([
-                'description' => $request->input('description'),
+            $obj = Permission::create([
+                'name' => $request->input('name'),
+                'guard_name' => "web"
             ]);
 
             return response()->json($obj, 201);
@@ -71,29 +66,29 @@ class AssociationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        try {
-                $data = Association::findOrFail($id);
-                return response()->json($data, 200);
-            // }
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Association $association)
+    public function show(string $id)
     {
         //
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        try {
+            $data = Permission::findOrFail($id);
+            return response()->json($data, 200);
+        // }
+    } catch (\Throwable $th) {
+        throw $th;
+    }
+    }
+
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         try {
         
@@ -111,7 +106,7 @@ class AssociationController extends Controller
                 return response()->json(["messages" => $validation->errors()], 400);
             }
 
-            $obj = Association::findOrFail($id);
+            $obj = Permission::findOrFail($id);
             $obj->update([
                 'description' => $request->input('description'),
             ]);
@@ -125,11 +120,11 @@ class AssociationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
         try {
         
-            $obj = Association::findOrFail($id);
+            $obj = Permission::findOrFail($id);
             $obj->delete();
     
             return response()->json($obj, 200);

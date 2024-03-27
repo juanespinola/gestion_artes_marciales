@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\UserType;
+
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -15,6 +16,7 @@ use Spatie\Permission\Models\Permission;
 class User extends Authenticatable
 {
     use HasRoles, HasApiTokens, HasFactory, Notifiable;
+    // protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +50,9 @@ class User extends Authenticatable
         // 'type' => UserType::class
     ];
     
-    // protected $with = ['roles', 'permissions'];
+    protected $with = ['roles', 'roles.permissions'];
+
+    
 
     // public function roles(){
     //     // return $this->hasMany(Role::class);

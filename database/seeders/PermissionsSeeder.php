@@ -20,29 +20,45 @@ class PermissionsSeeder extends Seeder
 
         // create permissions
         $arrayOfPermissionNames = [
-            // Posts
-            "access posts",
-            "create posts",
-            "update posts",
-            "delete posts",
-            // Users
-            "access users",
-            // ....
+            "access",
+            "create",
+            "update",
+            "delete",
         ];
-        $permissions = collect($arrayOfPermissionNames)->map(function (
-            $permission
-        ) {
-            return ["name" => $permission, "guard_name" => "web"];
-        });
 
-        Permission::insert($permissions->toArray());
+        $arrayOfModulesName = ["user", "federation", "association", "customer"];
 
+        $permissions = [];
+
+        foreach ($arrayOfModulesName as $module) {
+            foreach ($arrayOfPermissionNames as $permission) {
+                $permissions[] = [
+                    "name" => $module.".".$permission,
+                    "guard_name" => "web",
+                    "group_name" => $module
+                ];
+            }
+        }
+
+        Permission::insert($permissions);
         // create role & give it permissions
-        Role::create(["name" => "admin"])->givePermissionTo(Permission::all());
-        Role::create(["name" => "editor"])->givePermissionTo(['access posts',"update posts"]);
+        Role::create(["name" => "super-admin"])
+            ->givePermissionTo([
+                'federation.access',
+                'federation.create',
+                'federation.update',
+                'federation.delete', 
+                'user.access',
+                'user.create',
+                'user.update',
+                'user.delete'
+            ]);
+        // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
+        // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);
+        // Role::create(["name" => "asociation-admin"])->givePermissionTo(['access customer',"update customer"]);
 
         // Assign roles to users (in this case for user id -> 1 & 2)
-        User::find(1)->assignRole('admin');
-        User::find(2)->assignRole('editor');
+        User::find(1)->assignRole('super-admin');
+        // User::find(2)->assignRole('federation-admin');
     }
 }
