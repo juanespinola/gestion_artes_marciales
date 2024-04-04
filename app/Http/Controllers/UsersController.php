@@ -43,7 +43,7 @@ class UsersController extends Controller
     {
         try {
             if($request->BearerToken()){
-                if (!$user->hasPermissionTo("edit user")) {
+                if (!$user->hasPermissionTo("user.edit")) {
                     return response()->json(['Unauthorized, you don\'t have access.'],400);
                 }
                 $validation = Validator::make(

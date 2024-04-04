@@ -44,7 +44,7 @@ return [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
-            'expires_in' => 10, // tiempo en minutos
+            'expires_in' => 525600, // tiempo en minutos
         ]
     ],
 

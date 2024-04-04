@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller
 {
@@ -130,6 +131,39 @@ class PermissionController extends Controller
             return response()->json($obj, 200);
             
         } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function getPermissionsByGroup() {
+        try {
+            $permissionsByGroup = DB::table('permissions')
+                ->select('group_name', DB::raw('JSON_AGG(JSON_BUILD_OBJECT(\'name\', name, \'id\', id)) as permissions'))
+                ->orderBy('group_name')
+                ->groupBy('group_name')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'group_name' => $item->group_name,
+                        'permissions' => json_decode($item->permissions, true)
+                    ];
+                })
+                ->toArray();
+    
+            return response()->json($permissionsByGroup, 200);
+        } catch(\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function getPermissionsByGroupName($group_name) {
+        try {
+            $obj= DB::table('permissions')
+                ->select('name','id')
+                ->where('group_name', $group_name)
+                ->get();
+            return response()->json($obj, 200);
+        } catch(\Throwable $th) {
             throw $th;
         }
     }

@@ -68,6 +68,13 @@ Route::middleware('auth:sanctum')->prefix('permission')->group(function (){
     Route::post("/", [PermissionController::class, 'store']);
     Route::put($idInThePath, [PermissionController::class, 'update']);
     Route::delete($idInThePath, [PermissionController::class, 'destroy']);
+    
+});
+
+Route::middleware('auth:sanctum')->prefix('permissionsbygroup')->group(function (){
+    $idInThePath = "/{name}";
+    Route::get("/", [PermissionController::class, 'getPermissionsByGroup']);
+    Route::get($idInThePath, [PermissionController::class, 'getPermissionsByGroupName']);
 });
 
 

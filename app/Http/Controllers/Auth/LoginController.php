@@ -59,8 +59,8 @@ class LoginController extends Controller
                 
                 $token = $user->createToken('my-app-token')->plainTextToken;
                 $response = [
-                    // 'user' => new UserResource($user),
-                    'user' => $user,
+                    'user' => new UserResource($user),
+                    // 'user' => $user,
                     'token' => $token,
                 ];
                 return response()->json($response, 200);

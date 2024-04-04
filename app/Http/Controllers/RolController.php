@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Validator;
 
 
 class RolController extends Controller
@@ -16,7 +17,7 @@ class RolController extends Controller
     {
         try {
             if($request->BearerToken()){
-                $data = Role::all();
+                $data = Role::all()->load('permissions');
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -58,6 +59,8 @@ class RolController extends Controller
                 'name' => $request->input('name'),
                 'guard_name' => "web"
             ]);
+            $obj->givePermissionTo($request->input('rolePermissionArray'));
+
 
             return response()->json($obj, 201);
         } catch (\Throwable $th) {
@@ -79,12 +82,18 @@ class RolController extends Controller
     public function edit(string $id)
     {
         try {
-            $data = Role::findOrFail($id);
+            $roles = Role::findOrFail($id)->load('permissions');
+            $permissions = Permission::latest()->get();
+
+            $data = new \stdClass();
+            $data->roles = $roles;
+            $data->permissions = $permissions;
+            
             return response()->json($data, 200);
-        // }
-    } catch (\Throwable $th) {
-        throw $th;
-    }
+            
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -97,10 +106,10 @@ class RolController extends Controller
             $validation = Validator::make(
                 $request->all(), 
                 [
-                    'description' => 'required|string',
+                    'name' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: is Required',
                 ]
             );
 
@@ -110,8 +119,9 @@ class RolController extends Controller
 
             $obj = Role::findOrFail($id);
             $obj->update([
-                'description' => $request->input('description'),
+                'name' => $request->input('name'),
             ]);
+            $obj->givePermissionTo($request->input('rolePermissionArray'));
 
             return response()->json($obj, 201);
         } catch (\Throwable $th) {
@@ -136,3 +146,9 @@ class RolController extends Controller
         }
     }
 }
+
+
+// select r."name" , p."name" , p.group_name 
+// from roles r
+// join role_has_permissions rhp on r.id = rhp.role_id 
+// join permissions p on rhp.permission_id = p.id 
