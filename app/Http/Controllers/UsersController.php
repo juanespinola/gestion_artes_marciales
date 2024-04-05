@@ -43,16 +43,24 @@ class UsersController extends Controller
     {
         try {
             if($request->BearerToken()){
-                if (!$user->hasPermissionTo("user.edit")) {
+                $user = Auth::user();
+                if (!$user->hasPermissionTo("user.update")) {
                     return response()->json(['Unauthorized, you don\'t have access.'],400);
                 }
                 $validation = Validator::make(
                     $request->all(), 
                     [
-                        'description' => 'required|string',
+                        'name' => 'required|string',
+                        'email' => 'required|string',
+                        'password' => 'required|string',
+                        'rol' => 'required',
+    
                     ],
                     [
-                        'description.required' => ':attribute: is Required',
+                        'name.required' => ':attribute: is Required',
+                        'email.required' => ':attribute: is Required',
+                        'password.required' => ':attribute: is Required',
+                        'rol.required' => ':attribute: is Required',
                     ]
                 );
 
@@ -62,8 +70,16 @@ class UsersController extends Controller
 
                 
                 $obj = User::create([
-                    'description' => $request->input('description'),
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'password' => $request->input('password'),
                 ]);
+
+                foreach ($request->input('rol') as $rol) {
+                    $obj->assignRole($rol["name"]);
+                }
+                
+
 
                 return response()->json($obj, 201);
             }
@@ -108,10 +124,17 @@ class UsersController extends Controller
             $validation = Validator::make(
                 $request->all(), 
                 [
-                    'description' => 'required|string',
+                    'name' => 'required|string',
+                    'email' => 'required|string',
+                    'password' => 'required|string',
+                    'rol' => 'required',
+
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: is Required',
+                    'email.required' => ':attribute: is Required',
+                    'password.required' => ':attribute: is Required',
+                    'rol.required' => ':attribute: is Required',
                 ]
             );
 
@@ -121,10 +144,16 @@ class UsersController extends Controller
 
             $obj = User::findOrFail($id);
             $obj->update([
-                'description' => $request->input('description'),
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
             ]);
 
-            return response()->json($obj, 201);
+            foreach ($request->input('rol') as $rol) {
+                $obj->assignRole($rol["name"]);
+            }
+
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -140,7 +169,7 @@ class UsersController extends Controller
             $obj = User::findOrFail($id);
             $obj->delete();
     
-            return response()->json($obj, 200);
+            return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
             
         } catch (\Throwable $th) {
             throw $th;

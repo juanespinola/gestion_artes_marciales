@@ -123,7 +123,7 @@ class RolController extends Controller
             ]);
             $obj->givePermissionTo($request->input('rolePermissionArray'));
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -139,7 +139,7 @@ class RolController extends Controller
             $obj = Role::findOrFail($id);
             $obj->delete();
     
-            return response()->json($obj, 200);
+            return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
             
         } catch (\Throwable $th) {
             throw $th;

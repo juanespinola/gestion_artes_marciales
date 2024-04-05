@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PermissionController extends Controller
 {
@@ -42,9 +43,11 @@ class PermissionController extends Controller
                 $request->all(), 
                 [
                     'name' => 'required|string',
+                    'group_name'=> 'required|string',
                 ],
                 [
                     'name.required' => ':attribute: is Required',
+                    'group_name.required' => ':attribute: is Required',
                 ]
             );
 
@@ -55,7 +58,8 @@ class PermissionController extends Controller
             
             $obj = Permission::create([
                 'name' => $request->input('name'),
-                'guard_name' => "web"
+                'guard_name' => "web",
+                'group_name'=>$request->input('group_name'),
             ]);
 
             return response()->json($obj, 201);
@@ -96,10 +100,12 @@ class PermissionController extends Controller
             $validation = Validator::make(
                 $request->all(), 
                 [
-                    'description' => 'required|string',
+                    'name' => 'required|string',
+                    'group_name'=> 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: is Required',
+                    'group_name.required' => ':attribute: is Required',
                 ]
             );
 
@@ -109,10 +115,12 @@ class PermissionController extends Controller
 
             $obj = Permission::findOrFail($id);
             $obj->update([
-                'description' => $request->input('description'),
+                'name' => $request->input('name'),
+                'guard_name' => "web",
+                'group_name'=>$request->input('group_name'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -128,7 +136,7 @@ class PermissionController extends Controller
             $obj = Permission::findOrFail($id);
             $obj->delete();
     
-            return response()->json($obj, 200);
+            return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
             
         } catch (\Throwable $th) {
             throw $th;
