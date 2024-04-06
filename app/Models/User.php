@@ -52,22 +52,4 @@ class User extends Authenticatable
     
     protected $with = ['roles', 'roles.permissions'];
 
-    
-
-    // public function roles(){
-    //     // return $this->hasMany(Role::class);
-    //     // return $this->getRoleNames()[0];
-    // }
-    // public function permissions(){
-    //     // return $this->getPermissionsViaRoles()->pluck("name");
-    //     // return $this->hasMany(Permission::class);
-    // }
-
-
-    // protected function type(): Attribute {
-    //     return new Attribute(
-    //         get: fn ($value) =>  ["admin","user"][$value],
-    //     );
-
-    // }
 }

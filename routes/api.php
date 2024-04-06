@@ -9,6 +9,9 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SportController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GroupCategoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -77,6 +80,32 @@ Route::middleware('auth:sanctum')->prefix('permissionsbygroup')->group(function 
     Route::get($idInThePath, [PermissionController::class, 'getPermissionsByGroupName']);
 });
 
+Route::middleware('auth:sanctum')->prefix('sport')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [SportController::class, 'index']);
+    Route::get($idInThePath, [SportController::class, 'edit']);
+    Route::post("/", [SportController::class, 'store']);
+    Route::put($idInThePath, [SportController::class, 'update']);
+    Route::delete($idInThePath, [SportController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('category')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [CategoryController::class, 'index']);
+    Route::get($idInThePath, [CategoryController::class, 'edit']);
+    Route::post("/", [CategoryController::class, 'store']);
+    Route::put($idInThePath, [CategoryController::class, 'update']);
+    Route::delete($idInThePath, [CategoryController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('groupcategory')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [GroupCategoryController::class, 'index']);
+    Route::get($idInThePath, [GroupCategoryController::class, 'edit']);
+    Route::post("/", [GroupCategoryController::class, 'store']);
+    Route::put($idInThePath, [GroupCategoryController::class, 'update']);
+    Route::delete($idInThePath, [GroupCategoryController::class, 'destroy']);
+});
 
 
 // Route::group(['prefix'=>'user'], function () {

@@ -26,7 +26,14 @@ class PermissionsSeeder extends Seeder
             "delete",
         ];
 
-        $arrayOfModulesName = ["user", "federation", "association", "customer"];
+        $arrayOfModulesName = [
+            "user", 
+            "federation", 
+            "association", 
+            "customer", 
+            "sport",
+            "category"
+        ];
 
         $permissions = [];
 
@@ -44,14 +51,26 @@ class PermissionsSeeder extends Seeder
         // create role & give it permissions
         Role::create(["name" => "super-admin"])
             ->givePermissionTo([
+                // federation
                 'federation.access',
                 'federation.create',
                 'federation.update',
                 'federation.delete', 
+                // user
                 'user.access',
                 'user.create',
                 'user.update',
-                'user.delete'
+                'user.delete',
+                // sport
+                'sport.access',
+                'sport.create',
+                'sport.update',
+                'sport.delete',
+                // category
+                'category.access',
+                'category.create',
+                'category.update',
+                'category.delete'
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);

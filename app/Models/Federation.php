@@ -13,4 +13,9 @@ class Federation extends Model
         'id',
         'description',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }

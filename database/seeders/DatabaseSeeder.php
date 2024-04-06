@@ -8,6 +8,9 @@ use Database\Seeders\FederationSeeder;
 use Database\Seeders\CreateUsersSeeder;
 use Database\Seeders\AssociationSeeder;
 use Database\Seeders\PermissionsSeeder;
+use Database\Seeders\SportSeeder;
+use Database\Seeders\CategorySeeder;
+use Database\Seeders\GroupCategorySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,6 +30,9 @@ class DatabaseSeeder extends Seeder
             CreateUsersSeeder::class,
             AssociationSeeder::class,
             PermissionsSeeder::class,
+            SportSeeder::class,
+            CategorySeeder::class,
+            GroupCategorySeeder::class
         ]);
     }
 }
