@@ -10,6 +10,7 @@ class Association extends Model
     use HasFactory;
     protected $fillable = [
         'description',
+        'federation_id'
     ];
 
     protected $hidden = [

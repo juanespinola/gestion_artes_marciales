@@ -32,7 +32,8 @@ class PermissionsSeeder extends Seeder
             "association", 
             "customer", 
             "sport",
-            "category"
+            "category",
+            "groupcategory"
         ];
 
         $permissions = [];
@@ -61,11 +62,7 @@ class PermissionsSeeder extends Seeder
                 'user.create',
                 'user.update',
                 'user.delete',
-                // sport
-                'sport.access',
-                'sport.create',
-                'sport.update',
-                'sport.delete',
+               
                 // category
                 'category.access',
                 'category.create',
@@ -75,21 +72,46 @@ class PermissionsSeeder extends Seeder
         
             Role::create(["name" => "federation-admin"])
                 ->givePermissionTo([
-                    // federation
                     // category
                     'category.access',
                     'category.create',
                     'category.update',
-                    'category.delete'
+                    'category.delete',
+
+                    // user
+                    'user.access',
+                    'user.create',
+                    'user.update',
+                    'user.delete',
+                    // association
+                    'association.access',
+                    'association.create',
+                    'association.update',
+                    'association.delete',
+
+                    // category
+                    'groupcategory.access',
+                    'groupcategory.create',
+                    'groupcategory.update',
+                    'groupcategory.delete'
                 ]);
             Role::create(["name" => "association-admin"])
             ->givePermissionTo([
-                // federation
                 // category
                 'category.access',
                 'category.create',
                 'category.update',
-                'category.delete'
+                'category.delete',
+                // user
+                'user.access',
+                'user.create',
+                'user.update',
+                'user.delete',
+                // category
+                'groupcategory.access',
+                'groupcategory.create',
+                'groupcategory.update',
+                'groupcategory.delete'
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);

@@ -16,13 +16,21 @@ class AssociationController extends Controller
     {
         
         try {
-            // if($request->BearerToken()){
-                // if (Auth::user()->cannot('access posts')) {
-                //     return response()->json(['Unauthorized, you don\'t have access.'],400);
-                // }
+            if($request->BearerToken()){
+                $user = auth()->user();
+                if (!$user->hasPermissionTo("association.access")) {
+                    return response()->json(['Unauthorized, you don\'t have access.'],400);
+                }
+                if(isset(auth()->user()->federation_id) && !isset(auth()->user()->association_id)){
+                    $data = Association::where('federation_id', auth()->user()->federation_id)
+                    ->get();
+    
+                    return response()->json($data, 200);    
+                }
+
                 $data = Association::all();
                 return response()->json($data, 200);
-            // }
+            }
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -60,6 +68,7 @@ class AssociationController extends Controller
             
             $obj = Association::create([
                 'description' => $request->input('description'),
+                'federation_id' => auth()->user()->federation_id,
             ]);
 
             return response()->json($obj, 201);
@@ -114,6 +123,7 @@ class AssociationController extends Controller
             $obj = Association::findOrFail($id);
             $obj->update([
                 'description' => $request->input('description'),
+                'federation_id' => auth()->user()->federation_id,
             ]);
 
             return response()->json($obj, 201);

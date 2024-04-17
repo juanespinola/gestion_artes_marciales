@@ -16,9 +16,28 @@ class GroupCategoryController extends Controller
         try {
             if($request->BearerToken()){
                 
-                if (!auth()->user()->hasPermissionTo('category.access')) {
+                if (!auth()->user()->hasPermissionTo('groupcategory.access')) {
                     return response()->json(['Unauthorized, you don\'t have access.'], 400);
                 }
+
+                if(isset(auth()->user()->federation_id) && !isset(auth()->user()->association_id)){
+                    $data = GroupCategory::where('federation_id', auth()->user()->federation_id)
+                    ->where('association_id', null)
+                    ->with(['category', 'federation', 'association'])
+                    ->get();
+    
+                    return response()->json($data, 200);    
+                }
+    
+                if( isset(auth()->user()->federation_id) && isset(auth()->user()->association_id) ){
+                    $data = GroupCategory::where('federation_id', auth()->user()->federation_id)
+                    ->where('association_id', auth()->user()->association_id)
+                    ->with(['category', 'federation', 'association'])
+                    ->get();
+    
+                    return response()->json($data, 200);    
+                }
+
                 $data = GroupCategory::with(['category', 'federation', 'association'])->get();
                 return response()->json($data, 200);
             }
@@ -44,12 +63,17 @@ class GroupCategoryController extends Controller
             $validation = Validator::make(
                 $request->all(), 
                 [
-                    'description' => 'required|string',
-                    'sport_id' => 'required|integer',
+                    'group_category' => 'required|string',
+                    'initial_value' => 'required|string',
+                    'final_value' => 'required|string',
+                    'category_id' => 'required|integer',
+                   
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'sport_id.required' => ':attribute: is Required',
+                    'group_category.required' => ':attribute: is Required',
+                    'initial_value.required' => ':attribute: is Required',
+                    'final_value.required' => ':attribute: is Required',
+                    'category_id.required' => ':attribute: is Required',
                 ]
             );
 
@@ -59,11 +83,15 @@ class GroupCategoryController extends Controller
 
             
             $obj = GroupCategory::create([
-                'description' => $request->input('description'),
-                'sport_id' => $request->input('sport_id'),
+                'group_category' => $request->input('group_category'),
+                'initial_value' => $request->input('initial_value'),
+                'final_value' => $request->input('final_value'),
+                'category_id' => $request->input('category_id'),
+                'federation_id' => auth()->user()->federation_id,
+                'association_id' => auth()->user()->association_id,
             ]);
 
-            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -100,12 +128,17 @@ class GroupCategoryController extends Controller
             $validation = Validator::make(
                 $request->all(), 
                 [
-                    'description' => 'required|string',
-                    'sport_id' => 'required|integer',
+                    'group_category' => 'required|string',
+                    'initial_value' => 'required|string',
+                    'final_value' => 'required|string',
+                    'category_id' => 'required|integer',
+                   
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'sport_id.required' => ':attribute: is Required',
+                    'group_category.required' => ':attribute: is Required',
+                    'initial_value.required' => ':attribute: is Required',
+                    'final_value.required' => ':attribute: is Required',
+                    'category_id.required' => ':attribute: is Required',
                 ]
             );
 
@@ -115,11 +148,15 @@ class GroupCategoryController extends Controller
 
             $obj = GroupCategory::findOrFail($id);
             $obj->update([
-                'description' => $request->input('description'),
-                'sport_id' => $request->input('sport_id'),
+                'group_category' => $request->input('group_category'),
+                'initial_value' => $request->input('initial_value'),
+                'final_value' => $request->input('final_value'),
+                'category_id' => $request->input('category_id'),
+                'federation_id' => auth()->user()->federation_id,
+                'association_id' => auth()->user()->association_id,
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

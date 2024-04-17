@@ -19,10 +19,27 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         if($request->BearerToken()){
-            $user = Auth::user();
+            $user = auth()->user();
             if (!$user->hasPermissionTo("user.access")) {
                 return response()->json(['Unauthorized, you don\'t have access.'],400);
             }
+
+            if(isset(auth()->user()->federation_id) && !isset(auth()->user()->association_id)){
+                $data = User::where('federation_id', auth()->user()->federation_id)
+                ->where('association_id', null)
+                ->get();
+
+                return response()->json($data, 200);    
+            }
+
+            if( isset(auth()->user()->federation_id) && isset(auth()->user()->association_id) ){
+                $data = User::where('federation_id', auth()->user()->federation_id)
+                ->where('association_id', auth()->user()->association_id)
+                ->get();
+
+                return response()->json($data, 200);    
+            }
+
             $data = User::all();
             return response()->json($data, 200);
         }
