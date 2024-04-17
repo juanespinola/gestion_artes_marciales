@@ -12,7 +12,8 @@ class Category extends Model
 
     protected $fillable = [
         'description',
-        'sport_id'
+        'federation_id',
+        'association_id'
     ];
 
     protected $hidden = [
@@ -20,9 +21,7 @@ class Category extends Model
         'updated_at',
     ];
 
-    public function sport(){
-        return $this->hasOne(Sport::class, 'id', 'sport_id');
-    }
+    
 
     
 }

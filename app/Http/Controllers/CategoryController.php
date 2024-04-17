@@ -19,7 +19,21 @@ class CategoryController extends Controller
                 if (!auth()->user()->hasPermissionTo('category.access')) {
                     return response()->json(['Unauthorized, you don\'t have access.'], 400);
                 }
-                $data = Category::with('sport')->get();
+                if(isset(auth()->user()->federation_id) && !isset(auth()->user()->association_id)){
+                    $data = Category::where('federation_id', auth()->user()->federation_id)
+                    ->where('association_id', null)
+                    ->get();
+                    return response()->json($data, 200);    
+                }
+
+                if(isset(auth()->user()->federation_id) && isset(auth()->user()->association_id)){
+                    $data = Category::where('federation_id', auth()->user()->federation_id)
+                    ->where('association_id', auth()->user()->association_id)
+                    ->get();
+                    return response()->json($data, 200);    
+                }
+
+                $data = Category::all();
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -45,11 +59,10 @@ class CategoryController extends Controller
                 $request->all(), 
                 [
                     'description' => 'required|string',
-                    'sport_id' => 'required|integer',
                 ],
                 [
                     'description.required' => ':attribute: is Required',
-                    'sport_id.required' => ':attribute: is Required',
+                    
                 ]
             );
 
@@ -60,10 +73,11 @@ class CategoryController extends Controller
             
             $obj = Category::create([
                 'description' => $request->input('description'),
-                'sport_id' => $request->input('sport_id'),
+                'federation_id' => auth()->user()->federation_id,
+                'association_id' => auth()->user()->association_id,
             ]);
 
-            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -101,11 +115,9 @@ class CategoryController extends Controller
                 $request->all(), 
                 [
                     'description' => 'required|string',
-                    'sport_id' => 'required|integer',
                 ],
                 [
                     'description.required' => ':attribute: is Required',
-                    'sport_id.required' => ':attribute: is Required',
                 ]
             );
 
@@ -116,10 +128,11 @@ class CategoryController extends Controller
             $obj = Category::findOrFail($id);
             $obj->update([
                 'description' => $request->input('description'),
-                'sport_id' => $request->input('sport_id'),
+                'federation_id' => auth()->user()->federation_id,
+                'association_id' => auth()->user()->association_id,
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

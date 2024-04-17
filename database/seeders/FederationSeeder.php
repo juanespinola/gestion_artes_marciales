@@ -14,26 +14,15 @@ class FederationSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['description' => 'federacion 1'],
-            ['description' => 'federacion 2'],
-            ['description' => 'federacion 3'],
-            ['description' => 'federacion 4'],
-            ['description' => 'federacion 5'],
-            ['description' => 'federacion 6'],
-            ['description' => 'federacion 7'],
-            ['description' => 'federacion 8'],
-            ['description' => 'federacion 9'],
-            ['description' => 'federacion 10'],
-            ['description' => 'federacion 11'],
-            ['description' => 'federacion 12'],
-            ['description' => 'federacion 13'],
-            ['description' => 'federacion 14'],
-            ['description' => 'federacion 15'],
-            ['description' => 'federacion 16'],
-            ['description' => 'federacion 17'],
-            ['description' => 'federacion 18'],
-            ['description' => 'federacion 19'],
-            ['description' => 'federacion 20'],
+            [
+                'description' => 'Federacion Paraguaya de Jiu Jitsu'
+            ],
+            [
+                'description' => 'Federacion Paraguaya de Karate'
+            ],
+            [
+                'description' => 'Federacion Paraguaya de Taekwondo'
+            ]
         ];
 
         foreach ($data as $key => $item) {

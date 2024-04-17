@@ -72,12 +72,32 @@ class PermissionsSeeder extends Seeder
                 'category.update',
                 'category.delete'
             ]);
+        
+            Role::create(["name" => "federation-admin"])
+                ->givePermissionTo([
+                    // federation
+                    // category
+                    'category.access',
+                    'category.create',
+                    'category.update',
+                    'category.delete'
+                ]);
+            Role::create(["name" => "association-admin"])
+            ->givePermissionTo([
+                // federation
+                // category
+                'category.access',
+                'category.create',
+                'category.update',
+                'category.delete'
+            ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);
         // Role::create(["name" => "asociation-admin"])->givePermissionTo(['access customer',"update customer"]);
 
         // Assign roles to users (in this case for user id -> 1 & 2)
         User::find(1)->assignRole('super-admin');
-        // User::find(2)->assignRole('federation-admin');
+        User::find(3)->assignRole('federation-admin');
+        User::find(4)->assignRole('association-admin');
     }
 }

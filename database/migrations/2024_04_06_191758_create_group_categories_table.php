@@ -18,7 +18,7 @@ return new class extends Migration
             // $table->string('description');
             $table->string('initial_value');
             $table->string('final_value')->nullable();
-            $table->unsignedBigInteger('federation_id')->nullable();
+            $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id')->nullable();
             $table->timestamps();
         });

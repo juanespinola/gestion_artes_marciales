@@ -15,10 +15,20 @@ class AssociationSeeder extends Seeder
     {
         $data = [
             [
-                'description' => 'asociacion 1'
+                'description' => 'asociacion 1',
+                'federation_id'=> '1',
             ],
             [
-                'description' => 'asociacion 2'
+                'description' => 'asociacion 2',
+                'federation_id'=> '1',
+            ],
+            [
+                'description' => 'asociacion 3',
+                'federation_id'=> '2',
+            ],
+            [
+                'description' => 'asociacion 4',
+                'federation_id'=> '2',
             ],
         ];
 

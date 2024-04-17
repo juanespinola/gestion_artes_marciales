@@ -27,6 +27,19 @@ class CreateUsersSeeder extends Seeder
             //    'type'=>UserType::USER,
                'password'=> bcrypt('123456'),
             ],
+            [
+                'name'=>'Federacion User',
+                'email'=>'federacion@gmail.com',
+                'password'=> bcrypt('123456'),
+                'federation_id'=> '1',
+            ],
+            [
+                'name'=>'Asociacion User',
+                'email'=>'asociacion@gmail.com',
+                'password'=> bcrypt('123456'),
+                'federation_id'=> '1',
+                'association_id'=> '2',
+            ],
         ];
 
 

@@ -13,6 +13,9 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
+use App\Models\Federation;
+use App\Models\Association;
+
 class User extends Authenticatable
 {
     use HasRoles, HasApiTokens, HasFactory, Notifiable;
@@ -27,6 +30,8 @@ class User extends Authenticatable
         'email',
         'password',
         // 'type'
+        "federation_id",
+        "association_id",
     ];
 
     /**
@@ -51,5 +56,11 @@ class User extends Authenticatable
     ];
     
     protected $with = ['roles', 'roles.permissions'];
+
+
+    private function federation() {
+        return $this->hasOne(Federation::class, 'id', 'federation_id');
+    }
+
 
 }

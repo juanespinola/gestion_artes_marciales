@@ -26,6 +26,9 @@ use App\Http\Controllers\GroupCategoryController;
 
 Route::post("/login", [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post("/register", [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+Route::get("/", function () {
+    return "estamos Online";
+});
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
