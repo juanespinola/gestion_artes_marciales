@@ -11,6 +11,7 @@ use Database\Seeders\PermissionsSeeder;
 use Database\Seeders\SportSeeder;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\GroupCategorySeeder;
+use Database\Seeders\EventSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,7 +33,8 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class,
             SportSeeder::class,
             CategorySeeder::class,
-            GroupCategorySeeder::class
+            GroupCategorySeeder::class,
+            EventSeeder::class
         ]);
     }
 }

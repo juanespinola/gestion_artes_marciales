@@ -33,7 +33,8 @@ class PermissionsSeeder extends Seeder
             "customer", 
             "sport",
             "category",
-            "groupcategory"
+            "groupcategory",
+            "event"
         ];
 
         $permissions = [];
@@ -93,7 +94,13 @@ class PermissionsSeeder extends Seeder
                     'groupcategory.access',
                     'groupcategory.create',
                     'groupcategory.update',
-                    'groupcategory.delete'
+                    'groupcategory.delete',
+
+                     // event
+                    'event.access',
+                    'event.create',
+                    'event.update',
+                    'event.delete'
                 ]);
             Role::create(["name" => "association-admin"])
             ->givePermissionTo([
@@ -111,7 +118,12 @@ class PermissionsSeeder extends Seeder
                 'groupcategory.access',
                 'groupcategory.create',
                 'groupcategory.update',
-                'groupcategory.delete'
+                'groupcategory.delete',
+                // event
+                'event.access',
+                'event.create',
+                'event.update',
+                'event.delete'
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);

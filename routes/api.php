@@ -12,6 +12,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GroupCategoryController;
+use App\Http\Controllers\EventController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -108,6 +109,15 @@ Route::middleware('auth:sanctum')->prefix('groupcategory')->group(function (){
     Route::post("/", [GroupCategoryController::class, 'store']);
     Route::put($idInThePath, [GroupCategoryController::class, 'update']);
     Route::delete($idInThePath, [GroupCategoryController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('event')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [EventController::class, 'index']);
+    Route::get($idInThePath, [EventController::class, 'edit']);
+    Route::post("/", [EventController::class, 'store']);
+    Route::put($idInThePath, [EventController::class, 'update']);
+    Route::delete($idInThePath, [EventController::class, 'destroy']);
 });
 
 
