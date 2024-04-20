@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('description'); // Nombre para el evento
             $table->unsignedBigInteger('location_id');
-            $table->dateTime('initial_date');
-            $table->dateTime('final_date')->nullable();
-            $table->unsignedBigInteger('event_type_id');
-            $table->unsignedBigInteger('event_status_id');
+            $table->date('initial_date');
+            $table->date('final_date')->nullable();
+            $table->time('initial_time', $precision = 0);
+            $table->time('final_time', $precision = 0)->nullable();
+            $table->unsignedBigInteger('type_event_id');
+            $table->unsignedBigInteger('status_event_id');
             $table->integer('inscription_fee'); // precio de inscripcion
             $table->integer('total_participants')->nullable(); // total de participantes, cuando el evento finaliza la fecha de inscripcion, se debe actualizar esto
             $table->integer('available_slots');

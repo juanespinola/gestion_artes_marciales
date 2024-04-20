@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Event;
+use Carbon\Carbon;
 
 class EventSeeder extends Seeder
 {
@@ -18,8 +19,9 @@ class EventSeeder extends Seeder
                 'description' => 'Torneo Verano',
                 'location_id' => '1',
                 'initial_date' => '04/04/2024',
-                'event_type_id' => '1',
-                'event_status_id' => '1',
+                'initial_time' => Carbon::now()->toTimeString(),
+                'type_event_id' => '1',
+                'status_event_id' => '1',
                 'inscription_fee' => '100',
                 'available_slots' => '100',
                 'created_user_id' => '3',
@@ -29,8 +31,9 @@ class EventSeeder extends Seeder
                 'description' => 'Torneo Invierno',
                 'location_id' => '1',
                 'initial_date' => '04/04/2024',
-                'event_type_id' => '1',
-                'event_status_id' => '1',
+                'initial_time' => Carbon::now()->toTimeString(),
+                'type_event_id' => '1',
+                'status_event_id' => '1',
                 'inscription_fee' => '100',
                 'available_slots' => '100',
                 'created_user_id' => '4',

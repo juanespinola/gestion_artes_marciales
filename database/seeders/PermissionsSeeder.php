@@ -34,7 +34,9 @@ class PermissionsSeeder extends Seeder
             "sport",
             "category",
             "groupcategory",
-            "event"
+            "event",
+            "typesevent",
+            "statusevent"
         ];
 
         $permissions = [];
@@ -68,7 +70,19 @@ class PermissionsSeeder extends Seeder
                 'category.access',
                 'category.create',
                 'category.update',
-                'category.delete'
+                'category.delete',
+
+                // typesevent
+                'typesevent.access',
+                'typesevent.create',
+                'typesevent.update',
+                'typesevent.delete',
+
+                // typesevent
+                'statusevent.access',
+                'statusevent.create',
+                'statusevent.update',
+                'statusevent.delete',
             ]);
         
             Role::create(["name" => "federation-admin"])
@@ -100,7 +114,11 @@ class PermissionsSeeder extends Seeder
                     'event.access',
                     'event.create',
                     'event.update',
-                    'event.delete'
+                    'event.delete',
+                     // statusevent
+                    'statusevent.access',
+                     // typesevent
+                    'typesevent.access',
                 ]);
             Role::create(["name" => "association-admin"])
             ->givePermissionTo([
@@ -123,7 +141,12 @@ class PermissionsSeeder extends Seeder
                 'event.access',
                 'event.create',
                 'event.update',
-                'event.delete'
+                'event.delete',
+
+                // statusevent
+                'statusevent.access',
+                // typesevent
+                'typesevent.access',
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);

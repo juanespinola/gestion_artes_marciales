@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Location;
 
 class Event extends Model
 {
@@ -15,6 +16,8 @@ class Event extends Model
         'location_id',
         'initial_date',
         'final_date',
+        'initial_time',
+        'final_time',
         'event_type_id',
         'event_status_id',
         'inscription_fee',
@@ -31,5 +34,15 @@ class Event extends Model
         'updated_at',
     ];
 
-    protected $dates = ['initial_date', 'final_date'];
+    protected $casts = [
+        'initial_date'  => 'date:Y-m-d',
+        'final_date' => 'date:Y-m-d',
+    ];
+
+    // protected $dateFormat = 'U';
+
+    public function location() {
+        return $this->hasOne(Location::class, 'id', 'location_id');
+    }
+    
 }

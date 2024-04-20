@@ -24,7 +24,7 @@ class EventController extends Controller
                 if(isset(auth()->user()->federation_id) && !isset(auth()->user()->association_id)){
                     $data = Event::where('federation_id', auth()->user()->federation_id)
                     ->where('association_id', null)
-                    // ->with(['category', 'federation', 'association'])
+                    ->with(['location'])
                     ->get();
     
                     return response()->json($data, 200);    
@@ -33,13 +33,13 @@ class EventController extends Controller
                 if( isset(auth()->user()->federation_id) && isset(auth()->user()->association_id) ){
                     $data = Event::where('federation_id', auth()->user()->federation_id)
                     ->where('association_id', auth()->user()->association_id)
-                    // ->with(['category', 'federation', 'association'])
+                    ->with(['location'])
                     ->get();
     
                     return response()->json($data, 200);    
                 }
 
-                $data = Event::all();
+                $data = Event::with(['location'])->get();
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -67,6 +67,7 @@ class EventController extends Controller
                     'description' => 'required|string',
                     'location_id' => 'required|integer',
                     'initial_date' => 'required|date',
+                    'initial_time' => 'required|date_format:H:i:s',
                     'event_type_id' => 'required|integer',
                     'event_status_id' => 'required|integer',
                     'inscription_fee' => 'required|integer',
@@ -76,6 +77,7 @@ class EventController extends Controller
                     'description.required' => ':attribute: is Required',
                     'location_id.required' => ':attribute: is Required',
                     'initial_date.required' => ':attribute: is Required',
+                    'initial_time.required' => ':attribute: is Required',
                     'event_type_id.required' => ':attribute: is Required',
                     'event_status_id.required' => ':attribute: is Required',
                     'inscription_fee.required' => ':attribute: is Required',
@@ -92,7 +94,9 @@ class EventController extends Controller
                 'description' => $request->input('description'),
                 'location_id' => $request->input('location_id'),
                 'initial_date' => Carbon::parse($request->input('initial_date'))->format('Y-m-d'),
-                'final_date' => Carbon::parse($request->input('final_date'))->format('Y-m-d'),
+                'final_date' => $request->input('final_date') ? Carbon::parse($request->input('final_date'))->format('Y-m-d') : null,
+                'initial_time' => Carbon::parse($request->input('initial_time'))->format('h:i:s'),
+                'final_time' => $request->input('final_time') ? Carbon::parse($request->input('final_time'))->format('h:i:s') : null,
                 'event_type_id' => $request->input('event_type_id'),
                 'event_status_id' => $request->input('event_status_id'),
                 'inscription_fee' => $request->input('inscription_fee'),
@@ -143,6 +147,7 @@ class EventController extends Controller
                     'description' => 'required|string',
                     'location_id' => 'required|integer',
                     'initial_date' => 'required|date',
+                    'initial_time' => 'required|date_format:H:i:s',
                     'event_type_id' => 'required|integer',
                     'event_status_id' => 'required|integer',
                     'inscription_fee' => 'required|integer',
@@ -152,6 +157,7 @@ class EventController extends Controller
                     'description.required' => ':attribute: is Required',
                     'location_id.required' => ':attribute: is Required',
                     'initial_date.required' => ':attribute: is Required',
+                    'initial_time.required' => ':attribute: is Required',
                     'event_type_id.required' => ':attribute: is Required',
                     'event_status_id.required' => ':attribute: is Required',
                     'inscription_fee.required' => ':attribute: is Required',
@@ -168,7 +174,9 @@ class EventController extends Controller
                 'description' => $request->input('description'),
                 'location_id' => $request->input('location_id'),
                 'initial_date' => Carbon::parse($request->input('initial_date'))->format('Y-m-d'),
-                'final_date' => Carbon::parse($request->input('final_date'))->format('Y-m-d'),
+                'final_date' => $request->input('final_date') ? Carbon::parse($request->input('final_date'))->format('Y-m-d') : null,
+                'initial_time' => Carbon::parse($request->input('initial_time'))->format('h:i:s'),
+                'final_time' => $request->input('final_time') ? Carbon::parse($request->input('final_time'))->format('h:i:s') : null,
                 'event_type_id' => $request->input('event_type_id'),
                 'event_status_id' => $request->input('event_status_id'),
                 'inscription_fee' => $request->input('inscription_fee'),

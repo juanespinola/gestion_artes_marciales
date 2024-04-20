@@ -13,6 +13,9 @@ use App\Http\Controllers\SportController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GroupCategoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\StatusEventController;
+use App\Http\Controllers\TypesEventController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -119,6 +122,36 @@ Route::middleware('auth:sanctum')->prefix('event')->group(function (){
     Route::put($idInThePath, [EventController::class, 'update']);
     Route::delete($idInThePath, [EventController::class, 'destroy']);
 });
+
+Route::middleware('auth:sanctum')->prefix('typesevent')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [TypesEventController::class, 'index']);
+    Route::get($idInThePath, [TypesEventController::class, 'edit']);
+    Route::post("/", [TypesEventController::class, 'store']);
+    Route::put($idInThePath, [TypesEventController::class, 'update']);
+    Route::delete($idInThePath, [TypesEventController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('statusevent')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [StatusEventController::class, 'index']);
+    Route::get($idInThePath, [StatusEventController::class, 'edit']);
+    Route::post("/", [StatusEventController::class, 'store']);
+    Route::put($idInThePath, [StatusEventController::class, 'update']);
+    Route::delete($idInThePath, [StatusEventController::class, 'destroy']);
+});
+
+
+Route::middleware('auth:sanctum')->prefix('location')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [LocationController::class, 'index']);
+    Route::get($idInThePath, [LocationController::class, 'edit']);
+    Route::post("/", [LocationController::class, 'store']);
+    Route::put($idInThePath, [LocationController::class, 'update']);
+    Route::delete($idInThePath, [LocationController::class, 'destroy']);
+});
+
+
 
 
 // Route::group(['prefix'=>'user'], function () {

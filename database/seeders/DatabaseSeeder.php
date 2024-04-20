@@ -12,6 +12,9 @@ use Database\Seeders\SportSeeder;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\GroupCategorySeeder;
 use Database\Seeders\EventSeeder;
+use Database\Seeders\StatusEventSeeder;
+use Database\Seeders\TypesEventSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,12 +23,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $this->call([
             FederationSeeder::class,
             CreateUsersSeeder::class,
@@ -34,7 +31,10 @@ class DatabaseSeeder extends Seeder
             SportSeeder::class,
             CategorySeeder::class,
             GroupCategorySeeder::class,
-            EventSeeder::class
+            EventSeeder::class,
+            LocationSeeder::class,
+            StatusEventSeeder::class,
+            TypesEventSeeder::class
         ]);
     }
 }
