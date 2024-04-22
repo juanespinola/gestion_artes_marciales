@@ -34,6 +34,9 @@ Route::get("/", function () {
     return "estamos Online";
 });
 
+Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 'federations']);
+
+
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
     Route::get("/", [AssociationController::class, 'index']);
