@@ -60,7 +60,7 @@ class FederationController extends Controller
         //     return response()->json($th, 400);
         // }
         try {
-            $data = Federation::all();
+            $data = Federation::where('status', true)->get();
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

@@ -4,12 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Federation;
+use App\Models\Event;
 
 class OrganizationController extends Controller
 {
     public function federations() {
         try {
-            $data = Federation::all();
+            $data = Federation::where('status', true)->get();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function events($federation_id) {
+        try {
+            $data = Event::where('federation_id', $federation_id)
+                ->orderBy('initial_date', 'desc')
+                ->get();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function federation($federation_id) {
+        try {
+            $data = Federation::where('status', true)
+                ->findOrFail($federation_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

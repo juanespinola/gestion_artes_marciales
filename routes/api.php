@@ -35,6 +35,8 @@ Route::get("/", function () {
 });
 
 Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 'federations']);
+Route::get("/federations/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'federation']);
+Route::get("/federations/{federation_id}/events", [App\Http\Controllers\OrganizationController::class, 'events']);
 
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){

@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->unsignedBigInteger('federation_id');
+            $table->boolean('status')->default(true);
+            $table->string('email')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('president')->nullable();
+            $table->string('vice_president')->nullable();
+            $table->string('treasurer')->nullable();
             $table->timestamps();
         });
     }

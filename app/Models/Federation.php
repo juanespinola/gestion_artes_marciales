@@ -12,6 +12,7 @@ class Federation extends Model
     protected $fillable = [
         'id',
         'description',
+        'status'
     ];
 
     protected $hidden = [
