@@ -17,6 +17,16 @@ class OrganizationController extends Controller
         }
     }
 
+    public function federation($federation_id) {
+        try {
+            $data = Federation::where('status', true)
+                ->findOrFail($federation_id);
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function events($federation_id) {
         try {
             $data = Event::where('federation_id', $federation_id)
@@ -28,10 +38,9 @@ class OrganizationController extends Controller
         }
     }
 
-    public function federation($federation_id) {
+    public function event_detail($event_id) {
         try {
-            $data = Federation::where('status', true)
-                ->findOrFail($federation_id);
+            $data = Event::findOrFail($event_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

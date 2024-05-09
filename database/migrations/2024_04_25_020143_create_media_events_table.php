@@ -17,7 +17,9 @@ return new class extends Migration
         // https://es.stackoverflow.com/questions/603214/problema-al-guardar-imagenes-laravel-10-tmp
         Schema::create('media_events', function (Blueprint $table) {
             $table->id();
-            
+            $table->unsignedInteger('event_id');
+            $table->string('route_file', 2000)->nullable();
+            $table->string('type', 50)->nullable();
             $table->timestamps();
         });
     }

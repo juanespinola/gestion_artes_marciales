@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MediaEvent extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['route_file', 'type','event_id'];
+
 }

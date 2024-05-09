@@ -16,6 +16,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StatusEventController;
 use App\Http\Controllers\TypesEventController;
+use App\Http\Controllers\MediaEventController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -154,6 +155,15 @@ Route::middleware('auth:sanctum')->prefix('location')->group(function (){
     Route::post("/", [LocationController::class, 'store']);
     Route::put($idInThePath, [LocationController::class, 'update']);
     Route::delete($idInThePath, [LocationController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('mediaevent')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [MediaEventController::class, 'index']);
+    Route::get($idInThePath, [MediaEventController::class, 'edit']);
+    Route::post("/", [MediaEventController::class, 'store']);
+    Route::put($idInThePath, [MediaEventController::class, 'update']);
+    Route::delete($idInThePath, [MediaEventController::class, 'destroy']);
 });
 
 
