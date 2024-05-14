@@ -31,44 +31,17 @@ class MediaEventController extends Controller
      */
     public function store(Request $request)
     {
-        // no estamos pudiendo recibir el file
-    //    return response()->json(file($request->file('file')[0]->getClientOriginalName()), 200);
-        // return response()->json(json_decode($request->rows), 200);
-       
         if ($request->hasFile('file')) {
-            foreach ( $request->file('file') as $key => $value) {
-                // foreach ($request as $key => $value) {
-                // echo "<pre>";
-                // var_dump($value->getClientOriginalName());
-                // echo "</pre>";
+            foreach ( $request->file('file') as $key => $value) {   
 
-                // echo "<pre>";
-                // var_dump($request['type'][$key]);
-                // echo "</pre>";
+                
+                // $files = MediaEvent::where('event_id', $request['event_id'][$key])->get();
 
-                // $validation = Validator::make(
-                //     $request->all(), 
-                //     [
-                //         'file' => 'required|mimes:jpeg,jpg,png,webp,gif',
-                //         'type' => 'required|string',
-                //     ],
-                //     [
-                //         'file.required' => ':attribute: is Required',
-                //         'type.required' => ':attribute: is Required',
-                //     ]
-                // );
-        
-                // if($validation->fails()){
-                //     return response()->json(["messages" => $validation->errors()], 400);
+                // if (count($files) > 0) {
+                //     Storage::delete($files[$key]->route_file);
+                //     $files[$key]->delete();
                 // }
-          
-                $file = MediaEvent::where('type', $request['type'][$key])
-                        ->where('event_id', $request['event_id'][$key])
-                        ->first();
-                if ($file) {
-                    Storage::delete($file->route_file);
-                    $file->delete();
-                }
+         
 
                 $sizes = match($request['type'][$key]){
                     'banner_principal' => array('width' => 800, 'height' => 800),
@@ -76,10 +49,10 @@ class MediaEventController extends Controller
                 };
 
                 $upsized = !$request['type'][$key] == 'other';
-                $name = uploadImage( file($value->getClientOriginalName()), $sizes, $upsized );
+                $name = uploadImage( $value, $sizes, $upsized, $key );
 
                 $product_media = new MediaEvent;
-                $product_media->route_file = "events/{$name}.jpg";
+                $product_media->route_file = "events/{$name}";
                 $product_media->type = $request['type'][$key];
                 $product_media->event_id = $request['event_id'][$key];
                 $product_media->save();
@@ -87,7 +60,7 @@ class MediaEventController extends Controller
                 $imageUri = Storage::url($name);
                 
             }
-            // return response()->json(["messages" => "Registro creado Correctamente!", "data" => $imageUri], 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $request->file('file')], 201);
         } else {
             return response()->json(["messages" => "No se registra ningun archivo para cargar"], 200);
         }
