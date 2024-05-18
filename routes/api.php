@@ -38,7 +38,7 @@ Route::get("/", function () {
 Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 'federations']);
 Route::get("/federations/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'federation']);
 Route::get("/federations/{federation_id}/events", [App\Http\Controllers\OrganizationController::class, 'events']);
-
+Route::get("/events/{event_id}/eventdetail", [App\Http\Controllers\OrganizationController::class, 'event_detail']);
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
@@ -56,6 +56,15 @@ Route::middleware('auth:sanctum')->prefix('federation')->group(function (){
     Route::post("/", [FederationController::class, 'store']);
     Route::put($idInThePath, [FederationController::class, 'update']);
     Route::delete($idInThePath, [FederationController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('federationcontact')->group(function (){
+    $idInThePath = '/{id}';
+    Route::put($idInThePath, [FederationController::class, 'update_contacts']);
+});
+Route::middleware('auth:sanctum')->prefix('federationauthoritie')->group(function (){
+    $idInThePath = '/{id}';
+    Route::put($idInThePath, [FederationController::class, 'update_authorities']);
 });
 
 // necesita tener el middleware para acceder a los permisos, roles
@@ -127,6 +136,16 @@ Route::middleware('auth:sanctum')->prefix('event')->group(function (){
     Route::post("/", [EventController::class, 'store']);
     Route::put($idInThePath, [EventController::class, 'update']);
     Route::delete($idInThePath, [EventController::class, 'destroy']);
+
+    // Content
+
+    
+});
+
+Route::middleware('auth:sanctum')->prefix('eventcontent')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [EventController::class, 'index']);
+    Route::put($idInThePath, [EventController::class, 'update_event_content']);
 });
 
 Route::middleware('auth:sanctum')->prefix('typesevent')->group(function (){

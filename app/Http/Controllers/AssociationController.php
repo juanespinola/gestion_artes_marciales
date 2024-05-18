@@ -68,6 +68,15 @@ class AssociationController extends Controller
             
             $obj = Association::create([
                 'description' => $request->input('description'),
+                'email' => $request->input('email'),
+                'phone_number' => $request->input('phone_number'),
+                'president' => $request->input('president'),
+                'vice_president' => $request->input('vice_president'),
+                'treasurer' => $request->input('treasurer'),
+                'facebook' => $request->input('facebook'),
+                'whatsapp' => $request->input('whatsapp'),
+                'twitter' => $request->input('twitter'),
+                'instagram' => $request->input('instagram'),
                 'federation_id' => auth()->user()->federation_id,
             ]);
 
@@ -123,6 +132,15 @@ class AssociationController extends Controller
             $obj = Association::findOrFail($id);
             $obj->update([
                 'description' => $request->input('description'),
+                'email' => $request->input('email'),
+                'phone_number' => $request->input('phone_number'),
+                'president' => $request->input('president'),
+                'vice_president' => $request->input('vice_president'),
+                'treasurer' => $request->input('treasurer'),
+                'facebook' => $request->input('facebook'),
+                'whatsapp' => $request->input('whatsapp'),
+                'twitter' => $request->input('twitter'),
+                'instagram' => $request->input('instagram'),
                 'federation_id' => auth()->user()->federation_id,
             ]);
 

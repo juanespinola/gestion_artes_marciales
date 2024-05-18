@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('president')->nullable();
             $table->string('vice_president')->nullable();
             $table->string('treasurer')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('instagram')->nullable();
             $table->timestamps();
         });
     }

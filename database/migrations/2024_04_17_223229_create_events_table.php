@@ -28,6 +28,7 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_user_id')->nullable();
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id')->nullable();
+            $table->longText('content')->nullable(); // contenido del evento
             $table->timestamps();
         });
     }

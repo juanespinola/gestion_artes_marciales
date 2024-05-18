@@ -18,8 +18,9 @@ return new class extends Migration
         Schema::create('media_events', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('event_id');
-            $table->string('route_file', 2000)->nullable();
-            $table->string('type', 50)->nullable();
+            $table->string('name_file');
+            $table->string('route_file');
+            $table->string('type');
             $table->timestamps();
         });
     }

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // $table->enum('type',['user', 'admin'])->default('user');
             $table->unsignedBigInteger('federation_id')->nullable();
             $table->unsignedBigInteger('association_id')->nullable();
             $table->rememberToken();
@@ -30,7 +29,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // $table->enum('type',['user', 'admin'])->default('user');
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id')->nullable();
             $table->rememberToken();

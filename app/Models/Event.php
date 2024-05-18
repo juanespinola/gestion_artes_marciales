@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Location;
+use App\Models\MediaEvent;
 
 class Event extends Model
 {
@@ -27,11 +28,18 @@ class Event extends Model
         'updated_user_id',
         'federation_id',
         'association_id',
+        'content',
+        'introduction'
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
+        'location_id',
+        'federation_id',
+        'association_id',
+        'event_type_id',
+        'event_status_id',
     ];
 
     protected $casts = [
@@ -42,7 +50,25 @@ class Event extends Model
     // protected $dateFormat = 'U';
 
     public function location() {
-        return $this->hasOne(Location::class, 'id', 'location_id');
+        return $this->belongsTo(Location::class);
     }
     
+    public function media_event() {
+        return $this->hasMany(MediaEvent::class);
+    }
+
+    public function federation() {
+        return $this->belongsTo(Federation::class);
+    }
+
+    public function association() {
+        return $this->belongsTo(Association::class);
+    }
+
+    public function status_event() {
+        return $this->belongsTo(StatusEvent::class);
+    }
+    public function type_event() {
+        return $this->belongsTo(TypesEvent::class);
+    }
 }

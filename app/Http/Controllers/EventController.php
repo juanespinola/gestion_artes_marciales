@@ -68,8 +68,8 @@ class EventController extends Controller
                     'location_id' => 'required|integer',
                     'initial_date' => 'required|date',
                     'initial_time' => 'required|date_format:H:i:s',
-                    'event_type_id' => 'required|integer',
-                    'event_status_id' => 'required|integer',
+                    'status_event_id' => 'required|integer',
+                    'status_event_id' => 'required|integer',
                     'inscription_fee' => 'required|integer',
                     'available_slots' => 'required|integer',                   
                 ],
@@ -78,8 +78,8 @@ class EventController extends Controller
                     'location_id.required' => ':attribute: is Required',
                     'initial_date.required' => ':attribute: is Required',
                     'initial_time.required' => ':attribute: is Required',
-                    'event_type_id.required' => ':attribute: is Required',
-                    'event_status_id.required' => ':attribute: is Required',
+                    'status_event_id.required' => ':attribute: is Required',
+                    'status_event_id.required' => ':attribute: is Required',
                     'inscription_fee.required' => ':attribute: is Required',
                     'available_slots.required' => ':attribute: is Required',                  
                 ]
@@ -97,8 +97,8 @@ class EventController extends Controller
                 'final_date' => $request->input('final_date') ? Carbon::parse($request->input('final_date'))->format('Y-m-d') : null,
                 'initial_time' => Carbon::parse($request->input('initial_time'))->format('h:i:s'),
                 'final_time' => $request->input('final_time') ? Carbon::parse($request->input('final_time'))->format('h:i:s') : null,
-                'event_type_id' => $request->input('event_type_id'),
-                'event_status_id' => $request->input('event_status_id'),
+                'type_event_id' => $request->input('type_event_id'),
+                'status_event_id' => $request->input('status_event_id'),
                 'inscription_fee' => $request->input('inscription_fee'),
                 'total_participants' => $request->input('total_participants'),
                 'available_slots' => $request->input('available_slots'),
@@ -148,8 +148,8 @@ class EventController extends Controller
                     'location_id' => 'required|integer',
                     'initial_date' => 'required|date',
                     'initial_time' => 'required|date_format:H:i:s',
-                    'event_type_id' => 'required|integer',
-                    'event_status_id' => 'required|integer',
+                    'type_event_id' => 'required|integer',
+                    'status_event_id' => 'required|integer',
                     'inscription_fee' => 'required|integer',
                     'available_slots' => 'required|integer',                   
                 ],
@@ -158,8 +158,8 @@ class EventController extends Controller
                     'location_id.required' => ':attribute: is Required',
                     'initial_date.required' => ':attribute: is Required',
                     'initial_time.required' => ':attribute: is Required',
-                    'event_type_id.required' => ':attribute: is Required',
-                    'event_status_id.required' => ':attribute: is Required',
+                    'type_event_id.required' => ':attribute: is Required',
+                    'status_event_id.required' => ':attribute: is Required',
                     'inscription_fee.required' => ':attribute: is Required',
                     'available_slots.required' => ':attribute: is Required',                  
                 ]
@@ -177,8 +177,8 @@ class EventController extends Controller
                 'final_date' => $request->input('final_date') ? Carbon::parse($request->input('final_date'))->format('Y-m-d') : null,
                 'initial_time' => Carbon::parse($request->input('initial_time'))->format('h:i:s'),
                 'final_time' => $request->input('final_time') ? Carbon::parse($request->input('final_time'))->format('h:i:s') : null,
-                'event_type_id' => $request->input('event_type_id'),
-                'event_status_id' => $request->input('event_status_id'),
+                'type_event_id' => $request->input('type_event_id'),
+                'status_event_id' => $request->input('status_event_id'),
                 'inscription_fee' => $request->input('inscription_fee'),
                 'total_participants' => $request->input('total_participants'),
                 'available_slots' => $request->input('available_slots'),
@@ -205,6 +205,20 @@ class EventController extends Controller
     
             return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
             
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function update_event_content(Request $request, $id)  {
+        try {
+            $obj = Event::findOrFail($id);
+            $obj->update([
+                'introduction' => $request->input('introduction'),
+                'content' => $request->input('content'),
+                'updated_user_id' => auth()->user()->id,
+            ]);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj, 'aca es' => 'opa'], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -12,7 +12,16 @@ class Federation extends Model
     protected $fillable = [
         'id',
         'description',
-        'status'
+        'status',
+        'email',
+        'phone_number',
+        'president',
+        'vice_president',
+        'treasurer',
+        'facebook',
+        'whatsapp',
+        'twitter',
+        'instagram',
     ];
 
     protected $hidden = [
@@ -20,3 +29,5 @@ class Federation extends Model
         'updated_at',
     ];
 }
+
+

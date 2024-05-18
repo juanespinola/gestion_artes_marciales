@@ -51,16 +51,17 @@ class MediaEventController extends Controller
                 $upsized = !$request['type'][$key] == 'other';
                 $name = uploadImage( $value, $sizes, $upsized, $key );
 
+                $imageUri = Storage::url($name);
+
                 $product_media = new MediaEvent;
-                $product_media->route_file = "events/{$name}";
+                $product_media->name_file = $name;
+                $product_media->route_file = asset($imageUri);
                 $product_media->type = $request['type'][$key];
                 $product_media->event_id = $request['event_id'][$key];
                 $product_media->save();
-
-                $imageUri = Storage::url($name);
                 
             }
-            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $request->file('file')], 201);
+            return response()->json(["messages" => "Registro creado Correctamente!"], 201);
         } else {
             return response()->json(["messages" => "No se registra ningun archivo para cargar"], 200);
         }

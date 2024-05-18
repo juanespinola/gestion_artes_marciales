@@ -29,7 +29,8 @@ class OrganizationController extends Controller
 
     public function events($federation_id) {
         try {
-            $data = Event::where('federation_id', $federation_id)
+            $data = Event::with('federation', 'association', 'status_event', 'type_event')
+                ->where('federation_id', $federation_id)
                 ->orderBy('initial_date', 'desc')
                 ->get();
             return response()->json($data, 200);
@@ -40,7 +41,7 @@ class OrganizationController extends Controller
 
     public function event_detail($event_id) {
         try {
-            $data = Event::findOrFail($event_id);
+            $data = Event::with('media_event', 'location', 'federation', 'association')->findOrFail($event_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

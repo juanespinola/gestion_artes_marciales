@@ -14,7 +14,7 @@ if(!function_exists('uploadImage')) {
         $generated = md5(date('YmdHis')) . '_' . $index;
         $image = $manager->read($file);
         $image = $image->resize($resize['width'], $resize['height']);
-        $name = "events/{$generated}.jpg";
+        $name = "public/events/{$generated}.jpg";
         // $image->toJpeg(80)->save(base_path('public/storage/'.$name));
         Storage::put($name, $image->toJpeg(80));
         
