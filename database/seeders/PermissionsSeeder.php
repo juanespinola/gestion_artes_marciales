@@ -45,7 +45,7 @@ class PermissionsSeeder extends Seeder
             foreach ($arrayOfPermissionNames as $permission) {
                 $permissions[] = [
                     "name" => $module.".".$permission,
-                    "guard_name" => "web",
+                    "guard_name" => "admins",
                     "group_name" => $module
                 ];
             }

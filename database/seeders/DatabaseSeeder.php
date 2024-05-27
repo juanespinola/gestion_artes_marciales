@@ -14,6 +14,10 @@ use Database\Seeders\GroupCategorySeeder;
 use Database\Seeders\EventSeeder;
 use Database\Seeders\StatusEventSeeder;
 use Database\Seeders\TypesEventSeeder;
+use Database\Seeders\EntryCategorySeeder;
+use Database\Seeders\ClassCategorySeeder;
+use Database\Seeders\ValueCategorySeeder;
+use Database\Seeders\RuleCategorySeeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -34,7 +38,13 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             LocationSeeder::class,
             StatusEventSeeder::class,
-            TypesEventSeeder::class
+            TypesEventSeeder::class,
+            EntryCategorySeeder::class,
+            ClassCategorySeeder::class,
+            ValueCategorySeeder::class,
+            RuleCategorySeeder::class,
+            BeltSeeder::class,
+            AthleteSeeder::class,
         ]);
     }
 }

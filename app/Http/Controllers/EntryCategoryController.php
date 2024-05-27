@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EntryCategory;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class PermissionController extends Controller
+class EntryCategoryController extends Controller
 {
-   /**
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         try {
             if($request->BearerToken()){
-                $data = Permission::all();
+                $data = EntryCategory::all()
+                ->load('belt')
+                ->groupBy('belt.description');
+
+                // $data = EntryCategory::groupBy('belt.description')->with('belt')->get();
+                
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -38,16 +42,19 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         try {
-        
             $validation = Validator::make(
                 $request->all(), 
                 [
                     'name' => 'required|string',
-                    'group_name'=> 'required|string',
+                    'age' => 'required|integer',
+                    'belt_id' => 'required|integer',
+                    'sex' => 'required|string',
                 ],
                 [
                     'name.required' => ':attribute: is Required',
-                    'group_name.required' => ':attribute: is Required',
+                    'age.required' => ':attribute: is Required',                    
+                    'belt_id.required' => ':attribute: is Required',                    
+                    'sex.required' => ':attribute: is Required',                    
                 ]
             );
 
@@ -56,13 +63,17 @@ class PermissionController extends Controller
             }
 
             
-            $obj = Permission::create([
+            $obj = EntryCategory::create([
                 'name' => $request->input('name'),
-                'guard_name' => "web",
-                'group_name'=>$request->input('group_name'),
+                'age' => $request->input('age'),
+                'weight' => $request->input('weight'),
+                'belt_id' => $request->input('belt_id'),
+                'sex' => $request->input('sex'),
+                'clothes' => $request->input('clothes'),
+                'event_id' => $request->input('event_id'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -71,7 +82,7 @@ class PermissionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(EntryCategory $entryCategory)
     {
         //
     }
@@ -79,21 +90,20 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         try {
-            $data = Permission::findOrFail($id);
+            $data = EntryCategory::findOrFail($id);
             return response()->json($data, 200);
-        // }
-    } catch (\Throwable $th) {
-        throw $th;
-    }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         try {
         
@@ -101,11 +111,15 @@ class PermissionController extends Controller
                 $request->all(), 
                 [
                     'name' => 'required|string',
-                    'group_name'=> 'required|string',
+                    'age' => 'required|integer',
+                    'belt_id' => 'required|integer',
+                    'sex' => 'required|string',
                 ],
                 [
                     'name.required' => ':attribute: is Required',
-                    'group_name.required' => ':attribute: is Required',
+                    'age.required' => ':attribute: is Required',                    
+                    'belt_id.required' => ':attribute: is Required',                    
+                    'sex.required' => ':attribute: is Required',                    
                 ]
             );
 
@@ -113,11 +127,15 @@ class PermissionController extends Controller
                 return response()->json(["messages" => $validation->errors()], 400);
             }
 
-            $obj = Permission::findOrFail($id);
+            $obj = EntryCategory::findOrFail($id);
             $obj->update([
                 'name' => $request->input('name'),
-                'guard_name' => "admins",
-                'group_name'=>$request->input('group_name'),
+                'age' => $request->input('age'),
+                'weight' => $request->input('weight'),
+                'belt_id' => $request->input('belt_id'),
+                'sex' => $request->input('sex'),
+                'clothes' => $request->input('clothes'),
+                'event_id' => $request->input('event_id'),
             ]);
 
             return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
@@ -129,49 +147,16 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
         
-            $obj = Permission::findOrFail($id);
+            $obj = EntryCategory::findOrFail($id);
             $obj->delete();
     
             return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
             
         } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
-
-    public function getPermissionsByGroup() {
-        try {
-            $permissionsByGroup = DB::table('permissions')
-                ->select('group_name', DB::raw('JSON_AGG(JSON_BUILD_OBJECT(\'name\', name, \'id\', id)) as permissions'))
-                ->orderBy('group_name')
-                ->groupBy('group_name')
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'group_name' => $item->group_name,
-                        'permissions' => json_decode($item->permissions, true)
-                    ];
-                })
-                ->toArray();
-    
-            return response()->json($permissionsByGroup, 200);
-        } catch(\Throwable $th) {
-            throw $th;
-        }
-    }
-
-    public function getPermissionsByGroupName($group_name) {
-        try {
-            $obj= DB::table('permissions')
-                ->select('name','id')
-                ->where('group_name', $group_name)
-                ->get();
-            return response()->json($obj, 200);
-        } catch(\Throwable $th) {
             throw $th;
         }
     }

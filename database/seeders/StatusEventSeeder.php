@@ -15,7 +15,7 @@ class StatusEventSeeder extends Seeder
     {
         $data = [
             [
-                'description' => 'Preparando',
+                'description' => 'Organizando',
             ],
             [
                 'description' => 'En curso',
@@ -28,6 +28,12 @@ class StatusEventSeeder extends Seeder
             ],
             [
                 'description' => 'Finalizado',
+            ],
+            [
+                'description' => 'Autorizado',
+            ],
+            [
+                'description' => 'Pendiente Autorización',
             ],
         ];
 

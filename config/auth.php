@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'admins',
         'passwords' => 'users',
     ],
 
@@ -36,15 +36,21 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        // 'web' => [
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        // ],
+        'admins' => [
             'driver' => 'session',
             'provider' => 'users',
+            // 'hash' => false,
+            // 'expires_in' => 525600, // tiempo en minutos
         ],
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
+        'athletes' => [
+            'driver' => 'session',
+            'provider' => 'athletes',
             'hash' => false,
-            'expires_in' => 525600, // tiempo en minutos
+            'expires_in' => 525600, 
         ]
     ],
 
@@ -70,7 +76,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        'athletes' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Athlete::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -98,6 +107,12 @@ return [
 
     'passwords' => [
         'users' => [
+            'provider' => 'users',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'athletes' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
             'expire' => 60,

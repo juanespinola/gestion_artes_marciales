@@ -17,6 +17,8 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StatusEventController;
 use App\Http\Controllers\TypesEventController;
 use App\Http\Controllers\MediaEventController;
+use App\Http\Controllers\EntryCategoryController;
+use App\Http\Controllers\BeltController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,11 +31,11 @@ use App\Http\Controllers\MediaEventController;
 */
 
 
-Route::post("/login", [App\Http\Controllers\Auth\LoginController::class, 'login']);
-Route::post("/register", [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 Route::get("/", function () {
     return "estamos Online";
 });
+Route::post("/login", [App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post("/register", [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
 Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 'federations']);
 Route::get("/federations/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'federation']);
@@ -135,11 +137,7 @@ Route::middleware('auth:sanctum')->prefix('event')->group(function (){
     Route::get($idInThePath, [EventController::class, 'edit']);
     Route::post("/", [EventController::class, 'store']);
     Route::put($idInThePath, [EventController::class, 'update']);
-    Route::delete($idInThePath, [EventController::class, 'destroy']);
-
-    // Content
-
-    
+    Route::delete($idInThePath, [EventController::class, 'destroy']);    
 });
 
 Route::middleware('auth:sanctum')->prefix('eventcontent')->group(function (){
@@ -184,6 +182,31 @@ Route::middleware('auth:sanctum')->prefix('mediaevent')->group(function (){
     Route::put($idInThePath, [MediaEventController::class, 'update']);
     Route::delete($idInThePath, [MediaEventController::class, 'destroy']);
 });
+
+Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [EntryCategoryController::class, 'index']);
+    Route::get($idInThePath, [EntryCategoryController::class, 'edit']);
+    Route::post("/", [EntryCategoryController::class, 'store']);
+    Route::put($idInThePath, [EntryCategoryController::class, 'update']);
+    Route::delete($idInThePath, [EntryCategoryController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('belt')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [BeltController::class, 'index']);
+    Route::get($idInThePath, [BeltController::class, 'edit']);
+    Route::post("/", [BeltController::class, 'store']);
+    Route::put($idInThePath, [BeltController::class, 'update']);
+    Route::delete($idInThePath, [BeltController::class, 'destroy']);
+});
+
+
+Route::group(['prefix'=>'athlete'], function () {
+    Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
+    Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);
+});
+
 
 
 
