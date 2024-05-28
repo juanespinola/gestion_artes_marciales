@@ -18,6 +18,8 @@ use Database\Seeders\EntryCategorySeeder;
 use Database\Seeders\ClassCategorySeeder;
 use Database\Seeders\ValueCategorySeeder;
 use Database\Seeders\RuleCategorySeeder;
+use Database\Seeders\AthleteSeeder;
+use Database\Seeders\InscriptionSeeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -45,6 +47,7 @@ class DatabaseSeeder extends Seeder
             RuleCategorySeeder::class,
             BeltSeeder::class,
             AthleteSeeder::class,
+            InscriptionSeeder::class
         ]);
     }
 }
