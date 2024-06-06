@@ -15,93 +15,128 @@ class EntryCategorySeeder extends Seeder
     public function run(): void
     {
         $data = [
-            // [
-            //     'name' => 'Men', 
-            //     'description' => 'Categoria para Men',
-            //     'early_price' => 50,
-            //     'normal_price' => 100,
-            //     'late_price' => 120,
-            //     'event_id' => 1,
-            // ],  
-            // [
-            //     'name' => 'Women', 
-            //     'description' => 'Categoria para Women',
-            //     'early_price' => 50,
-            //     'normal_price' => 100,
-            //     'late_price' => 120,
-            //     'event_id' => 1,
-            // ],  
+            // adulto
             [
                 'name' => 'Galo',
-                'age'=> '30', // age maxima
-                'weight'=> '57', // weight maximo
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '52', // weight minimo
+                'max_weight'=> '57', // weight maximo
                 'belt_id'=> 1,
-                'sex'=> 'm',
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
             [
                 'name' => 'Pluma',
-                'age'=> '30', // age maxima
-                'weight'=> '64', // weight maximo
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '58', // weight maximo
+                'max_weight'=> '64', // weight maximo
                 'belt_id'=> 1,
-                'sex'=> 'm',
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
             [
                 'name' => 'Pena',
-                'age'=> '30', // age maxima
-                'weight'=> '76', // weight maximo
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '65', // weight maximo
+                'max_weight'=> '76', // weight maximo
                 'belt_id'=> 1,
-                'sex'=> 'm',
+                'gender'=> 'masculino',
+                'clothes'=> 'gi',
+                'event_id' => 1
+            ],
+            // jovenes
+            [
+                'name' => 'Galo',
+                'min_age'=> '12', // age minima
+                'max_age'=> '17', // age maxima
+                'min_weight'=> '52', // weight maximo
+                'max_weight'=> '57', // weight maximo
+                'belt_id'=> 1,
+                'gender'=> 'masculino',
+                'clothes'=> 'gi',
+                'event_id' => 1
+            ],
+            [
+                'name' => 'Pluma',
+                'min_age'=> '12', // age minima
+                'max_age'=> '17', // age maxima
+                'min_weight'=> '58', // weight maximo
+                'max_weight'=> '64', // weight maximo
+                'belt_id'=> 1,
+                'gender'=> 'masculino',
+                'clothes'=> 'gi',
+                'event_id' => 1
+            ],
+            [
+                'name' => 'Pena',
+                'min_age'=> '12', // age minima
+                'max_age'=> '17', // age maxima
+                'min_weight'=> '65', // weight maximo
+                'max_weight'=> '76', // weight maximo
+                'belt_id'=> 1,
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
             // azul
             [
                 'name' => 'Galo',
-                'age'=> '30', // age maxima
-                'weight'=> '57', // weight maximo
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '52', // weight minimo
+                'max_weight'=> '57', // weight maximo
                 'belt_id'=> 2,
-                'sex'=> 'm',
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
             [
                 'name' => 'Pluma',
-                'age'=> '30', // age maxima
-                'weight'=> '64', // weight maximo
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '58', // weight maximo
+                'max_weight'=> '64', // weight maximo
                 'belt_id'=> 2,
-                'sex'=> 'm',
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
             [
                 'name' => 'Pena',
-                'age'=> '30', // age maxima
-                'weight'=> '76', // weight maximo
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '65', // weight maximo
+                'max_weight'=> '76', // weight maximo
                 'belt_id'=> 2,
-                'sex'=> 'm',
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
             //lila
             [
                 'name' => 'Pena',
-                'age'=> '30', // age maxima
-                'weight'=> '76', // weight maximo
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '65', // weight maximo
+                'max_weight'=> '76', // weight maximo
                 'belt_id'=> 3,
-                'sex'=> 'm',
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
             [
                 'name' => 'Absoluto',
-                'age'=> '30', // age maxima
-                'weight'=> null, // weight maximo
-                'belt_id'=> 1,
-                'sex'=> 'm',
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> null, // weight maximo
+                'max_weight'=> null, // weight maximo
+                'belt_id'=> 3,
+                'gender'=> 'masculino',
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],

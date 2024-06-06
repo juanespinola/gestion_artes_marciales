@@ -18,8 +18,6 @@ class InscriptionSeeder extends Seeder
                 'event_id' => 1,
                 'athlete_id' => 1,
                 'weight' => '56.5',
-
-
             ],
             [
                 'event_id' => 1,

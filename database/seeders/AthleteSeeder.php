@@ -20,14 +20,15 @@ class AthleteSeeder extends Seeder
                 'password' => bcrypt('123456'),
                 'federation_id' => '1',
                 'association_id' => '2',
-                'location_id' => '1',
+                'country_id' => '1',
                 'city_id' => '1',
                 'type_document_id' => '1',
                 'document' => '123456',
                 'phone' => '+5950981123456',
                 'gender' => 'masculino',
-                'birthdate' => '04/04/2024',
-                'weight' => '56.5'
+                'birthdate' => '10/19/1996',
+                // 'weight' => '56.5',
+                'belt_id' => 1
             ],
             [
                 'name' => 'athlete 2',
@@ -35,14 +36,14 @@ class AthleteSeeder extends Seeder
                 'password'=> bcrypt('123456'),
                 'federation_id'=> '1',
                 'association_id'=> '2',
-                'location_id' => '1',
+                'country_id' => '1',
                 'city_id' => '1',
                 'type_document_id' => '1',
                 'document' => '123456',
                 'phone' => '+5950981123456',
                 'gender' => 'masculino',
-                'birthdate' => '04/04/2024',
-                'weight' => '80'
+                'birthdate' => '10/19/1994',
+                // 'weight' => '80'
             ],
             [
                 'name' => 'athlete 3',
@@ -50,14 +51,14 @@ class AthleteSeeder extends Seeder
                 'password'=> bcrypt('123456'),
                 'federation_id'=> '1',
                 'association_id'=> '2',
-                'location_id' => '1',
+                'country_id' => '1',
                 'city_id' => '1',
                 'type_document_id' => '1',
                 'document' => '123456',
                 'phone' => '+5950981123456',
                 'gender' => 'masculino',
                 'birthdate' => '04/04/2024',
-                'weight' => '69.5'
+                // 'weight' => '69.5'
             ],
             [
                 'name' => 'athlete 4',
@@ -65,14 +66,14 @@ class AthleteSeeder extends Seeder
                 'password'=> bcrypt('123456'),
                 'federation_id'=> '1',
                 'association_id'=> '2',
-                'location_id' => '1',
+                'country_id' => '1',
                 'city_id' => '1',
                 'type_document_id' => '1',
                 'document' => '123456',
                 'phone' => '+5950981123456',
                 'gender' => 'masculino',
                 'birthdate' => '04/04/2024',
-                'weight' => '99.5'
+                // 'weight' => '99.5'
             ],
         ];
 

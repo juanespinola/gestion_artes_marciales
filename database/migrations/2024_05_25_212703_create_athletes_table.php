@@ -19,15 +19,17 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id')->nullable();
-            $table->unsignedBigInteger('location_id');
-            $table->unsignedBigInteger('city_id');
+            // $table->unsignedBigInteger('location_id');
+            $table->unsignedBigInteger('country_id');
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->unsignedBigInteger('type_document_id');
             $table->string('document', 50);
             $table->string('phone')->nullable();
             $table->string('gender');
             $table->date('birthdate');
-            $table->double('weight');
+            // $table->double('weight');
             $table->string('profile_image')->nullable();
+            $table->unsignedBigInteger('belt_id')->nullable(); // no tiene sentido relacionar con level_belt_id, porque al iniciar es blanco y no hay niveles
             $table->rememberToken();
             $table->timestamps();
         });

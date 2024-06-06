@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EntryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class EntryCategoryController extends Controller
 {
@@ -17,7 +18,8 @@ class EntryCategoryController extends Controller
             if($request->BearerToken()){
                 $data = EntryCategory::all()
                 ->load('belt')
-                ->groupBy('belt.description');
+                ->groupBy('belt.color');
+                // ->orderBy('belt.color');
 
                 // $data = EntryCategory::groupBy('belt.description')->with('belt')->get();
                 
@@ -156,6 +158,31 @@ class EntryCategoryController extends Controller
     
             return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
             
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    public function getEntryForRegistratioAthlete(Request $request) {
+        try {
+            if($request->BearerToken()){
+                
+                $athlete = auth()->user();
+
+                $data = EntryCategory::where([
+                    ["min_age", "<=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
+                    ["max_age", ">=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
+                    ["belt_id", "=", $athlete->belt_id],
+                    ["gender", "=", $athlete->gender],
+                ])
+                // whereBetweenColumns($request->input('age'), ['min_age', 'max_age'])
+                ->get()
+                ->load('belt')
+                ->groupBy('belt.color');
+                
+                return response()->json($data, 200);
+            }
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('belts', function (Blueprint $table) {
+        Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->string('color');
-            $table->integer('badge'); // divisa
+            $table->string('name');
+            $table->unsignedBigInteger('country_id');
             $table->timestamps();
+
+
+            // $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('belts');
+        Schema::dropIfExists('cities');
     }
 };

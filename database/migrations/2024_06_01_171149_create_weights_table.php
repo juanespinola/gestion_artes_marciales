@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('belts', function (Blueprint $table) {
+        Schema::create('weights', function (Blueprint $table) {
             $table->id();
-            $table->string('color');
-            $table->integer('badge'); // divisa
+            $table->string('name');
+            $table->integer('min_weight');
+            $table->integer('max_weight');
+            $table->boolean('with_clothes')->default(false); // federaciones que no usan vestimenta para competir, ej: bjj
+            $table->unsignedBigInteger('federation_id');
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('belts');
+        Schema::dropIfExists('weights');
     }
 };

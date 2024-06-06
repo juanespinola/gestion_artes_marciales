@@ -19,6 +19,9 @@ use App\Http\Controllers\TypesEventController;
 use App\Http\Controllers\MediaEventController;
 use App\Http\Controllers\EntryCategoryController;
 use App\Http\Controllers\BeltController;
+use App\Http\Controllers\InscriptionController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -201,10 +204,29 @@ Route::middleware('auth:sanctum')->prefix('belt')->group(function (){
     Route::delete($idInThePath, [BeltController::class, 'destroy']);
 });
 
+Route::middleware('auth:sanctum')->prefix('inscription')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [InscriptionController::class, 'index']);
+    Route::get($idInThePath, [InscriptionController::class, 'edit']);
+    Route::post("/", [InscriptionController::class, 'store']);
+    Route::put($idInThePath, [InscriptionController::class, 'update']);
+    Route::delete($idInThePath, [InscriptionController::class, 'destroy']);
+});
+
 
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
     Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);
+
+
+    Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
+        $idInThePath = '/{id}';
+        Route::get("/", [EntryCategoryController::class, 'getEntryForRegistratioAthlete']);
+        // Route::get($idInThePath, [EntryCategoryController::class, 'edit']);
+        // Route::post("/", [EntryCategoryController::class, 'store']);
+        // Route::put($idInThePath, [EntryCategoryController::class, 'update']);
+        // Route::delete($idInThePath, [EntryCategoryController::class, 'destroy']);
+    });
 });
 
 

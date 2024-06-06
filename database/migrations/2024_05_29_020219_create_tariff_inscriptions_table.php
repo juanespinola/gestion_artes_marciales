@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('belts', function (Blueprint $table) {
+        Schema::create('tariff_inscriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('color');
-            $table->integer('badge'); // divisa
+            $table->unsignedBigInteger('entry_category_id');
+            // $table->unsignedBigInteger('event_id')->nullable();
+            $table->integer('price');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('belts');
+        Schema::dropIfExists('tariff_inscriptions');
     }
 };
