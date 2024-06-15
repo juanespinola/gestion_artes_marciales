@@ -204,6 +204,7 @@ Route::middleware('auth:sanctum')->prefix('belt')->group(function (){
     Route::delete($idInThePath, [BeltController::class, 'destroy']);
 });
 
+// falta separar el admin del atleta, porque estan juntos
 Route::middleware('auth:sanctum')->prefix('inscription')->group(function (){
     $idInThePath = '/{id}';
     Route::get("/", [InscriptionController::class, 'index']);
@@ -222,11 +223,12 @@ Route::group(['prefix'=>'athlete'], function () {
     Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
         $idInThePath = '/{id}';
         Route::get("/", [EntryCategoryController::class, 'getEntryForRegistratioAthlete']);
-        // Route::get($idInThePath, [EntryCategoryController::class, 'edit']);
-        // Route::post("/", [EntryCategoryController::class, 'store']);
-        // Route::put($idInThePath, [EntryCategoryController::class, 'update']);
-        // Route::delete($idInThePath, [EntryCategoryController::class, 'destroy']);
     });
+
+    Route::middleware('auth:sanctum')->prefix('inscription')->group(function (){
+        Route::post("/create", [InscriptionController::class, 'setEntryForRegistratioAthlete']);
+    });
+
 });
 
 

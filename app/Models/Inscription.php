@@ -14,7 +14,7 @@ class Inscription extends Model
         'event_id',
         'athlete_id',
         'tariff_inscription_id',
-        'weight',
+        'event_weight',
         'valid_weight',
     ];
 

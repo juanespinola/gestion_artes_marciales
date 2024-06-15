@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             RuleCategorySeeder::class,
             BeltSeeder::class,
             AthleteSeeder::class,
-            // InscriptionSeeder::class,
+            InscriptionSeeder::class,
             TariffInscriptionSeeder::class,
             CitySeeder::class,
         ]);

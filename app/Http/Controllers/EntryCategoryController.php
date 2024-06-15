@@ -19,9 +19,6 @@ class EntryCategoryController extends Controller
                 $data = EntryCategory::all()
                 ->load('belt')
                 ->groupBy('belt.color');
-                // ->orderBy('belt.color');
-
-                // $data = EntryCategory::groupBy('belt.description')->with('belt')->get();
                 
                 return response()->json($data, 200);
             }
@@ -176,7 +173,7 @@ class EntryCategoryController extends Controller
                     ["belt_id", "=", $athlete->belt_id],
                     ["gender", "=", $athlete->gender],
                 ])
-                // whereBetweenColumns($request->input('age'), ['min_age', 'max_age'])
+                ->with('tariff_inscription')
                 ->get()
                 ->load('belt')
                 ->groupBy('belt.color');

@@ -9,13 +9,6 @@ class EntryCategory extends Model
 {
     use HasFactory;
     protected $fillable = [
-        // 'name',
-        // 'description',
-        // 'status',
-        // 'early_price',
-        // 'normal_price',
-        // 'event_id',
-
         'name',
         'age',
         'weight',
@@ -33,6 +26,10 @@ class EntryCategory extends Model
 
     public function belt() {
         return $this->belongsTo(Belt::class);
+    }
+
+    public function tariff_inscription()  {
+        return $this->belongsTo(TariffInscription::class, 'id', 'entry_category_id');
     }
 
 }

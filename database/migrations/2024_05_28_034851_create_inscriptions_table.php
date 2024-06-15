@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('athlete_id');
-            $table->double('event_weight'); // el peso del atleta en el pesaje del evento.
+            $table->double('event_weight')->nullable(); // el peso del atleta en el pesaje del evento.
             $table->boolean('valid_weight')->default(false);
-            $table->unsignedBigInteger('tariff_inscription_id');
-            // $table->unsignedBigInteger('payment_id')->nullable();
-            // $table->string('status');
+            $table->unsignedBigInteger('tariff_inscription_id'); // de este sacas la categoria
+            $table->unsignedBigInteger('payment_id')->nullable();
+            // $table->enum('status', ['pendiente', 'completado']);  // pendiente -> completado   si el estado es completado, podra ser puesto en brackets 
 
             $table->timestamps();
         });
