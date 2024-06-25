@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('federation_id');
-            $table->unsignedBigInteger('association_id')->nullable();
+            // $table->unsignedBigInteger('federation_id');
+            // $table->unsignedBigInteger('association_id')->nullable();
             // $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('city_id')->nullable();
@@ -30,6 +30,7 @@ return new class extends Migration
             // $table->double('weight');
             $table->string('profile_image')->nullable();
             $table->unsignedBigInteger('belt_id')->nullable(); // no tiene sentido relacionar con level_belt_id, porque al iniciar es blanco y no hay niveles
+            $table->string('type')->default('athlete');
             $table->rememberToken();
             $table->timestamps();
         });

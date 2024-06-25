@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 // use App\Http\Resources\UserResource;
+use Illuminate\Database\Eloquent\Builder;
 
 class LoginController extends Controller
 {
@@ -50,19 +51,25 @@ class LoginController extends Controller
             $this->validate($request, [
                 'email' => 'required|email',
                 'password' => 'required',
+                'federation_id' => 'required'
             ]);
 
         
-            if(auth('athletes')->attempt(array('email' => $input['email'], 'password' => $input['password']))){
+            if(auth('athletes')->attempt(array('email' => $input['email'], 'password' => $input['password'] ))){
                         
-                $user = auth('athletes')->user();
+                $user = auth('athletes')->user();                
+                $federationOfUser = $user->federation($input['federation_id'])->first();
+                $user->federation = $federationOfUser;
                 
+                if($user->type !== 'athlete'){
+                    return response()->json(['message' => ' Usuario no es Atleta'], 400);
+                }
                 $token = $user->createToken('my-app-token')->plainTextToken;
                 $response = [
-                    // 'user' => new UserResource($user),
                     'user' => $user,
                     'token' => $token,
                 ];
+
                 return response()->json($response, 200);
             } else {
                 return response()->json(['message' => ' E-mail o Contraseña no correcta'], 400);

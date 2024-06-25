@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Federation;
 use App\Models\Event;
+use App\Models\News;
 
 class OrganizationController extends Controller
 {
@@ -42,6 +43,17 @@ class OrganizationController extends Controller
     public function event_detail($event_id) {
         try {
             $data = Event::with('media_event', 'location', 'federation', 'association')->findOrFail($event_id);
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function news($federation_id) {
+        try {
+            $data = News::where('federation_id', $federation_id)
+                ->orderBy('created_at', 'desc')
+                ->get();
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

@@ -124,10 +124,10 @@ class FederationController extends Controller
         try {
             $data = Federation::findOrFail($id);
             return response()->json($data, 200);
-        // }
-    } catch (\Throwable $th) {
-        throw $th;
-    }
+    
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -185,15 +185,15 @@ class FederationController extends Controller
     public function destroy($id)
     {
         try {
-        
             $obj = Federation::findOrFail($id);
             $obj->delete();
     
             return response()->json($obj, 200);
-            
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+
+        }  catch (\Throwable $th) {
+            // throw $th;
+            return response()->json($th, 400);
+        } 
     }
 
     public function update_authorities(Request $request, $id)
@@ -253,6 +253,11 @@ class FederationController extends Controller
             $limit, 
             $page, 
             $options);
+    }
+
+    // funcion para obtener federacion sin token, para login de athleta
+    public function getFederations(){
+        return Federation::where('status', true)->get();
     }
 
 }

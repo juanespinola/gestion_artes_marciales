@@ -50,6 +50,8 @@ class DatabaseSeeder extends Seeder
             InscriptionSeeder::class,
             TariffInscriptionSeeder::class,
             CitySeeder::class,
+            FederationsAthletesSeeder::class,
+            NewsSeeder::class
         ]);
     }
 }

@@ -13,9 +13,10 @@ use Spatie\Permission\Models\Permission;
 
 use App\Models\Federation;
 use App\Models\Association;
+use App\Models\FederationsAthletes;
 
 
-class Athlete  extends Authenticatable
+class Athlete extends Authenticatable
 {
     use HasRoles, HasApiTokens, HasFactory, Notifiable;
 
@@ -23,8 +24,8 @@ class Athlete  extends Authenticatable
         'name',
         'email',
         'password',
-        "federation_id",
-        "association_id",
+        // "federation_id",
+        // "association_id",
     ];
 
     /**
@@ -49,10 +50,13 @@ class Athlete  extends Authenticatable
         'password' => 'hashed',
     ];
     
-    // protected $with = ['roles', 'roles.permissions'];
-
-
-    private function federation() {
-        return $this->hasOne(Federation::class, 'id', 'federation_id');
+    // protected $with = ['federation'];
+    public function federation($federation_id) {
+        return $this->belongsToMany(Federation::class, FederationsAthletes::class, 'athlete_id', 'federation_id')
+                    ->wherePivot('federation_id', $federation_id);
     }
+
+    // public function federation($federation_id){     
+    //     return $this->belongsToMany(Federation::class, FederationsAthletes::class, 'athlete_id', 'federation_id')->where('federation_id', $federation_id);
+    // }
 }

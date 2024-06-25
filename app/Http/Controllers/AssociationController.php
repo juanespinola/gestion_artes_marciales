@@ -166,4 +166,41 @@ class AssociationController extends Controller
             throw $th;
         }
     }
+
+    public function update_authorities(Request $request, $id)
+    {
+        try {
+
+            $obj = Federation::findOrFail($id);
+            $obj->update([
+                'president' => $request->input('president'),
+                'vice_president' => $request->input('vice_president'),
+                'treasurer' => $request->input('treasurer'),
+            ]);
+
+            return response()->json($obj, 201);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function update_contacts(Request $request, $id)
+    {
+        try {
+
+            $obj = Federation::findOrFail($id);
+            $obj->update([
+                'email' => $request->input('email'),
+                'phone_number' => $request->input('phone_number'),
+                'facebook' => $request->input('facebook'),
+                'whatsapp' => $request->input('whatsapp'),
+                'twitter' => $request->input('twitter'),
+                'instagram' => $request->input('instagram'),
+            ]);
+
+            return response()->json($obj, 201);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

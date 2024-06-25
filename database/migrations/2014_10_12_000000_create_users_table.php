@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('federation_id')->nullable();
             $table->unsignedBigInteger('association_id')->nullable();
+            $table->string('type')->default('admin');
             $table->rememberToken();
             $table->timestamps();
         });
