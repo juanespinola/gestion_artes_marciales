@@ -21,6 +21,7 @@ use App\Http\Controllers\EntryCategoryController;
 use App\Http\Controllers\BeltController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\MediaNewController;
 
 
 /*
@@ -44,6 +45,8 @@ Route::post("/register", [App\Http\Controllers\Auth\RegisterController::class, '
 Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 'federations']);
 Route::get("/federations/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'federation']);
 Route::get("/federations/{federation_id}/news", [App\Http\Controllers\OrganizationController::class, 'news']);
+Route::get("/news/{new_id}/newdetail", [App\Http\Controllers\OrganizationController::class, 'new_detail']);
+
 Route::get("/federations/{federation_id}/events", [App\Http\Controllers\OrganizationController::class, 'events']);
 Route::get("/events/{event_id}/eventdetail", [App\Http\Controllers\OrganizationController::class, 'event_detail']);
 
@@ -235,6 +238,16 @@ Route::middleware('auth:sanctum')->prefix('new')->group(function (){
     Route::put($idInThePath, [NewsController::class, 'update']);
     Route::delete($idInThePath, [NewsController::class, 'destroy']);
 });
+
+Route::middleware('auth:sanctum')->prefix('medianew')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [MediaNewController::class, 'index']);
+    Route::get($idInThePath, [MediaNewController::class, 'edit']);
+    Route::post("/", [MediaNewController::class, 'store']);
+    Route::put($idInThePath, [MediaNewController::class, 'update']);
+    Route::delete($idInThePath, [MediaNewController::class, 'destroy']);
+});
+
 
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);

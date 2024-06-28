@@ -20,12 +20,14 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_user_id')->nullable()->index('news_updated_user_id_foreign');
             $table->unsignedBigInteger('federation_id')->index('news_federation_id_foreign');
             $table->unsignedBigInteger('association_id')->nullable()->index('news_association_id_foreign');
+            $table->unsignedBigInteger('new_category_id')->nullable()->index('news_new_category_id_foreign');
             $table->timestamps();
 
             $table->foreign(['created_user_id'])->references(['id'])->on('users')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign(['updated_user_id'])->references(['id'])->on('users')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign(['federation_id'])->references(['id'])->on('federations')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign(['association_id'])->references(['id'])->on('associations')->onUpdate('restrict')->onDelete('restrict');
+            // $table->foreign(['new_category_id'])->references(['id'])->on('category_news')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 

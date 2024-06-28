@@ -19,26 +19,30 @@ class NewsSeeder extends Seeder
                 'content' => "tenemos una prueba",
                 "created_user_id" => 1,
                 "federation_id" => 1,
+                "new_category_id" => 1
             ],
             [
                 'title' => 'Noticia 2',
                 'content' => "tenemos una prueba",
                 "created_user_id" => 1,
                 "federation_id" => 2,
+                "new_category_id" => 2,
             ],
             [
                 'title' => 'Noticia 3',
                 'content' => "tenemos una prueba",
                 "created_user_id" => 1,
                 "federation_id" => 1,
-                "association_id" => 2
+                "association_id" => 2,
+                "new_category_id" => 2,
             ],
             [
                 'title' => 'Noticia 4',
                 'content' => "tenemos una prueba",
                 "created_user_id" => 1,
                 "federation_id" => 1,
-                "association_id" => 2
+                "association_id" => 2,
+                "new_category_id" => 3,
             ],
         ];
 

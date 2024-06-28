@@ -51,9 +51,21 @@ class OrganizationController extends Controller
 
     public function news($federation_id) {
         try {
-            $data = News::where('federation_id', $federation_id)
+            $data = News::with('category_new', 'media_new_list')
+                // ->where("status", "activo")
+                ->where('federation_id', $federation_id)
                 ->orderBy('created_at', 'desc')
                 ->get();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function new_detail($new_id) {
+        try {
+            $data = News::with('category_new', 'media_new_detail')
+                ->findOrFail($new_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

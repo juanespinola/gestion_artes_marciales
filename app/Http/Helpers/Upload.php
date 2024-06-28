@@ -34,3 +34,18 @@ if(!function_exists('uploadImage')) {
         return $name;
     }
 }
+
+
+if(!function_exists('uploadImageNew')) {
+    function uploadImageNew($file, array $resize = null, bool $upsize = false): string
+    {
+        $manager =  ImageManager::imagick();
+        $generated = md5(date('YmdHis'));
+        $image = $manager->read($file);
+        $image = $image->resize($resize['width'], $resize['height']);
+        $name = "public/news/{$generated}.jpg";
+        Storage::put($name, $image->toJpeg(80));
+        
+        return $name;
+    }
+}
