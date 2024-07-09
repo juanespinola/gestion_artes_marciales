@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Federation;
 use App\Models\Event;
 use App\Models\News;
+use App\Models\MatchBracket;
+use App\Models\Bracket;
 
 class OrganizationController extends Controller
 {
@@ -66,6 +68,28 @@ class OrganizationController extends Controller
         try {
             $data = News::with('category_new', 'media_new_detail')
                 ->findOrFail($new_id);
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    public function matchBrackets($event_id){
+        try {
+            $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
+                ->where('event_id', $event_id)
+                ->get();    
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function groupBrackets($event_id) {
+        try {
+            // $data = Bracket::groupBy('phase, number_phase')->orderBy('number_phase');
+            $data = MatchBracket::groupBrackets($event_id);   
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

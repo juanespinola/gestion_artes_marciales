@@ -22,6 +22,7 @@ use App\Http\Controllers\BeltController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\MediaNewController;
+use App\Http\Controllers\MatchBracketController;
 
 
 /*
@@ -42,6 +43,8 @@ Route::get("/", function () {
 Route::post("/login", [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post("/register", [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
+
+//apartado de usuario offline
 Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 'federations']);
 Route::get("/federations/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'federation']);
 Route::get("/federations/{federation_id}/news", [App\Http\Controllers\OrganizationController::class, 'news']);
@@ -49,6 +52,8 @@ Route::get("/news/{new_id}/newdetail", [App\Http\Controllers\OrganizationControl
 
 Route::get("/federations/{federation_id}/events", [App\Http\Controllers\OrganizationController::class, 'events']);
 Route::get("/events/{event_id}/eventdetail", [App\Http\Controllers\OrganizationController::class, 'event_detail']);
+Route::get("/events/{event_id}/matchbrackets", [App\Http\Controllers\OrganizationController::class, 'matchBrackets']);
+Route::get("/events/{event_id}/groupbrackets", [App\Http\Controllers\OrganizationController::class, 'groupBrackets']);
 
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
@@ -248,12 +253,25 @@ Route::middleware('auth:sanctum')->prefix('medianew')->group(function (){
     Route::delete($idInThePath, [MediaNewController::class, 'destroy']);
 });
 
+Route::middleware('auth:sanctum')->prefix('matchbracket')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [MatchBracketController::class, 'index']);
+    Route::get($idInThePath, [MatchBracketController::class, 'edit']);
+    Route::post("/", [MatchBracketController::class, 'store']);
+    Route::put($idInThePath, [MatchBracketController::class, 'update']);
+    Route::delete($idInThePath, [MatchBracketController::class, 'destroy']);
+
+    Route::post("/generate", [MatchBracketController::class, 'generateMatchBrackets']);
+    Route::post("/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
+});
+
 
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
     Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);
     Route::get("/federations", [FederationController::class, "getFederations"]);
 
+    // requiere que el atleta este conectado para registrarse
     Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
         $idInThePath = '/{id}';
         Route::get("/", [EntryCategoryController::class, 'getEntryForRegistratioAthlete']);
