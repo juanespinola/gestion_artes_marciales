@@ -107,7 +107,8 @@ class MatchBracketController extends Controller
         shuffle($athletes);
         $numberPhase = $this->calcularFases(count($athletes));
         $phase = 1;
-          
+        $entry_category_id = 0;
+
         for ($i = 0; $i < count($athletes); $i += 2) {
             $participante1 = $athletes[$i]['id'];
             $participante2 = $athletes[$i + 1]['id'] ?? null;
@@ -153,6 +154,7 @@ class MatchBracketController extends Controller
                     // 'date' => $date,
                     'score_one_athlete' => 0,
                     'score_two_athlete' => 0,
+                    'entry_category_id' => $entry_category_id,
                 ]);
 
                 // Guardar llave en la base de datos

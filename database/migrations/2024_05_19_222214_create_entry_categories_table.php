@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('gender');
             $table->string('clothes')->nullable();
             $table->unsignedBigInteger('event_id');
+            $table->boolean('minor_category')->default(false);
             $table->timestamps();
         });
     }

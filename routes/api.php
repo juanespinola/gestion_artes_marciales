@@ -228,9 +228,9 @@ Route::middleware('auth:sanctum')->prefix('belt')->group(function (){
 // falta separar el admin del atleta, porque estan juntos
 Route::middleware('auth:sanctum')->prefix('inscription')->group(function (){
     $idInThePath = '/{id}';
-    Route::get("/", [InscriptionController::class, 'index']);
+    Route::post("/", [InscriptionController::class, 'index']);
     Route::get($idInThePath, [InscriptionController::class, 'edit']);
-    Route::post("/", [InscriptionController::class, 'store']);
+    // Route::post("/", [InscriptionController::class, 'store']);
     Route::put($idInThePath, [InscriptionController::class, 'update']);
     Route::delete($idInThePath, [InscriptionController::class, 'destroy']);
 });

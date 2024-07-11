@@ -6,6 +6,7 @@ use App\Models\Inscription;
 use App\Models\EntryCategory;
 use App\Models\TariffInscription;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,11 +28,29 @@ class InscriptionController extends Controller
                 //     return response()->json(['Unauthorized, you don\'t have access.'],400);
                 // }
 
-                $data = Inscription::all()
-                        ->load('athlete', 'tariff_inscription.entry_category.belt')
-                        ->groupBy(['tariff_inscription.entry_category.gender','tariff_inscription.entry_category.belt.color', 'tariff_inscription.entry_category.name'])
-                        ->sortByDesc('tariff_inscription.entry_category.belt.color');
-                        
+                // $data = Inscription::all()
+                //         ->load('athlete', 'tariff_inscription.entry_category.belt')
+                //         ->groupBy(['tariff_inscription.entry_category.gender','tariff_inscription.entry_category.belt.color', 'tariff_inscription.entry_category.name'])
+                //         ->sortByDesc('tariff_inscription.entry_category.belt.color');            
+                // $data = Inscription::where('event_id', $request->input('event_id'))
+                //         ->get()
+                //         ->load('athlete', 'tariff_inscription.entry_category.belt')
+                //         ->groupBy(['tariff_inscription.entry_category.gender','tariff_inscription.entry_category.belt.color', 'tariff_inscription.entry_category.name'])
+                //         ->sortByDesc('tariff_inscription.entry_category.belt.color');      
+                $inscriptions = Inscription::where('event_id', $request->input('event_id'))
+                                    ->with('athlete', 'tariff_inscription.entry_category.belt')
+                                    ->get();
+                $entry_categories = EntryCategory::where('event_id', $request->input('event_id'))
+                                    ->with('belt')
+                                    ->get()
+                                    ->groupBy(['gender','belt.color', 'name'])
+                                    ->sortByDesc('belt.color');   
+
+                $data = [
+                    "entry_categories" => $entry_categories,
+                    "inscriptions" => $inscriptions,
+
+                ];
                 
                 return response()->json($data, 200);
             }
@@ -154,28 +173,6 @@ class InscriptionController extends Controller
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
 
-                // $entry_category = EntryCategory::where([
-                //     ["min_age", "<=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
-                //     ["max_age", ">=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
-                //     ["min_weight", "<=", $request->input('weight')],
-                //     ["max_weight", ">=", $request->input('weight')],
-                //     ["belt_id", "=", $athlete->belt_id],
-                //     ["gender", "=", $athlete->gender],
-                // ]);
-                
-                // if($request->input('clothes')){
-                //     $entry_category->where("clothes", "=", $request->input('clothes'));
-                // }
-                
-                // obtenemos el objeto por eso el first
-                // $entry_category_id = $entry_category
-                //                         ->first()
-                //                         ->id;
-                
-                // $tariff_inscription_id = TariffInscription::where('entry_category_id', $entry_category_id)
-                //         ->first()
-                //         ->id;
-
                 // // Verificamos si el atleta ya tiene una inscripción con el mismo tariff_inscription_id
                 $existing_inscription = Inscription::where([
                     ['athlete_id', '=', $athlete->id],
@@ -185,31 +182,6 @@ class InscriptionController extends Controller
                 if ($existing_inscription) {
                     return response()->json(["messages" => "El atleta ya tiene una inscripción con esta Categoría.", "response" => false], 400);
                 }
-
-                // Verificamos si el atleta ya tiene una inscripción 
-                // $existing_inscription = DB::table('inscriptions')
-                //     ->join('tariff_inscriptions', 'tariff_inscriptions.id', '=', 'inscriptions.tariff_inscription_id')
-                //     ->join('entry_categories', 'tariff_inscriptions.entry_category_id', '=', 'entry_categories.id')
-                //     ->where('entry_categories.name', '<>', 'absoluto')
-                //     ->select('*')
-                    
-                //     ->get();
-
-                // $existing_inscription = Inscription::with('tariff_inscription.entry_category')
-                // ->where([
-                    // ['athlete_id', '=', $athlete->id],
-                    // ['tariff_inscription["entry_category"]["name"]', '<>', strtolower('absoluto')]
-                // ])
-                // ->whereHas('tariff_inscription', function (Builder $query){
-                //     $query->whereHas('entry_category', function (Builder $query){
-                //         $query->where(['name' ,'==', 'Absoluto']);
-                //     });
-                // })
-                // ->first();
-   
-                // if ($existing_inscription) {
-                //     return response()->json(["messages" => "El atleta ya tiene una inscripción a este evento.", "response" => false], 400);
-                // }
 
                 // queda realizar las funcionalidades para obtener los cinturones por atleta
                 $obj = Inscription::create([
