@@ -37,5 +37,4 @@ class Inscription extends Model
     public function tariff_inscription()  {
         return $this->belongsTo(TariffInscription::class);
     }
-  
 }

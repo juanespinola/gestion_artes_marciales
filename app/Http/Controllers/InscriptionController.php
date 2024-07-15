@@ -37,20 +37,30 @@ class InscriptionController extends Controller
                 //         ->load('athlete', 'tariff_inscription.entry_category.belt')
                 //         ->groupBy(['tariff_inscription.entry_category.gender','tariff_inscription.entry_category.belt.color', 'tariff_inscription.entry_category.name'])
                 //         ->sortByDesc('tariff_inscription.entry_category.belt.color');      
-                $inscriptions = Inscription::where('event_id', $request->input('event_id'))
-                                    ->with('athlete', 'tariff_inscription.entry_category.belt')
-                                    ->get();
-                $entry_categories = EntryCategory::where('event_id', $request->input('event_id'))
-                                    ->with('belt')
+
+                // $inscriptions = Inscription::where('event_id', $request->input('event_id'))
+                //                     ->with('athlete', 'tariff_inscription.entry_category.belt')
+                //                     ->get();
+                // $entry_categories = EntryCategory::where('event_id', $request->input('event_id'))
+                //                     ->with('belt')
+                //                     ->get()
+                //                     ->groupBy(['gender','belt.color', 'name'])
+                //                     ->sortByDesc('belt.color');   
+                $data = TariffInscription::with('entry_category', 'inscriptions.athlete')
                                     ->get()
-                                    ->groupBy(['gender','belt.color', 'name'])
+                                    ->groupBy(['entry_category.minor_category','entry_category.gender','entry_category.belt.color', 'entry_category.name'])
                                     ->sortByDesc('belt.color');   
+                // $group_entry_categories =  EntryCategory::where('event_id', $request->input('event_id'))
+                //                     ->with('belt')
+                //                     ->get()
+                //                     ->groupBy(['gender','belt.color', 'name'])
+                //                     ->sortByDesc('belt.color');                      
 
-                $data = [
-                    "entry_categories" => $entry_categories,
-                    "inscriptions" => $inscriptions,
-
-                ];
+                // $data = [
+                    // "entryCategories" => $entry_categories,
+                    // "groupEntryCategories" => $group_entry_categories,
+                    // "inscriptions" => $inscriptions,
+                // ];
                 
                 return response()->json($data, 200);
             }

@@ -59,7 +59,8 @@ class EntryCategorySeeder extends Seeder
                 'belt_id'=> 1,
                 'gender'=> 'masculino',
                 'clothes'=> 'gi',
-                'event_id' => 1
+                'event_id' => 1,
+                'minor_category' => true,
             ],
             [
                 'name' => 'Pluma',
@@ -70,7 +71,9 @@ class EntryCategorySeeder extends Seeder
                 'belt_id'=> 1,
                 'gender'=> 'masculino',
                 'clothes'=> 'gi',
-                'event_id' => 1
+                'event_id' => 1,
+                'minor_category' => true,
+
             ],
             [
                 'name' => 'Pena',
@@ -81,7 +84,8 @@ class EntryCategorySeeder extends Seeder
                 'belt_id'=> 1,
                 'gender'=> 'masculino',
                 'clothes'=> 'gi',
-                'event_id' => 1
+                'event_id' => 1,
+                'minor_category' => true,
             ],
             // azul
             [

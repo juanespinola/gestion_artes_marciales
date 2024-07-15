@@ -16,6 +16,7 @@ class EntryCategory extends Model
         'sex',
         'clothes',
         'event_id',
+        'minor_category'
     ];
 
     protected $hidden = [
