@@ -18,8 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('one_athlete_id')->nullable();
             $table->unsignedBigInteger('two_athlete_id')->nullable();
             $table->integer('quadrilateral'); // nro de cuadrilatero
-            $table->date('match_date')->nullable();
-            $table->time('match_time')->nullable();
+            $table->date('match_date')->nullable(); // fecha de la lucha
+            $table->time('match_time')->nullable(); // hora de la lucha
+            $table->time('match_timer')->nullable(); // temporizador de la lucha
             $table->integer('score_one_athlete');
             $table->integer('score_two_athlete');
             $table->unsignedBigInteger('athlete_id_winner')->nullable();

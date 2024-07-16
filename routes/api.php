@@ -23,7 +23,8 @@ use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\MediaNewController;
 use App\Http\Controllers\MatchBracketController;
-
+use App\Http\Controllers\TypesVictoryController;
+use App\Http\Controllers\AcademyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -255,14 +256,32 @@ Route::middleware('auth:sanctum')->prefix('medianew')->group(function (){
 
 Route::middleware('auth:sanctum')->prefix('matchbracket')->group(function (){
     $idInThePath = '/{id}';
-    Route::get("/", [MatchBracketController::class, 'index']);
+    Route::post("/", [MatchBracketController::class, 'index']);
     Route::get($idInThePath, [MatchBracketController::class, 'edit']);
-    Route::post("/", [MatchBracketController::class, 'store']);
+    // Route::post("/", [MatchBracketController::class, 'store']);
     Route::put($idInThePath, [MatchBracketController::class, 'update']);
     Route::delete($idInThePath, [MatchBracketController::class, 'destroy']);
 
     Route::post("/generate", [MatchBracketController::class, 'generateMatchBrackets']);
     Route::post("/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
+});
+
+Route::middleware('auth:sanctum')->prefix('typevictory')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [TypesVictoryController::class, 'index']);
+    Route::get($idInThePath, [TypesVictoryController::class, 'edit']);
+    Route::post("/", [TypesVictoryController::class, 'store']);
+    Route::put($idInThePath, [TypesVictoryController::class, 'update']);
+    Route::delete($idInThePath, [TypesVictoryController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('academy')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [AcademyController::class, 'index']);
+    Route::get($idInThePath, [AcademyController::class, 'edit']);
+    Route::post("/", [AcademyController::class, 'store']);
+    Route::put($idInThePath, [AcademyController::class, 'update']);
+    Route::delete($idInThePath, [AcademyController::class, 'destroy']);
 });
 
 

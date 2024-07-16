@@ -19,6 +19,7 @@ class MatchBracket extends Model
         'quadrilateral', // nro de cuadrilatero
         'match_date',
         'match_time',
+        "match_timer",
         'score_one_athlete',
         'score_two_athlete',
         "athlete_id_winner",

@@ -53,7 +53,9 @@ class DatabaseSeeder extends Seeder
             FederationsAthletesSeeder::class,
             NewsSeeder::class,
             CategoryNewSeeder::class,
-            TypeBracketSeeder::class
+            TypeBracketSeeder::class,
+            TypeVictorySeeder::class,
+            AcademySeeder::class,
         ]);
     }
 }
