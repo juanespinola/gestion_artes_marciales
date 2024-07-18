@@ -17,12 +17,12 @@ class InscriptionSeeder extends Seeder
             [
                 'event_id' => 1,
                 'athlete_id' => 1,
-                'tariff_inscription_id' => '1',
+                'tariff_inscription_id' => '2',
             ],
             [
                 'event_id' => 1,
                 'athlete_id' => 2,
-                'tariff_inscription_id' => '1',
+                'tariff_inscription_id' => '2',
             ],
             [
                 'event_id' => 1,

@@ -25,6 +25,7 @@ class MatchBracket extends Model
         "athlete_id_winner",
         "athlete_id_loser",
         "entry_category_id",
+        "victory_type_id"
     ];
 
     protected $hidden = [
@@ -56,5 +57,9 @@ class MatchBracket extends Model
 
     public function athleteTwo() {
         return $this->belongsTo(Athlete::class, 'two_athlete_id', 'id');   
+    }
+
+    public function typeVictory() {
+        return $this->belongsTo(TypesVictory::class, 'victory_type_id', 'id');   
     }
 }
