@@ -29,6 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id')->nullable();
             $table->longText('content')->nullable(); // contenido del evento
+            $table->integer('quantity_quadrilateral')->default(0); // cantidad de cuadrilateros disponibles
             $table->timestamps();
         });
     }

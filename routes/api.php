@@ -55,6 +55,7 @@ Route::get("/federations/{federation_id}/events", [App\Http\Controllers\Organiza
 Route::get("/events/{event_id}/eventdetail", [App\Http\Controllers\OrganizationController::class, 'event_detail']);
 Route::get("/events/{event_id}/matchbrackets", [App\Http\Controllers\OrganizationController::class, 'matchBrackets']);
 Route::get("/events/{event_id}/groupbrackets", [App\Http\Controllers\OrganizationController::class, 'groupBrackets']);
+Route::get("/events/{event_id}/registered", [App\Http\Controllers\OrganizationController::class, 'athletesInscription']);
 
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){

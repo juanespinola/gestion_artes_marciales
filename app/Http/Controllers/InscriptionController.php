@@ -48,6 +48,7 @@ class InscriptionController extends Controller
                 //                     ->sortByDesc('belt.color');   
                 $data = TariffInscription::with('entry_category', 'inscriptions.athlete')
                                     ->get()
+                                    ->where('entry_category.event_id', $request->input('event_id'))
                                     ->groupBy(['entry_category.minor_category','entry_category.gender','entry_category.belt.color', 'entry_category.name'])
                                     ->sortByDesc('belt.color');   
                 // $group_entry_categories =  EntryCategory::where('event_id', $request->input('event_id'))

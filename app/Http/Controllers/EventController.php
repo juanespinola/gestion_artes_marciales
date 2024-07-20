@@ -72,6 +72,7 @@ class EventController extends Controller
                     'status_event_id' => 'required|integer',
                     'inscription_fee' => 'required|integer',
                     'available_slots' => 'required|integer',                   
+                    'quantity_quadrilateral' => 'required|integer',   
                 ],
                 [
                     'description.required' => ':attribute: is Required',
@@ -82,6 +83,7 @@ class EventController extends Controller
                     'status_event_id.required' => ':attribute: is Required',
                     'inscription_fee.required' => ':attribute: is Required',
                     'available_slots.required' => ':attribute: is Required',                  
+                    'quantity_quadrilateral.required' => ':attribute: is Required',                  
                 ]
             );
 
@@ -102,6 +104,7 @@ class EventController extends Controller
                 'inscription_fee' => $request->input('inscription_fee'),
                 'total_participants' => $request->input('total_participants'),
                 'available_slots' => $request->input('available_slots'),
+                'quantity_quadrilateral' => $request->input('quantity_quadrilateral'),
                 'created_user_id' => auth()->user()->id,
                 'federation_id' => auth()->user()->federation_id,
                 'association_id' => auth()->user()->association_id,
@@ -152,6 +155,7 @@ class EventController extends Controller
                     'status_event_id' => 'required|integer',
                     'inscription_fee' => 'required|integer',
                     'available_slots' => 'required|integer',                   
+                    'quantity_quadrilateral' => 'required|integer',                   
                 ],
                 [
                     'description.required' => ':attribute: is Required',
@@ -162,6 +166,7 @@ class EventController extends Controller
                     'status_event_id.required' => ':attribute: is Required',
                     'inscription_fee.required' => ':attribute: is Required',
                     'available_slots.required' => ':attribute: is Required',                  
+                    'quantity_quadrilateral.required' => ':attribute: is Required',                  
                 ]
             );
 
@@ -182,6 +187,7 @@ class EventController extends Controller
                 'inscription_fee' => $request->input('inscription_fee'),
                 'total_participants' => $request->input('total_participants'),
                 'available_slots' => $request->input('available_slots'),
+                'quantity_quadrilateral' => $request->input('quantity_quadrilateral'),
                 'updated_user_id' => auth()->user()->id,
                 'federation_id' => auth()->user()->federation_id,
                 'association_id' => auth()->user()->association_id,

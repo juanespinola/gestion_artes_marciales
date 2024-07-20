@@ -24,6 +24,7 @@ class Event extends Model
         'inscription_fee',
         'total_participants',
         'available_slots',
+        'quantity_quadrilateral',
         'created_user_id',
         'updated_user_id',
         'federation_id',
