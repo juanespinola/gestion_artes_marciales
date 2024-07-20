@@ -53,9 +53,10 @@ Route::get("/news/{new_id}/newdetail", [App\Http\Controllers\OrganizationControl
 
 Route::get("/federations/{federation_id}/events", [App\Http\Controllers\OrganizationController::class, 'events']);
 Route::get("/events/{event_id}/eventdetail", [App\Http\Controllers\OrganizationController::class, 'event_detail']);
-Route::get("/events/{event_id}/matchbrackets", [App\Http\Controllers\OrganizationController::class, 'matchBrackets']);
-Route::get("/events/{event_id}/groupbrackets", [App\Http\Controllers\OrganizationController::class, 'groupBrackets']);
+Route::post("/events/{event_id}/matchbrackets", [App\Http\Controllers\OrganizationController::class, 'matchBrackets']);
+Route::post("/events/{event_id}/groupbrackets", [App\Http\Controllers\OrganizationController::class, 'groupBrackets']);
 Route::get("/events/{event_id}/registered", [App\Http\Controllers\OrganizationController::class, 'athletesInscription']);
+Route::get("/events/{event_id}/schedules", [App\Http\Controllers\OrganizationController::class, 'schedules']);
 
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){

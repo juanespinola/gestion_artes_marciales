@@ -9,6 +9,7 @@ use App\Models\News;
 use App\Models\MatchBracket;
 use App\Models\Bracket;
 use App\Models\TariffInscription;
+use App\Models\EntryCategory;
 
 class OrganizationController extends Controller
 {
@@ -76,10 +77,11 @@ class OrganizationController extends Controller
     }
 
 
-    public function matchBrackets($event_id){
+    public function matchBrackets(Request $request, $event_id){
         try {
-            $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo','typeVictory')
+            $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo', 'typeVictory')
                 ->where('event_id', $event_id)
+                ->where('entry_category_id', $request->input('entry_category_id'))
                 ->get();    
             return response()->json($data, 200);
         } catch (\Throwable $th) {
@@ -87,9 +89,9 @@ class OrganizationController extends Controller
         }
     }
 
-    public function groupBrackets($event_id) {
+    public function groupBrackets(Request $request, $event_id) {
         try {
-            $data = MatchBracket::groupBrackets($event_id);   
+            $data = MatchBracket::groupBrackets($event_id, $request->input('entry_category_id'));   
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;
@@ -103,6 +105,26 @@ class OrganizationController extends Controller
                 ->where('entry_category.event_id', $event_id)
                 ->groupBy(['entry_category.minor_category','entry_category.gender','entry_category.belt.color', 'entry_category.name'])
                 ->sortByDesc('belt.color');   
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function schedules($event_id) {
+        try {
+            // $data = MatchBracket::with('entry_category')
+            //     ->get()
+            //     ->where('entry_category.event_id', $event_id)
+            //     ->groupBy(['quadrilateral']);
+            $data = EntryCategory::where('event_id', $event_id)
+                ->get()
+                ->groupBy(['minor_category','gender','name']);
+    
+            // $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo', '')
+            //     ->where('event_id', $event_id)
+            //     ->get();  
+
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

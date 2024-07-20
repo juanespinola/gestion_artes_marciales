@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class EntryCategory extends Model
 {
@@ -29,8 +30,22 @@ class EntryCategory extends Model
         return $this->belongsTo(Belt::class);
     }
 
-    public function tariff_inscription()  {
+    public function tariff_inscription() {
         return $this->belongsTo(TariffInscription::class, 'id', 'entry_category_id');
+    }
+
+    public function matchBracket() {
+        return $this->hasMany(MatchBracket::class, 'entry_category_id');
+    }
+
+    public static function ringMatMatchBracket($event_id) {
+        return DB::table('entry_categories')
+            ->select('entry_categories.name', 'match_brackets.quadrilateral', 'entry_categories.gender', DB::raw('count(match_brackets.id) as quantity_match'))
+            ->join('match_brackets', 'entry_categories.id', '=', 'match_brackets.entry_category_id')
+            ->groupBy(['entry_categories.name', 'match_brackets.quadrilateral', 'entry_categories.gender'])
+            ->orderBy('match_brackets.quadrilateral')
+            ->where('entry_categories.event_id', $event_id)
+            ->get();
     }
 
 }

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Bracket;
 use DB;
 
 class MatchBracket extends Model
@@ -37,17 +36,17 @@ class MatchBracket extends Model
     ];
 
     public function bracket()  {
-        // return $this->belongsTo(Bracket::class, 'id', 'match_bracket_id');      
         return $this->hasOne(Bracket::class);
     }
 
-    public static function groupBrackets($event_id) {
+    public static function groupBrackets($event_id, $entry_category_id) {
         return DB::table('brackets')
         ->select('brackets.number_phase' , 'brackets.phase')
         ->join('match_brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
         ->groupBy(['brackets.phase', 'brackets.number_phase'])
         ->orderBy('brackets.number_phase')
         ->where('event_id', $event_id)
+        ->where('match_brackets.entry_category_id', $entry_category_id)
         ->get();
     }
 
@@ -61,5 +60,9 @@ class MatchBracket extends Model
 
     public function typeVictory() {
         return $this->belongsTo(TypesVictory::class, 'victory_type_id', 'id');   
+    }
+
+    public function entry_category() {
+        return $this->belongsTo(EntryCategory::class);
     }
 }
