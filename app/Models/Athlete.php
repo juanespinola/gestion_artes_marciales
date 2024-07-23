@@ -24,8 +24,9 @@ class Athlete extends Authenticatable
         'name',
         'email',
         'password',
-        // "federation_id",
+        "academy_id",
         // "association_id",
+
     ];
 
     /**
@@ -59,4 +60,8 @@ class Athlete extends Authenticatable
     // public function federation($federation_id){     
     //     return $this->belongsToMany(Federation::class, FederationsAthletes::class, 'athlete_id', 'federation_id')->where('federation_id', $federation_id);
     // }
+
+    public function academy() {
+        return $this->belongsTo(Academy::class);
+    }
 }

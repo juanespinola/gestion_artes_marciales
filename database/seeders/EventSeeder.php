@@ -26,6 +26,7 @@ class EventSeeder extends Seeder
                 'available_slots' => '100',
                 'created_user_id' => '3',
                 'federation_id'=> '1',
+                'quantity_quadrilateral' => 2
             ],
             [
                 'description' => 'Torneo Invierno',

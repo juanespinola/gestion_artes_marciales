@@ -79,7 +79,7 @@ class OrganizationController extends Controller
 
     public function matchBrackets(Request $request, $event_id){
         try {
-            $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo', 'typeVictory')
+            $data = MatchBracket::with('bracket', 'athleteOne.academy', 'athleteTwo.academy', 'typeVictory', 'entry_category')
                 ->where('event_id', $event_id)
                 ->where('entry_category_id', $request->input('entry_category_id'))
                 ->get();    

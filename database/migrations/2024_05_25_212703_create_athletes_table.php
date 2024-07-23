@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->unsignedBigInteger('belt_id')->nullable(); // no tiene sentido relacionar con level_belt_id, porque al iniciar es blanco y no hay niveles
             $table->string('type')->default('athlete');
+            $table->unsignedBigInteger('academy_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
