@@ -15,20 +15,33 @@ class CitySeeder extends Seeder
     public function run(): void
     {
         $country = Country::create([
-            'name' => 'Paraguay',
+            'description' => 'Paraguay',
         ]);
         
         $data = [
-            ['name' => 'Asunción', 'country_id' => $country->id],
-            ['name' => 'Ciudad del Este', 'country_id' => $country->id],
-            ['name' => 'San Lorenzo', 'country_id' => $country->id],
-            ['name' => 'Luque', 'country_id' => $country->id],
-            ['name' => 'Capiatá', 'country_id' => $country->id],
-            ['name' => 'Lambaré', 'country_id' => $country->id],
-            ['name' => 'Fernando de la Mora', 'country_id' => $country->id],
-            ['name' => 'Limpio', 'country_id' => $country->id],
-            ['name' => 'Ñemby', 'country_id' => $country->id],
-            ['name' => 'Encarnación', 'country_id' => $country->id],
+            ['description' => 'Asunción', 'country_id' => $country->id],
+            ['description' => 'Ciudad del Este', 'country_id' => $country->id],
+            ['description' => 'San Lorenzo', 'country_id' => $country->id],
+            ['description' => 'Luque', 'country_id' => $country->id],
+            ['description' => 'Capiatá', 'country_id' => $country->id],
+            ['description' => 'Lambaré', 'country_id' => $country->id],
+            ['description' => 'Fernando de la Mora', 'country_id' => $country->id],
+            ['description' => 'Limpio', 'country_id' => $country->id],
+            ['description' => 'Ñemby', 'country_id' => $country->id],
+            ['description' => 'Encarnación', 'country_id' => $country->id],
+        ];
+
+        foreach ($data as $item) {
+            City::create($item);
+        }
+
+        $country = Country::create([
+            'description' => 'Argentina',
+        ]);
+        
+        $data = [
+            ['description' => 'Formosa', 'country_id' => $country->id],
+            ['description' => 'Buenos Aires', 'country_id' => $country->id],
         ];
 
         foreach ($data as $item) {

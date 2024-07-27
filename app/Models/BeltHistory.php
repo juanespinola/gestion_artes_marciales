@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class BeltHistory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id',
-        'description',
-        'status',
-        'country_id',
+        'belt_id',
+        'athlete_id',
+        'federation_id',
+        'achieved',
+        'promoted_by',
     ];
 
     protected $hidden = [
@@ -21,8 +22,7 @@ class City extends Model
         'updated_at',
     ];
 
-    
-    public function country(){
-        return $this->belongsTo(Country::class);
+    public function belt() {
+        return $this->belongsTo(Belt::class);
     }
 }

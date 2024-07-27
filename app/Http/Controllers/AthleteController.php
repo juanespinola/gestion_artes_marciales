@@ -3,63 +3,72 @@
 namespace App\Http\Controllers;
 
 use App\Models\Athlete;
+use App\Models\BeltHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class AthleteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    
+    public function getProfile(Request $request){
+        $data = Athlete::with('belt')
+            ->findOrFail(auth()->user()->id);
+        return response()->json($data, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function updateBeltHistory(Request $request){
+        try {
+            if($request->BearerToken()){
+                $validation = Validator::make(
+                    $request->all(), 
+                    [
+                        'belt_id' => 'required|integer',
+                        'athlete_id' => 'required|integer',
+                        'federation_id' => 'required|integer',
+
+                    ],
+                    [
+                        'belt_id.required' => ':attribute: is Required',
+                        'athlete_id.required' => ':attribute: is Required',
+                        'federation_id.required' => ':attribute: is Required',
+                    ]
+                );
+    
+                if($validation->fails()){
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+    
+                $existBelt = BeltHistory::where([
+                    ['belt_id', $request->input('belt_id')],
+                    ['athlete_id', $request->input('athlete_id')],
+                ])->first();
+                
+                if($existBelt){
+                    return response()->json(["messages" => "Ya cuentas con ese cinturón"], 400);
+                }
+
+                $athlete = Athlete::findOrFail($request->input('athlete_id'));
+                $athlete->update([
+                    'belt_id' => $request->input('belt_id'),
+                ]);
+
+                $obj = BeltHistory::create([
+                    'belt_id' => $request->input('belt_id'),
+                    'athlete_id' => $request->input('athlete_id'),
+                    'federation_id' => $request->input('federation_id'),
+                    'achieved' => $request->input('achieved') ? Carbon::parse($request->input('achieved'))->format('Y-m-d') : null,
+                    'promoted_by' => $request->input('promoted_by'),
+                ]);
+
+
+    
+                return response()->json($obj, 201);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Athlete $athlete)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Athlete $athlete)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Athlete $athlete)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Athlete $athlete)
-    {
-        //
-    }
 }

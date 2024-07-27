@@ -58,9 +58,17 @@ class LoginController extends Controller
             if(auth('athletes')->attempt(array('email' => $input['email'], 'password' => $input['password'] ))){
                         
                 $user = auth('athletes')->user();                
+                
+                $user->city = $user->city()->first();
+                $user->country = $user->country()->first();
+                $user->typeDocument = $user->typeDocument()->first();
+
                 $federationOfUser = $user->federation($input['federation_id'])->first();
                 $user->federation = $federationOfUser;
                 
+              
+
+
                 if($user->type !== 'athlete'){
                     return response()->json(['message' => ' Usuario no es Atleta'], 400);
                 }

@@ -56,6 +56,8 @@ class DatabaseSeeder extends Seeder
             TypeBracketSeeder::class,
             TypeVictorySeeder::class,
             AcademySeeder::class,
+            TypeDocumentSeeder::class,
+            BeltHistorySeeder::class,
         ]);
     }
 }

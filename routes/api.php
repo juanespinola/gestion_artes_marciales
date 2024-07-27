@@ -25,6 +25,12 @@ use App\Http\Controllers\MediaNewController;
 use App\Http\Controllers\MatchBracketController;
 use App\Http\Controllers\TypesVictoryController;
 use App\Http\Controllers\AcademyController;
+use App\Http\Controllers\AthleteController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\TypeDocumentController;
+use App\Http\Controllers\BeltHistoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -286,21 +292,62 @@ Route::middleware('auth:sanctum')->prefix('academy')->group(function (){
     Route::delete($idInThePath, [AcademyController::class, 'destroy']);
 });
 
+Route::middleware('auth:sanctum')->prefix('city')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [CityController::class, 'index']);
+    Route::get($idInThePath, [CityController::class, 'edit']);
+    Route::post("/", [CityController::class, 'store']);
+    Route::put($idInThePath, [CityController::class, 'update']);
+    Route::delete($idInThePath, [CityController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('country')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [CountryController::class, 'index']);
+    Route::get($idInThePath, [CountryController::class, 'edit']);
+    Route::post("/", [CountryController::class, 'store']);
+    Route::put($idInThePath, [CountryController::class, 'update']);
+    Route::delete($idInThePath, [CountryController::class, 'destroy']);
+});
+
 
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
     Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);
     Route::get("/federations", [FederationController::class, "getFederations"]);
-
+    
+    Route::post("/cities", [CityController::class, 'getCities']);
+    Route::get("/countries", [CountryController::class, 'getCountries']);
+    Route::get("/typesdocument", [TypeDocumentController::class, 'getTypesDocument']);
+    
     // requiere que el atleta este conectado para registrarse
     Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
         $idInThePath = '/{id}';
         Route::get("/", [EntryCategoryController::class, 'getEntryForRegistratioAthlete']);
     });
-
+    
     Route::middleware('auth:sanctum')->prefix('inscription')->group(function (){
         Route::post("/create", [InscriptionController::class, 'setEntryForRegistratioAthlete']);
     });
+
+    
+    Route::middleware('auth:sanctum')->prefix('belthistory')->group(function (){
+        $idInThePath = '/{id}';
+        Route::get("/", [BeltHistoryController::class, 'index']);
+        Route::get($idInThePath, [BeltHistoryController::class, 'edit']);
+        Route::post("/", [BeltHistoryController::class, 'store']);
+        Route::put($idInThePath, [BeltHistoryController::class, 'update']);
+        Route::delete($idInThePath, [BeltHistoryController::class, 'destroy']);
+    });
+    
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::get("/profile", [AthleteController::class, 'getProfile']);
+        Route::post("/belts", [BeltController::class, 'getBelts']);
+        Route::post("/updatebelthistory", [AthleteController::class, 'updateBeltHistory']);
+      
+    });
+
+
 
 });
 

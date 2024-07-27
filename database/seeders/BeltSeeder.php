@@ -16,23 +16,23 @@ class BeltSeeder extends Seeder
         $data = [
             [
                 'color' => 'Blanco',
-                'badge' => '4',
+                'federation_id' => '1',
             ],  
             [
                 'color' => 'Azul',
-                'badge' => '4',
+                'federation_id' => '1',
             ],  
             [
                 'color' => 'Lila',
-                'badge' => '4',
+                'federation_id' => '1',
             ],  
             [
                 'color' => 'Marrón',
-                'badge' => '4',
+                'federation_id' => '1',
             ],  
             [
                 'color' => 'Negro',
-                'badge' => '4',
+                'federation_id' => '1',
             ],  
         ];
 

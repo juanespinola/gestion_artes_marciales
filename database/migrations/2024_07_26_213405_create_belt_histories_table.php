@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('belts', function (Blueprint $table) {
+        Schema::create('belt_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('color');
+            // $table->unsignedBigInteger('created_user_id')->index('news_created_user_id_foreign');
+            $table->unsignedBigInteger('belt_id');
+            $table->unsignedBigInteger('athlete_id');
             $table->unsignedBigInteger('federation_id');
+            $table->date('achieved')->nullable();
+            $table->string('promoted_by')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('belts');
+        Schema::dropIfExists('belt_histories');
     }
 };

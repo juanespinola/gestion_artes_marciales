@@ -2,25 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
+use App\Models\TypeDocument;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class TypeDocumentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        try {
-            if($request->BearerToken()){
-                $data = City::where('country_id', $request->input('country_id'))
-                    ->get();
-                return response()->json($data, 200);
-            }
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        
     }
 
     /**
@@ -42,7 +34,7 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(City $city)
+    public function show(TypeDocument $typeDocument)
     {
         //
     }
@@ -50,7 +42,7 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(City $city)
+    public function edit(TypeDocument $typeDocument)
     {
         //
     }
@@ -58,7 +50,7 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, City $city)
+    public function update(Request $request, TypeDocument $typeDocument)
     {
         //
     }
@@ -66,19 +58,15 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(City $city)
+    public function destroy(TypeDocument $typeDocument)
     {
         //
     }
 
-
-    public function getCities(Request $request)
-    {
+    public function getTypesDocument() {
         try {
-            $data = City::where('country_id', $request->input('country_id'))
-                ->get();
+            $data = TypeDocument::all();
             return response()->json($data, 200);
-           
         } catch (\Throwable $th) {
             throw $th;
         }

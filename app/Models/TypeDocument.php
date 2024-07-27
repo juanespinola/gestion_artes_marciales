@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class TypeDocument extends Model
 {
     use HasFactory;
 
@@ -13,16 +13,10 @@ class City extends Model
         'id',
         'description',
         'status',
-        'country_id',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
-
-    
-    public function country(){
-        return $this->belongsTo(Country::class);
-    }
 }

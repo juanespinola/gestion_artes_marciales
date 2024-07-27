@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
+use App\Models\BeltHistory;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class BeltHistoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class CityController extends Controller
     {
         try {
             if($request->BearerToken()){
-                $data = City::where('country_id', $request->input('country_id'))
+                $data = BeltHistory::with('belt')
+                    ->where('athlete_id', auth()->user()->id)
                     ->get();
                 return response()->json($data, 200);
             }
@@ -36,13 +37,13 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(City $city)
+    public function show(BeltHistory $beltHistory)
     {
         //
     }
@@ -50,7 +51,7 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(City $city)
+    public function edit(BeltHistory $beltHistory)
     {
         //
     }
@@ -58,7 +59,7 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, City $city)
+    public function update(Request $request, BeltHistory $beltHistory)
     {
         //
     }
@@ -66,21 +67,8 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(City $city)
+    public function destroy(BeltHistory $beltHistory)
     {
         //
-    }
-
-
-    public function getCities(Request $request)
-    {
-        try {
-            $data = City::where('country_id', $request->input('country_id'))
-                ->get();
-            return response()->json($data, 200);
-           
-        } catch (\Throwable $th) {
-            throw $th;
-        }
     }
 }

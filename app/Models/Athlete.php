@@ -26,7 +26,9 @@ class Athlete extends Authenticatable
         'password',
         "academy_id",
         // "association_id",
-
+        "city_id",
+        "country_id",
+        'belt_id',
     ];
 
     /**
@@ -57,11 +59,23 @@ class Athlete extends Authenticatable
                     ->wherePivot('federation_id', $federation_id);
     }
 
-    // public function federation($federation_id){     
-    //     return $this->belongsToMany(Federation::class, FederationsAthletes::class, 'athlete_id', 'federation_id')->where('federation_id', $federation_id);
-    // }
-
     public function academy() {
         return $this->belongsTo(Academy::class);
+    }
+
+    public function city() {
+        return $this->belongsTo(City::class);
+    }
+
+    public function country() {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function typeDocument() {
+        return $this->belongsTo(TypeDocument::class);
+    }
+
+    public function belt() {
+        return $this->belongsTo(Belt::class);
     }
 }

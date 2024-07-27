@@ -10,9 +10,16 @@ class CountryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            if($request->BearerToken()){
+                $data = Country::all();
+                return response()->json($data, 200);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -62,4 +69,15 @@ class CountryController extends Controller
     {
         //
     }
+
+    public function getCountries(Request $request)
+    {
+        try {
+            $data = Country::all();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }
