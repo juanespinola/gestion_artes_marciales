@@ -17,6 +17,64 @@ class AthleteController extends Controller
         return response()->json($data, 200);
     }
 
+
+    public function updateProfile(Request $request){
+        try {
+            if($request->BearerToken()){
+                $validation = Validator::make(
+                    $request->all(), 
+                    [
+                        'name' => 'required|string',
+                        'email' => 'required|string',
+                        'document' => 'required|string',
+                        'phone' => 'required|string',
+                        'gender' => 'required|string',
+                        'birthdate' => 'required|date',
+                        'country_id' => 'required|integer',
+                        'city_id' => 'required|integer',
+                        'type_document_id' => 'required|integer',
+                        'belt_id' => 'required|integer',
+                    ],
+                    [
+                        'name.required' => ':attribute: is Required',
+                        'email.required' => ':attribute: is Required',
+                        'document.required' => ':attribute: is Required',
+                        'phone.required' => ':attribute: is Required',
+                        'gender.required' => ':attribute: is Required',
+                        'birthdate.required' => ':attribute: is Required',
+                        'country_id.required' => ':attribute: is Required',
+                        'city_id.required' => ':attribute: is Required',
+                        'type_document_id.required' => ':attribute: is Required',
+                        'belt_id.required' => ':attribute: is Required',
+                    ]
+                );
+    
+                if($validation->fails()){
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+    
+                $obj = Athlete::findOrFail(auth()->user()->id);
+                $obj->update([
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'document' => $request->input('document'),
+                    'phone' => $request->input('phone'),
+                    'gender' => $request->input('gender'),
+                    'birthdate' => $request->input('birthdate'),
+                    'country_id' => $request->input('country_id'),
+                    'city_id' => $request->input('city_id'),
+                    'type_document_id' => $request->input('type_document_id'),
+                    'belt_id' => $request->input('belt_id'),
+                    'academy_id' => $request->input('academy_id'),
+                ]);
+    
+                return response()->json($obj, 201);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function updateBeltHistory(Request $request){
         try {
             if($request->BearerToken()){

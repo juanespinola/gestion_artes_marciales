@@ -319,6 +319,7 @@ Route::group(['prefix'=>'athlete'], function () {
     Route::post("/cities", [CityController::class, 'getCities']);
     Route::get("/countries", [CountryController::class, 'getCountries']);
     Route::get("/typesdocument", [TypeDocumentController::class, 'getTypesDocument']);
+    Route::get("/academies", [AcademyController::class, 'getAcademies']);
     
     // requiere que el atleta este conectado para registrarse
     Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
@@ -342,6 +343,7 @@ Route::group(['prefix'=>'athlete'], function () {
     
     Route::middleware('auth:sanctum')->group(function (){
         Route::get("/profile", [AthleteController::class, 'getProfile']);
+        Route::post("/profile", [AthleteController::class, 'updateProfile']);
         Route::post("/belts", [BeltController::class, 'getBelts']);
         Route::post("/updatebelthistory", [AthleteController::class, 'updateBeltHistory']);
       

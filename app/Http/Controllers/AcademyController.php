@@ -69,4 +69,13 @@ class AcademyController extends Controller
     {
         //
     }
+
+    public function getAcademies() {
+        try {      
+            $data = Academy::all();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
