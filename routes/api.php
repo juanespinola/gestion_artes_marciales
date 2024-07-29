@@ -30,7 +30,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\TypeDocumentController;
 use App\Http\Controllers\BeltHistoryController;
-
+use App\Http\Controllers\RequestAutorizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -308,6 +308,15 @@ Route::middleware('auth:sanctum')->prefix('country')->group(function (){
     Route::post("/", [CountryController::class, 'store']);
     Route::put($idInThePath, [CountryController::class, 'update']);
     Route::delete($idInThePath, [CountryController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('requestautorization')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [RequestAutorizationController::class, 'index']);
+    Route::get($idInThePath, [RequestAutorizationController::class, 'edit']);
+    Route::post("/", [RequestAutorizationController::class, 'store']);
+    Route::put($idInThePath, [RequestAutorizationController::class, 'update']);
+    Route::delete($idInThePath, [RequestAutorizationController::class, 'destroy']);
 });
 
 

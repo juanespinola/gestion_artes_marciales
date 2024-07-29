@@ -58,6 +58,7 @@ class DatabaseSeeder extends Seeder
             AcademySeeder::class,
             TypeDocumentSeeder::class,
             BeltHistorySeeder::class,
+            // RequestAutorizationSeeder::class,
         ]);
     }
 }
