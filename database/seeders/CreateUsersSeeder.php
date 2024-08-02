@@ -34,11 +34,18 @@ class CreateUsersSeeder extends Seeder
                 'federation_id'=> '1',
             ],
             [
-                'name'=>'Asociacion User',
+                'name'=>'Asociacion 2 User',
                 'email'=>'asociacion@gmail.com',
                 'password'=> bcrypt('123456'),
                 'federation_id'=> '1',
                 'association_id'=> '2',
+            ],
+            [
+                'name'=>'Asociacion 1 User',
+                'email'=>'asociacion1@gmail.com',
+                'password'=> bcrypt('123456'),
+                'federation_id'=> '1',
+                'association_id'=> '1',
             ],
         ];
 

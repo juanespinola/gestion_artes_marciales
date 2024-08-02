@@ -21,11 +21,21 @@ class RequestAutorization extends Model
         'request_type_id',
         'request_text',
         'response_text',
+        'status'
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
+
+
+    public function association() {
+        return $this->belongsTo(Association::class);
+    }
+
+    public function typerequest() {
+        return $this->belongsTo(TypeRequest::class, 'request_type_id', 'id');
+    }
 
 }

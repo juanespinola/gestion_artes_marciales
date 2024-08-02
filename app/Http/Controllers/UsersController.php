@@ -143,14 +143,14 @@ class UsersController extends Controller
                 [
                     'name' => 'required|string',
                     'email' => 'required|string',
-                    'password' => 'required|string',
+                    // 'password' => 'required|string',
                     'rol' => 'required',
 
                 ],
                 [
                     'name.required' => ':attribute: is Required',
                     'email.required' => ':attribute: is Required',
-                    'password.required' => ':attribute: is Required',
+                    // 'password.required' => ':attribute: is Required',
                     'rol.required' => ':attribute: is Required',
                 ]
             );
@@ -163,7 +163,7 @@ class UsersController extends Controller
             $obj->update([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'password' => $request->input('password'),
+                // 'password' => $request->input('password'),
             ]);
 
             foreach ($request->input('rol') as $rol) {

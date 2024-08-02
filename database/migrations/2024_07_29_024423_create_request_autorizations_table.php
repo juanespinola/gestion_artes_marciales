@@ -15,14 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id');
-            $table->unsignedBigInteger('requested_by')->nullable(); 
-            $table->unsignedBigInteger('approved_by')->nullable(); 
-            $table->unsignedBigInteger('rejected_by')->nullable(); 
+            $table->string('requested_by')->nullable(); 
+            $table->string('approved_by')->nullable(); 
+            $table->string('rejected_by')->nullable(); 
             $table->date('date_request');
             $table->date('date_response')->nullable();
             $table->unsignedBigInteger('request_type_id');
             $table->mediumText('request_text')->nullable();
             $table->mediumText('response_text')->nullable();
+            $table->enum('status', ['pendiente', 'respuesta', 'aprobado', 'rechazado'])->default('pendiente');
             $table->timestamps();
         });
     }

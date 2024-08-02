@@ -31,6 +31,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\TypeDocumentController;
 use App\Http\Controllers\BeltHistoryController;
 use App\Http\Controllers\RequestAutorizationController;
+use App\Http\Controllers\TypeRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -317,6 +318,15 @@ Route::middleware('auth:sanctum')->prefix('requestautorization')->group(function
     Route::post("/", [RequestAutorizationController::class, 'store']);
     Route::put($idInThePath, [RequestAutorizationController::class, 'update']);
     Route::delete($idInThePath, [RequestAutorizationController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('typerequest')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [TypeRequestController::class, 'index']);
+    Route::get($idInThePath, [TypeRequestController::class, 'edit']);
+    Route::post("/", [TypeRequestController::class, 'store']);
+    Route::put($idInThePath, [TypeRequestController::class, 'update']);
+    Route::delete($idInThePath, [TypeRequestController::class, 'destroy']);
 });
 
 
