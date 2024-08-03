@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
             BeltHistorySeeder::class,
             // RequestAutorizationSeeder::class,
             TypesRequestSeeder::class,
+            TypesMembershipsSeeder::class,
         ]);
     }
 }

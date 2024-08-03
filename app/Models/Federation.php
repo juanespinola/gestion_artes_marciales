@@ -28,6 +28,10 @@ class Federation extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function association() {
+        return $this->belongsTo(Association::class, 'id', 'federation_id');
+    }
 }
 
 

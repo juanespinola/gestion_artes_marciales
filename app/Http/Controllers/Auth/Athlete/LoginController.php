@@ -63,7 +63,8 @@ class LoginController extends Controller
                 $user->country = $user->country()->first();
                 $user->typeDocument = $user->typeDocument()->first();
 
-                $federationOfUser = $user->federation($input['federation_id'])->first();
+                $federationOfUser = $user->federation($input['federation_id'])->with('association')->first();
+
                 $user->federation = $federationOfUser;
                 
               

@@ -27,4 +27,10 @@ class Association extends Model
         'created_at',
         'updated_at',
     ];
+
+
+    public function federation() {
+        return $this->belongsTo(Federation::class);
+    }
+
 }
