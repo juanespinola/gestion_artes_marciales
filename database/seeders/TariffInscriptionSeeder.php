@@ -16,51 +16,51 @@ class TariffInscriptionSeeder extends Seeder
         $data = [
             [
                 'entry_category_id' => '1',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '2',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '3',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '4',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '5',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '6',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '7',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '8',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '9',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '10',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '11',
-                'price' => '1000',
+                'price' => '1',
             ],
             [
                 'entry_category_id' => '12',
-                'price' => '1000',
+                'price' => '1',
             ],
             
         ];

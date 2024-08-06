@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('athlete_id');
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id');
+            // $table->unsignedBigInteger('payment_id');
             $table->timestamps();
         });
     }

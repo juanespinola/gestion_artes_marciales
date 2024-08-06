@@ -16,7 +16,7 @@ class TypesMembershipsSeeder extends Seeder
         $data = [
             [
                 'description' => 'Membresia Asociacion',
-                'price' => 10000,
+                'price' => 1,
                 'total_number_fee' => 12,
                 'federation_id' => 1,
                 'association_id' => 2,

@@ -33,6 +33,8 @@ use App\Http\Controllers\BeltHistoryController;
 use App\Http\Controllers\RequestAutorizationController;
 use App\Http\Controllers\TypeRequestController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PaymentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -334,15 +336,17 @@ Route::middleware('auth:sanctum')->prefix('typerequest')->group(function (){
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
     Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);
+    // este se genera al registrarse
+    Route::post("/generatemembershipfee", [MembershipController::class, 'generateMemberShipFee']);
+
     Route::get("/federations", [FederationController::class, "getFederations"]);
-    
     Route::post("/cities", [CityController::class, 'getCities']);
     Route::get("/countries", [CountryController::class, 'getCountries']);
     Route::get("/typesdocument", [TypeDocumentController::class, 'getTypesDocument']);
     Route::get("/academies", [AcademyController::class, 'getAcademies']);
     
     
-    Route::post("/generatemembershipfee", [MembershipController::class, 'generateMemberShipFee']);
+    Route::post("/payment/create", [PaymentController::class, 'createPayment']);
     
 
     // requiere que el atleta este conectado para registrarse
@@ -366,6 +370,7 @@ Route::group(['prefix'=>'athlete'], function () {
     });
     
     Route::middleware('auth:sanctum')->group(function (){
+        //si el atleta esta conectado
         Route::get("/profile", [AthleteController::class, 'getProfile']);
         Route::post("/profile", [AthleteController::class, 'updateProfile']);
 
@@ -373,8 +378,9 @@ Route::group(['prefix'=>'athlete'], function () {
         Route::post("/updatebelthistory", [AthleteController::class, 'updateBeltHistory']);
         
         Route::post("/getathletemembershipfee", [AthleteController::class, 'getAthleteMembershipFee']);
-        Route::get("/paymentmembershipfee/{id}", [MembershipController::class, 'paymentMemberShipFee']);
-        
+        Route::put("/paymentmembershipfee/{id}", [MembershipController::class, 'paymentMemberShipFee']);
+        Route::post("/getathletemembershipfeepayment", [AthleteController::class, 'getAthleteMembershipFeePayment']);
+        Route::get("/getmembershipfee/{id}", [MembershipController::class, 'getMemberShipFee']);
     });
 
 

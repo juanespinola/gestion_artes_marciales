@@ -161,8 +161,51 @@ class AthleteController extends Controller
                     ['athlete_id', $athlete_id],
                     ['federation_id', $federation_id],
                     ['association_id', $association_id],
+                    ['status', '<>','pagado']
                 ])
-                ->orderBy('end_date_fee', 'desc')
+                ->orderBy('end_date_fee', 'asc')
+                ->get();
+
+                return response()->json($memberships, 200);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function getAthleteMembershipFeePayment(Request $request) {
+        try {
+            if($request->BearerToken()){
+                $validation = Validator::make(
+                    $request->all(), 
+                    [
+                        'athlete_id' => 'required|integer',
+                        'federation_id' => 'required|integer',
+                        'association_id' => 'required|integer',
+
+                    ],
+                    [
+                        'athlete_id.required' => ':attribute: is Required',
+                        'federation_id.required' => ':attribute: is Required',
+                        'association_id.required' => ':attribute: is Required',
+                    ]
+                );
+    
+                if($validation->fails()){
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+
+                $athlete_id = $request->input('athlete_id');
+                $federation_id = $request->input('federation_id');
+                $association_id = $request->input('association_id');
+
+                $memberships = Membership::where([
+                    ['athlete_id', $athlete_id],
+                    ['federation_id', $federation_id],
+                    ['association_id', $association_id],
+                    ['status', 'pagado']
+                ])
+                ->orderBy('end_date_fee', 'asc')
                 ->get();
 
                 return response()->json($memberships, 200);

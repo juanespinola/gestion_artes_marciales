@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class MembershipController extends Controller
 {
-    public function generateMemberShipFee() {
+    public function generateMemberShipFee(Request $request) {
         
         try {
 
@@ -70,7 +70,7 @@ class MembershipController extends Controller
     public function paymentMemberShipFee($id) {
 
         try {
-            $obj = Membership::findById($id);
+            $obj = Membership::findOrFail($id);
             $obj->update([
                 'status' => 'pagado',
                 'payment_date_fee' => Carbon::now()->format('Y-m-d h:i:s'),
@@ -80,7 +80,14 @@ class MembershipController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
-        
+    }
 
+    public function getMemberShipFee($id) {
+        try {
+            $obj = Membership::findOrFail($id);
+            return response()->json($obj, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
