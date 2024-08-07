@@ -347,7 +347,9 @@ Route::group(['prefix'=>'athlete'], function () {
     
     
     Route::post("/payment/create", [PaymentController::class, 'createPayment']);
-    
+    Route::withoutMiddleware('throttle:60,1')->group(function () {
+        Route::post("/payment/confirm", [PaymentController::class, 'confirmPaymentBancard']);
+    });
 
     // requiere que el atleta este conectado para registrarse
     Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
@@ -378,9 +380,12 @@ Route::group(['prefix'=>'athlete'], function () {
         Route::post("/updatebelthistory", [AthleteController::class, 'updateBeltHistory']);
         
         Route::post("/getathletemembershipfee", [AthleteController::class, 'getAthleteMembershipFee']);
+        Route::post("/getathleteparticipatedevent", [AthleteController::class, 'getAthleteParticipatedEvents']);
         Route::put("/paymentmembershipfee/{id}", [MembershipController::class, 'paymentMemberShipFee']);
         Route::post("/getathletemembershipfeepayment", [AthleteController::class, 'getAthleteMembershipFeePayment']);
+        Route::post("/getathleteinscriptionpayment", [AthleteController::class, 'getAthleteInscriptionPayment']);
         Route::get("/getmembershipfee/{id}", [MembershipController::class, 'getMemberShipFee']);
+        Route::get("/getinscription/{id}", [InscriptionController::class, 'getInscription']);
     });
 
 

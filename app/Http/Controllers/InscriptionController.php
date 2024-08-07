@@ -208,7 +208,13 @@ class InscriptionController extends Controller
         }
     }
 
-
-
-    // para el payment_id, en caso de que sea transferencia, se debe seleccionar el item
+    public function getInscription($id) {
+        try {
+            $obj = Inscription::with('event', 'tariff_inscription')
+                ->findOrFail($id);
+            return response()->json($obj, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

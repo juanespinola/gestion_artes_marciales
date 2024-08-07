@@ -178,9 +178,20 @@ class BancardGateway
         return $this->response;
     }
 
-    public function setReturnUrls($payment_id = null)
+    public function setReturnUrls($payment_id = null, $payment_for = null)
     {
-        $this->v_return_error = $this->v_return_success = "events" . "?confirm=$payment_id";
+        switch ($payment_for) {
+            case 'membresia':
+                $this->v_return_error = $this->v_return_success = "membership";
+                break;
+            case 'inscripcion':
+                $this->v_return_error = $this->v_return_success = "events";
+                break;
+            default:
+                $this->v_return_error = $this->v_return_success = "membership";
+                break;
+        }
+
     }
 
     public function setVPosConfigID($id): void
@@ -196,10 +207,10 @@ class BancardGateway
     /**
      * Crea una pedido de transaccion single buy que retorna una key para invocar el frame de pago
      */
-    public function create_single_buy($amount, $shop_process_id, $payment_id_encode, $v_description, $zimple = null, $phone = null, $add_data = null) {
+    public function create_single_buy($amount, $shop_process_id, $payment_id_encode, $v_description, $zimple = null, $phone = null, $add_data = null, $payment_for = null) {
 
         
-        // $this->setReturnUrls($shop_process_id);
+        $this->setReturnUrls($shop_process_id, $payment_for);
         $amount = (string)number_format($amount, 2, '.', '');
         $v_shop_process_id = (string)$shop_process_id;
         $v_single_buy_token = md5($this->v_private_key . $v_shop_process_id . $amount . $this->v_currency);

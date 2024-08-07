@@ -214,6 +214,24 @@ class PaymentController extends Controller
 
             if ($payment_gateway == 'transferencia') {
                 $status = true;
+
+                // Crear la compra a ser procesada
+                $payment = Payment::create([
+                    'inscription_id' => $inscription_id,
+                    'membership_id' => $membership_id,
+                    'payment_gateway' => $payment_gateway,
+                    'status' => 'pendiente',
+                    'federation_id' => $federation_id,
+                    'association_id' => $association_id,
+                ]);
+
+
+                $obj = new \StdClass;
+                $obj->process = $status;
+                $obj->data_error = "Ocurrió un error que no sabemos";
+
+                return response()->json(["messages" => "Pago creado correctamente", "data" => $obj], 200);
+
             } else if ($payment_gateway == 'vpos') {
                 $status = true;
 
@@ -242,7 +260,8 @@ class PaymentController extends Controller
                         $payment_id,
                         $payment_id_encode,
                         $description_payment,
-                        $zimple
+                        $zimple,
+                        $payment_for
                     );
                     
                     if ($bancard->isSuccess()) {
@@ -334,7 +353,7 @@ class PaymentController extends Controller
     private static function rejectPayment($payment_id, $response, $request)
     {
         #REGISTRAR REQUEST
-        $payment = new Payment;
+        $payment = Payment::findOrFail($payment_id);
         $payment->payment_id = $payment_id;
         $payment->json_response = json_encode($response);
         $payment->json_request = json_encode($request);
@@ -347,44 +366,35 @@ class PaymentController extends Controller
 
     public static function confirmPaymentBancard()
     {
-        $status = 'OK';
-
+        // $status = 'OK';
+        
         $operation = (object)request()->operation;
-
-        #EXTRAER DATOS PARA VALIDAR TOKEN
-        $shop_process_id = $operation->shop_process_id; #ID DE TABLA SALE
+        $shop_process_id = $operation->shop_process_id; 
         $amount = $operation->amount;
         $token = $operation->token;
-        // $request = $this->getDataOperation();
+        
 
         try {
             $bancard = new BancardGateway;
 
-            #DATOS PARA VALIDAR OPERACION
             $response_varchar = (string)$operation->response;
             $response_code = (string)$operation->response_code;
 
-            Log::info('payConfirm - CONFIRMAR TOKEN INICIANDO PROCESO');
-            #Confirmar Token
-
-            $request_confirm =  $bancard->confirmTokenSingleBuy($shop_process_id, $amount, $token);
-            if ($request_confirm) {
-                Log::info('payConfirm - TOKEN CONFIRMADO');
-                #VERIFICAR SI OPERACION ES CONFIRMADA
-                if ($response_varchar === 'S' &&  $response_code === '00') {
-                    $status = self::confirmPayment($shop_process_id, $operation, null);
-                    return response()->json($status, 200);
-                } else {
-                    self::rejectPayment($shop_process_id, $operation, null);
-                    $status = self::reason_cancel($response_code);
-                    return response()->json($status, 200);
-                }
+            if ($response_varchar === 'S' &&  $response_code === '00') {
+                $status = self::confirmPayment($shop_process_id, $operation, null);
+                return response()->json($status, 200);
             } else {
-                return response()->json(['messages' => 'Token Invalido'], 200);
+                self::rejectPayment($shop_process_id, $operation, null);
+                $status = self::reason_cancel($response_code);
+                return response()->json($status, 200);
             }
+           
         } catch (\Exception $e) {
             return response()->json(['messages' => $e->getMessage()], 400);
         }
     }
+
+
+    
 
 }

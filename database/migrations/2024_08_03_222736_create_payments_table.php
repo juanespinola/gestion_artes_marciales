@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('inscription_id')->nullable();
             $table->unsignedBigInteger('membership_id')->nullable();
             $table->enum('payment_gateway', ['vpos', 'transferencia']);
-            $table->mediumText('json_response')->nullable();
-            $table->mediumText('json_request')->nullable();
+            $table->mediumText('json_request')->nullable(); // para las transferencias generamos un json con toda la info
+            $table->mediumText('json_response')->nullable(); // un vez verificado el pago, agregamos aca y cambiamos el estado a confirmado
             $table->mediumText('json_rollback')->nullable();
             $table->string('status', 50)->nullable();
             $table->unsignedBigInteger('federation_id');

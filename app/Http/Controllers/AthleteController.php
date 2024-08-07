@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Models\Membership;
 use App\Models\TypeMembership;
+use App\Models\Inscription;
 
 class AthleteController extends Controller
 {
@@ -213,6 +214,76 @@ class AthleteController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function getAthleteInscriptionPayment(Request $request) {
+        try {
+            if($request->BearerToken()){
+                $validation = Validator::make(
+                    $request->all(), 
+                    [
+                        'athlete_id' => 'required|integer',
+                    ],
+                    [
+                        'athlete_id.required' => ':attribute: is Required',
+                    ]
+                );
+    
+                if($validation->fails()){
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+
+                $athlete_id = $request->input('athlete_id');
+                // $federation_id = $request->input('federation_id');
+                // $association_id = $request->input('association_id');
+
+                $inscriptions = Inscription::with('event', 'tariff_inscription')
+                    ->where([
+                        ['athlete_id', $athlete_id]
+                    ])
+                    ->get();
+
+                return response()->json($inscriptions, 200);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        } 
+    }
+
+
+    public function getAthleteParticipatedEvents(Request $request) {
+        try {
+            if($request->BearerToken()){
+                $validation = Validator::make(
+                    $request->all(), 
+                    [
+                        'athlete_id' => 'required|integer',
+                    ],
+                    [
+                        'athlete_id.required' => ':attribute: is Required',
+                    ]
+                );
+    
+                if($validation->fails()){
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+
+                $athlete_id = $request->input('athlete_id');
+                // $federation_id = $request->input('federation_id');
+                // $association_id = $request->input('association_id');
+
+                $inscriptions = Inscription::with('event', 'tariff_inscription')
+                    ->where([
+                        ['athlete_id', $athlete_id],
+                        ['status', 'pagado']
+                    ])
+                    ->get();
+
+                return response()->json($inscriptions, 200);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        } 
     }
 
 }
