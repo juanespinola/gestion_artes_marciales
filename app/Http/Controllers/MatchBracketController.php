@@ -125,8 +125,8 @@ class MatchBracketController extends Controller
         $phase = 1;
 
         for ($i = 0; $i < count($athletes); $i += 2) {
-            $participante1 = $athletes[$i]['id'];
-            $participante2 = $athletes[$i + 1]['id'] ?? null;
+            $participante1 = $athletes[$i]['athlete']['id'];
+            $participante2 = $athletes[$i + 1]['athlete']['id'] ?? null;
 
             // Guardar enfrentamiento en la base de datos
             $match_bracket = MatchBracket::create([

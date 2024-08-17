@@ -64,6 +64,16 @@ class InscriptionSeeder extends Seeder
                 'athlete_id' => 10,
                 'tariff_inscription_id' => '12',
             ],
+            [
+                'event_id' => 4,
+                'athlete_id' => 8,
+                'tariff_inscription_id' => '13',
+            ],
+            [
+                'event_id' => 4,
+                'athlete_id' => 9,
+                'tariff_inscription_id' => '13',
+            ],
             
         ];
 

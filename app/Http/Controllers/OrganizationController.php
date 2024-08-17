@@ -10,6 +10,7 @@ use App\Models\MatchBracket;
 use App\Models\Bracket;
 use App\Models\TariffInscription;
 use App\Models\EntryCategory;
+use App\Models\Athlete;
 
 class OrganizationController extends Controller
 {
@@ -130,5 +131,28 @@ class OrganizationController extends Controller
             throw $th;
         }
     }
+
+
+    public function getAllAthletesWinLose() {
+        try {
+            $athletes = Athlete::getAthleteWinLoseInformation();
+            return response()->json($athletes, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function getAthleteProfileWinLose($id) {
+        try {
+            $athletes = [
+                "history_match" => Athlete::getAthleteEventWinLoseInformation($id),
+                "profile" => Athlete::getAthleteInformation($id)
+            ];
+            return response()->json($athletes, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 
 }

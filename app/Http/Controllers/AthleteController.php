@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Models\Membership;
 use App\Models\TypeMembership;
 use App\Models\Inscription;
+use DB;
 
 class AthleteController extends Controller
 {

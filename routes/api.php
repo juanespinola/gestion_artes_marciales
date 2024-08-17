@@ -67,7 +67,9 @@ Route::post("/events/{event_id}/matchbrackets", [App\Http\Controllers\Organizati
 Route::post("/events/{event_id}/groupbrackets", [App\Http\Controllers\OrganizationController::class, 'groupBrackets']);
 Route::get("/events/{event_id}/registered", [App\Http\Controllers\OrganizationController::class, 'athletesInscription']);
 Route::get("/events/{event_id}/schedules", [App\Http\Controllers\OrganizationController::class, 'schedules']);
-
+Route::get("/athleteswinlose", [App\Http\Controllers\OrganizationController::class, 'getAllAthletesWinLose']);
+Route::get("/athleteprofilewinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteProfileWinLose']);
+    
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
@@ -344,7 +346,6 @@ Route::group(['prefix'=>'athlete'], function () {
     Route::get("/countries", [CountryController::class, 'getCountries']);
     Route::get("/typesdocument", [TypeDocumentController::class, 'getTypesDocument']);
     Route::get("/academies", [AcademyController::class, 'getAcademies']);
-    
     
     Route::post("/payment/create", [PaymentController::class, 'createPayment']);
     Route::withoutMiddleware('throttle:60,1')->group(function () {

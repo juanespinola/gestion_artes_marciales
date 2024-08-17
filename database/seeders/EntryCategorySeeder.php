@@ -155,6 +155,17 @@ class EntryCategorySeeder extends Seeder
                 'clothes'=> 'gi',
                 'event_id' => 1
             ],
+            [
+                'name' => 'Galo',
+                'min_age'=> '18', // age minima
+                'max_age'=> '30', // age maxima
+                'min_weight'=> '52', // weight minimo
+                'max_weight'=> '57', // weight maximo
+                'belt_id'=> 1,
+                'gender'=> 'masculino',
+                'clothes'=> 'gi',
+                'event_id' => 4
+            ],
         ];
 
         foreach ($data as $key => $item) {

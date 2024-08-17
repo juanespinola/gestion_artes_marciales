@@ -62,6 +62,10 @@ class TariffInscriptionSeeder extends Seeder
                 'entry_category_id' => '12',
                 'price' => '1',
             ],
+            [
+                'entry_category_id' => '13',
+                'price' => '1',
+            ],
             
         ];
 
