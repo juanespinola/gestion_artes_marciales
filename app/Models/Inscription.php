@@ -22,7 +22,6 @@ class Inscription extends Model
         'created_at',
         'updated_at',
         'event_id',
-        'athlete_id',
         'tariff_inscription_id',
     ];
 

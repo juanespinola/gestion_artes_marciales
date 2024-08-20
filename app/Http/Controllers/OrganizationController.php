@@ -144,11 +144,21 @@ class OrganizationController extends Controller
 
     public function getAthleteProfileWinLose($id) {
         try {
-            $athletes = [
-                "history_match" => Athlete::getAthleteEventWinLoseInformation($id),
-                "profile" => Athlete::getAthleteInformation($id)
-            ];
-            return response()->json($athletes, 200);
+            // $athletes = [
+                // "history_match" => Athlete::getAthleteEventWinLoseInformation($id),
+                // "profile" => Athlete::getAthleteInformation($id)
+            // ];
+            $athlete = Athlete::getAthleteProfileWinLose($id);
+            return response()->json($athlete, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function getAthleteEventMatchWinLoseInformation($athlete_id){
+        try {
+            $matchbracketdetail = Athlete::getAthleteEventMatchWinLoseInformation($athlete_id);
+            return response()->json($matchbracketdetail, 200);
         } catch (\Throwable $th) {
             throw $th;
         }

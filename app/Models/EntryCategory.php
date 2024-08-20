@@ -38,6 +38,10 @@ class EntryCategory extends Model
         return $this->hasMany(MatchBracket::class, 'entry_category_id');
     }
 
+    public function inscriptions() {
+        return $this->hasMany(Inscription::class);
+    }    
+
     public static function ringMatMatchBracket($event_id) {
         return DB::table('entry_categories')
             ->select('entry_categories.name', 'match_brackets.quadrilateral', 'entry_categories.gender', DB::raw('count(match_brackets.id) as quantity_match'))

@@ -72,4 +72,8 @@ class Event extends Model
     public function type_event() {
         return $this->belongsTo(TypesEvent::class);
     }
+
+    public function matchBrackets() {
+        return $this->hasMany(MatchBracket::class, 'event_id');
+    }
 }

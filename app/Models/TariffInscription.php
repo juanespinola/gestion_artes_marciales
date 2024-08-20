@@ -21,8 +21,7 @@ class TariffInscription extends Model
 
 
     public function entry_category() {
-        // return $this->belongsTo(EntryCategory::class,  'entry_category_id', 'id');
-        return $this->hasOne(EntryCategory::class, 'id', 'entry_category_id' );
+        return $this->belongsTo(EntryCategory::class,  'entry_category_id', 'id');
     }
 
     public function inscriptions() {

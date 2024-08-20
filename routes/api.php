@@ -69,7 +69,7 @@ Route::get("/events/{event_id}/registered", [App\Http\Controllers\OrganizationCo
 Route::get("/events/{event_id}/schedules", [App\Http\Controllers\OrganizationController::class, 'schedules']);
 Route::get("/athleteswinlose", [App\Http\Controllers\OrganizationController::class, 'getAllAthletesWinLose']);
 Route::get("/athleteprofilewinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteProfileWinLose']);
-    
+Route::get("/athleteeventmatchwinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteEventMatchWinLoseInformation']);
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';

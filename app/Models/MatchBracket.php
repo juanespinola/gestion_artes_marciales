@@ -11,6 +11,7 @@ class MatchBracket extends Model
     use HasFactory;
 
     protected $fillable = [
+        
         'event_id',
         'victory_type_id',
         'one_athlete_id',
@@ -35,9 +36,33 @@ class MatchBracket extends Model
         // 'event_id',
     ];
 
-    public function bracket()  {
+    public function event(){
+        return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    public function brackets() {
         return $this->hasOne(Bracket::class);
     }
+
+     // Relación con Athlete
+    public function athleteOne() {
+        return $this->belongsTo(Athlete::class, 'one_athlete_id', 'id');   
+    }
+
+     // Relación con Athlete
+    public function athleteTwo() {
+        return $this->belongsTo(Athlete::class, 'two_athlete_id', 'id');   
+    }
+
+    public function typeVictory() {
+        return $this->belongsTo(TypesVictory::class, 'victory_type_id', 'id');   
+    }
+
+    public function entry_category() {
+        return $this->belongsTo(EntryCategory::class);
+    }
+
+
 
     public static function groupBrackets($event_id, $entry_category_id) {
         return DB::table('brackets')
@@ -50,19 +75,4 @@ class MatchBracket extends Model
         ->get();
     }
 
-    public function athleteOne() {
-        return $this->belongsTo(Athlete::class, 'one_athlete_id', 'id');   
-    }
-
-    public function athleteTwo() {
-        return $this->belongsTo(Athlete::class, 'two_athlete_id', 'id');   
-    }
-
-    public function typeVictory() {
-        return $this->belongsTo(TypesVictory::class, 'victory_type_id', 'id');   
-    }
-
-    public function entry_category() {
-        return $this->belongsTo(EntryCategory::class);
-    }
 }

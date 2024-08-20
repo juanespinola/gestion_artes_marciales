@@ -20,4 +20,15 @@ class Bracket extends Model
         'created_at',
         'updated_at',
     ];
+
+
+     // Relación con MatchBracket
+    public function matchBrackets() {
+        return $this->belongsTo(MatchBracket::class);
+    }
+    
+    public function inscriptions()
+    {
+        return $this->hasMany(Inscription::class);
+    }
 }

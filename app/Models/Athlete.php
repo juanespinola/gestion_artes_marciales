@@ -15,6 +15,7 @@ use App\Models\Federation;
 use App\Models\Association;
 use App\Models\FederationsAthletes;
 use App\Models\MatchBracket;
+use App\Models\Bracket;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
@@ -31,7 +32,6 @@ class Athlete extends Authenticatable
         'email',
         'password',
         "academy_id",
-        // "association_id",
         "city_id",
         "country_id",
         'belt_id',
@@ -88,18 +88,35 @@ class Athlete extends Authenticatable
         return $this->belongsTo(Belt::class);
     }
 
-    // devuelve todas las peleas participadas y debemos aplicar tambien por evento
-    protected function AthleteMatchBrackets() {
-        $athlete_id = $this->attributes['id'];
-        return MatchBracket::where('one_athlete_id', $athlete_id)->orWhere('two_athlete_id', $athlete_id)
-        ->get()
-        ->groupBy(['event_id']);
+    public function inscriptions()
+    {
+        return $this->hasMany(Inscription::class);
     }
 
-    protected function getEventMatchBracketsAttribute()
+    public function matchBrackets()
     {
-        return $this->AthleteMatchBrackets();
+        return $this->hasMany(MatchBracket::class, 'one_athlete_id')
+            ->orWhere('two_athlete_id', $this->id);
+        // return $this->hasMany(MatchBracket::class)
+        //     ->where(function ($query) {
+        //         $query->where('one_athlete_id', $this->id)
+        //             ->orWhere('two_athlete_id', $this->id);
+        //     });
     }
+
+    // Relación con Bracket a través de MatchBracket
+    // public function brackets()
+    // {
+    //     return $this->hasManyThrough(
+    //         Bracket::class, 
+    //         MatchBracket::class, 
+    //         'one_athlete_id', 
+    //         'match_bracket_id'
+    //     )
+    //     ->orWhereHas('matchBrackets', function ($query) {
+    //         $query->where('two_athlete_id', $this->id);
+    //     });
+    // }
 
     public static function getAthleteWinLoseInformation() {
         return Athlete::select(
@@ -123,22 +140,24 @@ class Athlete extends Authenticatable
     }
 
     public static function getAthleteEventWinLoseInformation($id) {
+        
         return Athlete::select(
             'e.description',
             DB::raw('SUM(CASE WHEN athletes.id = mb.athlete_id_winner THEN 1 ELSE 0 END) as Wins'),
             DB::raw('SUM(CASE WHEN athletes.id = mb.athlete_id_loser THEN 1 ELSE 0 END) as Losses'),
             DB::raw("SUM(CASE WHEN athletes.id = mb.athlete_id_winner AND b.phase = 'Final' THEN 1 ELSE 0 END) as gold"),
             DB::raw("SUM(CASE WHEN athletes.id = mb.athlete_id_loser AND b.phase = 'Final' THEN 1 ELSE 0 END) as silver"),
-            DB::raw("SUM(CASE WHEN athletes.id = mb.athlete_id_loser AND b.phase = 'Semifinal' THEN 1 ELSE 0 END) as bronze")
+            DB::raw("SUM(CASE WHEN athletes.id = mb.athlete_id_loser AND b.phase = 'Semifinal' THEN 1 ELSE 0 END) as bronze"),
+            'e.id as event_id'
         )
         ->join('match_brackets as mb', function($join) {
             $join->on('athletes.id', '=', 'mb.one_athlete_id')
                  ->orOn('athletes.id', '=', 'mb.two_athlete_id');
         })
         ->join('brackets as b', 'mb.id', '=', 'b.match_bracket_id')
-        ->join('events as e', 'mb.id', '=', 'e.id')
+        ->join('events as e', 'mb.event_id', '=', 'e.id')
         ->where('athletes.id', $id)
-        ->groupBy('athletes.id', 'athletes.name', 'e.description')
+        ->groupBy('athletes.id', 'athletes.name', 'e.description', 'e.id')
         ->orderBy('athletes.id')
         ->get();
     }
@@ -157,4 +176,27 @@ class Athlete extends Authenticatable
             ->where('athletes.id', $id)
             ->first();
     }
+
+
+    public static function getAthleteProfileWinLose($athlete_id) {
+            return  Athlete::with([
+                'country',
+                'belt',
+                'inscriptions.event',
+                'inscriptions.tariff_inscription.entry_category.matchBracket' => function ($query) use ($athlete_id) {
+                    $query->where(function ($q) use ($athlete_id) {
+                        $q->where('one_athlete_id', $athlete_id)
+                          ->orWhere('two_athlete_id', $athlete_id);
+                    });
+                },                
+                'inscriptions.tariff_inscription.entry_category.matchBracket.brackets',
+                'inscriptions.tariff_inscription.entry_category.matchBracket.typeVictory',
+                'inscriptions.tariff_inscription.entry_category.matchBracket.athleteOne',
+                'inscriptions.tariff_inscription.entry_category.matchBracket.athleteTwo',
+                ])    
+                
+            ->findOrFail($athlete_id);
+    }
+
+    
 }
