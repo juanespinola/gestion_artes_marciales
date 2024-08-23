@@ -34,6 +34,7 @@ use App\Http\Controllers\RequestAutorizationController;
 use App\Http\Controllers\TypeRequestController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RankingController;
 
 
 /*
@@ -70,6 +71,7 @@ Route::get("/events/{event_id}/schedules", [App\Http\Controllers\OrganizationCon
 Route::get("/athleteswinlose", [App\Http\Controllers\OrganizationController::class, 'getAllAthletesWinLose']);
 Route::get("/athleteprofilewinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteProfileWinLose']);
 Route::get("/athleteeventmatchwinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteEventMatchWinLoseInformation']);
+Route::get("/getAthleteRanking", [App\Http\Controllers\OrganizationController::class, 'getAthleteRanking']);
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
@@ -271,11 +273,7 @@ Route::middleware('auth:sanctum')->prefix('medianew')->group(function (){
 Route::middleware('auth:sanctum')->prefix('matchbracket')->group(function (){
     $idInThePath = '/{id}';
     Route::post("/", [MatchBracketController::class, 'index']);
-    Route::get($idInThePath, [MatchBracketController::class, 'edit']);
-    // Route::post("/", [MatchBracketController::class, 'store']);
-    Route::put($idInThePath, [MatchBracketController::class, 'update']);
-    Route::delete($idInThePath, [MatchBracketController::class, 'destroy']);
-
+    Route::post("/check", [MatchBracketController::class, 'checkMathBracket']);
     Route::post("/generate", [MatchBracketController::class, 'generateMatchBrackets']);
     Route::post("/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
 });
@@ -334,6 +332,10 @@ Route::middleware('auth:sanctum')->prefix('typerequest')->group(function (){
     Route::delete($idInThePath, [TypeRequestController::class, 'destroy']);
 });
 
+Route::middleware('auth:sanctum')->prefix('ranking')->group(function (){
+    Route::put("/", [RankingController::class, 'update']);
+});
+
 
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
@@ -388,6 +390,8 @@ Route::group(['prefix'=>'athlete'], function () {
         Route::get("/getmembershipfee/{id}", [MembershipController::class, 'getMemberShipFee']);
         Route::get("/getinscription/{id}", [InscriptionController::class, 'getInscription']);
     });
+
+
 
 
 

@@ -30,53 +30,21 @@ class MatchBracketController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function checkMathBracket(Request $request){
+        try {
+            return MatchBracket::where(
+                [
+                    ['entry_category_id', $request->input('entry_category_id')],
+                    ['event_id', $request->input('event_id')],
+                ]
+            )
+            ->count();
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-       
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(MatchBracket $matchBracket)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(MatchBracket $matchBracket)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, MatchBracket $matchBracket)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(MatchBracket $matchBracket)
-    {
-        //
-    }
 
     public function generateMatchBrackets(Request $request) {
         try {
@@ -365,38 +333,4 @@ class MatchBracketController extends Controller
     }
 
 
-    // private function generateNextPhase($match_bracket, $winner) {
-
-    //     $bracket = Bracket::where('match_bracket_id', $match_bracket->id)->first();
-    //     $actualStep = $bracket->step;
-    //     $actualPhase = $bracket->number_phase;
-
-    //     $nextPhase = $this->getNamePhase($actualPhase + 1, $this->calcularFases( count(MatchBracket::where('event_id', $match_bracket->event_id)->get() )));
-    //     // $nextStep = ($actualStep % 2 == 0) ? ($actualStep / 2) + 1 : ceil($actualStep / 2);
-    //     $nextStep = $actualStep + 1;
-        
-    //     $nextMatch = Bracket::where('phase', $nextPhase)->where('step', $actualStep)->first();
-
-    //     if($nextMatch){
-    //         $nextMatchBracket = MatchBracket::findOrFail($nextMatch->match_bracket_id);
-    
-    //         if($nextMatchBracket->one_athlete_id === null){
-    //             $nextMatchBracket->one_athlete_id = $winner;
-    //         } else {
-    //             $nextMatchBracket->two_athlete_id = $winner;
-    //         }
-    
-    //         // $nextMatchBracket->save();
-    //     }  
-        
-    //     $data = [
-    //         "bracket" => $bracket,
-    //         "nextMatch" => $nextMatch,
-    //         "nextMatchBracket" => $nextMatchBracket,
-    //         "actualStep" => $actualStep,
-    //         "nextStep" => $nextStep,
-    //     ];
-
-    //     return response()->json($data, 200);
-    // }   
 }

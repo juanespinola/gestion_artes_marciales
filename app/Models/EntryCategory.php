@@ -31,7 +31,7 @@ class EntryCategory extends Model
     }
 
     public function tariff_inscription() {
-        return $this->belongsTo(TariffInscription::class, 'id', 'entry_category_id');
+        return $this->hasOne(TariffInscription::class, 'entry_category_id');
     }
 
     public function matchBracket() {

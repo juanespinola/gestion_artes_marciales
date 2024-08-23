@@ -164,5 +164,14 @@ class OrganizationController extends Controller
         }
     }
 
+    public function getAthleteRanking() {
+        try {
+            $ranking = Athlete::getAthleteRanking();
+            return response()->json($ranking, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 
 }

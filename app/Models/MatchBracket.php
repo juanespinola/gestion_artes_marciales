@@ -31,16 +31,13 @@ class MatchBracket extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-        // 'one_athlete_id',
-        // 'two_athlete_id',
-        // 'event_id',
     ];
 
     public function event(){
         return $this->belongsTo(Event::class, 'event_id');
     }
 
-    public function brackets() {
+    public function bracket() {
         return $this->hasOne(Bracket::class);
     }
 

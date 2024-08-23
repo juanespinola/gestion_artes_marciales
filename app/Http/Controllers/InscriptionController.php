@@ -22,46 +22,53 @@ class InscriptionController extends Controller
     {
         // este es para el listado de admin de las personas inscriptas
         try {
+            
+
             if($request->BearerToken()){
-                // $user = auth()->user();
-                // if (!$user->hasPermissionTo("association.access")) {
-                //     return response()->json(['Unauthorized, you don\'t have access.'],400);
-                // }
 
-                // $data = Inscription::all()
-                //         ->load('athlete', 'tariff_inscription.entry_category.belt')
-                //         ->groupBy(['tariff_inscription.entry_category.gender','tariff_inscription.entry_category.belt.color', 'tariff_inscription.entry_category.name'])
-                //         ->sortByDesc('tariff_inscription.entry_category.belt.color');            
-                // $data = Inscription::where('event_id', $request->input('event_id'))
-                //         ->get()
-                //         ->load('athlete', 'tariff_inscription.entry_category.belt')
-                //         ->groupBy(['tariff_inscription.entry_category.gender','tariff_inscription.entry_category.belt.color', 'tariff_inscription.entry_category.name'])
-                //         ->sortByDesc('tariff_inscription.entry_category.belt.color');      
+                $data = EntryCategory::with([
+                            'belt',
+                            'tariff_inscription.inscriptions.athlete',
+                            'matchBracket',        
+                        ])
+                        ->where('event_id', $request->input('event_id'))
+                        ->get()
+                        ->groupBy([
+                            function ($item) {
+                                return $item->minor_category ? 'Menores' : 'Mayores';
+                            },
+                            'gender',
+                            'belt.color', 
+                            'name'
+                        ])
+                        ->sortByDesc('belt.color');
 
-                // $inscriptions = Inscription::where('event_id', $request->input('event_id'))
-                //                     ->with('athlete', 'tariff_inscription.entry_category.belt')
-                //                     ->get();
-                // $entry_categories = EntryCategory::where('event_id', $request->input('event_id'))
-                //                     ->with('belt')
+                // $data = Inscription::with([
+                //         'athlete',
+                //         'tariff_inscription.entry_category.belt',
+                //         'tariff_inscription.entry_category',
+                //         'tariff_inscription.entry_category.matchBracket',
+                //     ])
+                //     ->get()
+                //     ->where('event_id', $request->input('event_id'))
+                //     ->groupBy([
+                //         'tariff_inscription.entry_category.minor_category',
+                //         'tariff_inscription.entry_category.gender',
+                //         'tariff_inscription.entry_category.belt.color', 
+                //         'tariff_inscription.entry_category.name',
+                //     ])
+                //     ->sortByDesc('tariff_inscription.entry_category.belt.color');
+                
+                // return response()->json($data, 200);
+
+                // $data = TariffInscription::with([
+                //                             'entry_category', 
+                //                             'inscriptions.athlete'
+                //                             ])
                 //                     ->get()
-                //                     ->groupBy(['gender','belt.color', 'name'])
+                //                     ->where('entry_category.event_id', $request->input('event_id'))
+                //                     ->groupBy(['entry_category.minor_category','entry_category.gender','entry_category.belt.color', 'entry_category.name'])
                 //                     ->sortByDesc('belt.color');   
-                $data = TariffInscription::with('entry_category', 'inscriptions.athlete')
-                                    ->get()
-                                    ->where('entry_category.event_id', $request->input('event_id'))
-                                    ->groupBy(['entry_category.minor_category','entry_category.gender','entry_category.belt.color', 'entry_category.name'])
-                                    ->sortByDesc('belt.color');   
-                // $group_entry_categories =  EntryCategory::where('event_id', $request->input('event_id'))
-                //                     ->with('belt')
-                //                     ->get()
-                //                     ->groupBy(['gender','belt.color', 'name'])
-                //                     ->sortByDesc('belt.color');                      
-
-                // $data = [
-                    // "entryCategories" => $entry_categories,
-                    // "groupEntryCategories" => $group_entry_categories,
-                    // "inscriptions" => $inscriptions,
-                // ];
                 
                 return response()->json($data, 200);
             }

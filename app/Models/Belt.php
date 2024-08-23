@@ -10,7 +10,7 @@ class Belt extends Model
     use HasFactory;
     
     protected $fillable = [
-        'description',
+        'color',
         'federation_id',
     ];
 
@@ -18,4 +18,8 @@ class Belt extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function entry_category() {
+        return $this->belongsTo(Belt::class, 'belt_id', 'id');
+    }
 }

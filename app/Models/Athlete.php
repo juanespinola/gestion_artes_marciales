@@ -97,26 +97,9 @@ class Athlete extends Authenticatable
     {
         return $this->hasMany(MatchBracket::class, 'one_athlete_id')
             ->orWhere('two_athlete_id', $this->id);
-        // return $this->hasMany(MatchBracket::class)
-        //     ->where(function ($query) {
-        //         $query->where('one_athlete_id', $this->id)
-        //             ->orWhere('two_athlete_id', $this->id);
-        //     });
     }
 
-    // Relación con Bracket a través de MatchBracket
-    // public function brackets()
-    // {
-    //     return $this->hasManyThrough(
-    //         Bracket::class, 
-    //         MatchBracket::class, 
-    //         'one_athlete_id', 
-    //         'match_bracket_id'
-    //     )
-    //     ->orWhereHas('matchBrackets', function ($query) {
-    //         $query->where('two_athlete_id', $this->id);
-    //     });
-    // }
+
 
     public static function getAthleteWinLoseInformation() {
         return Athlete::select(
@@ -189,13 +172,84 @@ class Athlete extends Authenticatable
                           ->orWhere('two_athlete_id', $athlete_id);
                     });
                 },                
-                'inscriptions.tariff_inscription.entry_category.matchBracket.brackets',
+                'inscriptions.tariff_inscription.entry_category.matchBracket.bracket',
                 'inscriptions.tariff_inscription.entry_category.matchBracket.typeVictory',
                 'inscriptions.tariff_inscription.entry_category.matchBracket.athleteOne',
                 'inscriptions.tariff_inscription.entry_category.matchBracket.athleteTwo',
                 ])    
                 
             ->findOrFail($athlete_id);
+    }
+
+    public static function getAthleteRanking() {
+        // Asignar puntos por posición
+        $points = [
+            'gold' => 3,
+            'silver' => 2,
+            'bronze' => 1,
+        ];
+
+        $results = MatchBracket::with(['bracket', 'entry_category', 'entry_category.belt', 'event'])
+        ->select(
+            'athlete_id_winner', 
+            'athlete_id_loser', 
+            'brackets.phase',
+            'match_brackets.event_id',
+            'entry_category_id',
+            'entry_categories.belt_id'
+        )
+        ->join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
+        ->join('entry_categories', 'match_brackets.entry_category_id', '=', 'entry_categories.id')
+        ->whereNotNull('athlete_id_winner')
+        ->get();
+
+        // Inicializar un array para almacenar los puntos de cada atleta agrupados por evento, cinturón, y categoría
+        $ranking = [];
+
+        // Calcular puntos y agrupar
+        foreach ($results as $match) {
+            $phase = $match->phase;
+            $eventId = $match->event_id;
+            $beltId = $match->entry_category->belt_id;
+            $categoryId = $match->entry_category_id;
+
+            // Crear la llave para agrupar
+            $key = "{$eventId}_{$beltId}_{$categoryId}";
+
+            // Inicializar el array si no existe
+            if (!isset($ranking[$key])) {
+                $ranking[$key] = [];
+            }
+
+            // Asignar puntos al atleta ganador
+            if ($match->athlete_id_winner) {
+                if (!isset($ranking[$key][$match->athlete_id_winner])) {
+                    $ranking[$key][$match->athlete_id_winner] = 0;
+                }
+                if ($phase === 'Final') {
+                    $ranking[$key][$match->athlete_id_winner] += $points['gold'];
+                } 
+            }
+
+            // Asignar puntos al atleta perdedor
+            if ($match->athlete_id_loser) {
+                if (!isset($ranking[$key][$match->athlete_id_loser])) {
+                    $ranking[$key][$match->athlete_id_loser] = 0;
+                }
+                if ($phase === 'Final') {
+                    $ranking[$key][$match->athlete_id_loser] += $points['silver'];
+                } elseif ($phase === 'Semifinal') {
+                    $ranking[$key][$match->athlete_id_loser] += $points['bronze'];
+                }
+            }
+        }
+
+        // Ordenar el ranking dentro de cada grupo por puntos de mayor a menor
+        foreach ($ranking as &$group) {
+            arsort($group);
+        }
+
+        return $ranking; 
     }
 
     
