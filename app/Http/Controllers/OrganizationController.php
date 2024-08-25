@@ -11,6 +11,7 @@ use App\Models\Bracket;
 use App\Models\TariffInscription;
 use App\Models\EntryCategory;
 use App\Models\Athlete;
+use App\Models\Ranking;
 
 class OrganizationController extends Controller
 {
@@ -165,11 +166,23 @@ class OrganizationController extends Controller
     }
 
     public function getAthleteRanking() {
+        // try {
+        //     $ranking = Athlete::getAthleteRanking();
+        //     return response()->json($ranking, 200);
+        // } catch (\Throwable $th) {
+        //     throw $th;
+        // }
+
         try {
-            $ranking = Athlete::getAthleteRanking();
+            $ranking = Ranking::orderBy('points', 'desc')
+            ->orderBy('victories', 'desc')
+            ->orderBy('defeats', 'asc')
+            ->where('entry_category_id', 12)
+            ->get();
+
             return response()->json($ranking, 200);
         } catch (\Throwable $th) {
-            throw $th;
+            //throw $th;
         }
     }
 

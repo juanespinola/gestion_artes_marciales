@@ -333,7 +333,7 @@ Route::middleware('auth:sanctum')->prefix('typerequest')->group(function (){
 });
 
 Route::middleware('auth:sanctum')->prefix('ranking')->group(function (){
-    Route::put("/", [RankingController::class, 'update']);
+    Route::post("/", [RankingController::class, 'update']);
 });
 
 

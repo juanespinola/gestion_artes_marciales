@@ -20,4 +20,10 @@ class Ranking extends Model
         'defeats',
     ];
 
+
+    public static function getRankingByEvent($event_id){
+
+    }
+
+
 }

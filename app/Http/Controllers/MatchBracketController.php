@@ -294,6 +294,7 @@ class MatchBracketController extends Controller
         $puntaje_1 = $request->input('score_one_athlete');
         $puntaje_2 = $request->input('score_two_athlete');
         $winner = $request->input('athlete_id_winner');
+        $loser = $request->input('athlete_id_loser');
         $match_timer = $request->input('match_timer');
        
         $match_bracket = MatchBracket::findOrFail($match_bracket_id);
@@ -301,6 +302,7 @@ class MatchBracketController extends Controller
         $match_bracket->score_one_athlete = $puntaje_1;
         $match_bracket->score_two_athlete = $puntaje_2;
         $match_bracket->athlete_id_winner = $winner;
+        $match_bracket->athlete_id_loser = $loser;
         $match_bracket->match_timer = $match_timer;
 
         $match_bracket->save();
@@ -308,14 +310,12 @@ class MatchBracketController extends Controller
         // Lógica para actualizar los enfrentamientos futuros según el ganador
         $this->generateNextPhase($match_bracket, $winner);
 
-        return response()->json(['message' => 'Resultado actualizado correctamente']);
+        return response()->json(['message' => 'Resultado actualizado correctamente', 'data' => $match_bracket]);
     }
 
     private function generateNextPhase($match_bracket, $winner){
         $bracket = Bracket::where('match_bracket_id', $match_bracket->id)->first();
         $nextMatchBracket = MatchBracket::join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
-                    // ->whereNull('match_brackets.one_athlete_id')
-                    // ->whereNull('match_brackets.two_athlete_id')
                     ->where('brackets.number_phase', $bracket->number_phase + 1)
                     ->first();
 
