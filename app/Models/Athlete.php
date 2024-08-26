@@ -16,6 +16,7 @@ use App\Models\Association;
 use App\Models\FederationsAthletes;
 use App\Models\MatchBracket;
 use App\Models\Bracket;
+use App\Models\Ranking;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
@@ -181,7 +182,7 @@ class Athlete extends Authenticatable
             ->findOrFail($athlete_id);
     }
 
-    public static function getAthleteRanking() {
+    public static function getAthleteRanking_v1() {
         // Asignar puntos por posición
         $points = [
             'gold' => 3,
@@ -189,14 +190,25 @@ class Athlete extends Authenticatable
             'bronze' => 1,
         ];
 
-        $results = MatchBracket::with(['bracket', 'entry_category', 'entry_category.belt', 'event'])
+        $results = MatchBracket::with([
+            'bracket', 
+            'entry_category', 
+            'entry_category.belt', 
+            'event',
+            'entry_category.ranking.athlete',
+            'entry_category.ranking' => function ($query) {
+                $query->orderBy('points', 'desc')
+                    ->orderBy('victories', 'desc')
+                    ->orderBy('defeats', 'asc');
+                }
+            ])
         ->select(
             'athlete_id_winner', 
             'athlete_id_loser', 
             'brackets.phase',
             'match_brackets.event_id',
             'entry_category_id',
-            'entry_categories.belt_id'
+            'entry_categories.belt_id',
         )
         ->join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
         ->join('entry_categories', 'match_brackets.entry_category_id', '=', 'entry_categories.id')
@@ -214,7 +226,7 @@ class Athlete extends Authenticatable
             $categoryId = $match->entry_category_id;
 
             // Crear la llave para agrupar
-            $key = "{$eventId}_{$beltId}_{$categoryId}";
+            $key = "{$eventId}_{$beltId}_{$categoryId}_";
 
             // Inicializar el array si no existe
             if (!isset($ranking[$key])) {
@@ -251,6 +263,5 @@ class Athlete extends Authenticatable
 
         return $ranking; 
     }
-
     
 }

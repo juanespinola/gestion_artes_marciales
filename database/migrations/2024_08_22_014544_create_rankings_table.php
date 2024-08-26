@@ -17,9 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('entry_category_id');
             $table->integer('position')->nullable(); // Posición final en el torneo
-            $table->integer('points')->nullable(); // Puntos obtenidos
             $table->integer('victories')->nullable(); // Número de victorias
             $table->integer('defeats')->nullable(); // Número de derrotas
+            $table->integer('gold')->nullable();
+            $table->integer('silver')->nullable();
+            $table->integer('bronze')->nullable();
+            $table->integer('event_points')->nullable();
             $table->timestamps();
         });
     }

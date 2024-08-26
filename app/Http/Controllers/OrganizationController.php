@@ -167,22 +167,24 @@ class OrganizationController extends Controller
 
     public function getAthleteRanking() {
         // try {
-        //     $ranking = Athlete::getAthleteRanking();
+            // $ranking = Ranking::getAthleteRanking();
+           
         //     return response()->json($ranking, 200);
         // } catch (\Throwable $th) {
         //     throw $th;
         // }
 
         try {
-            $ranking = Ranking::orderBy('points', 'desc')
-            ->orderBy('victories', 'desc')
-            ->orderBy('defeats', 'asc')
-            ->where('entry_category_id', 12)
-            ->get();
-
-            return response()->json($ranking, 200);
+            $rankings = EntryCategory::with([
+                    'belt',
+                    'ranking.athlete',
+                    'ranking'
+                ])
+                ->get();
+            
+            return response()->json($rankings, 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
