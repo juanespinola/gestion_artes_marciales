@@ -36,11 +36,8 @@ class Event extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-        'location_id',
         'federation_id',
         'association_id',
-        'event_type_id',
-        'event_status_id',
     ];
 
     protected $casts = [

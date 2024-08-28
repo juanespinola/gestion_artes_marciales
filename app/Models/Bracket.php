@@ -14,6 +14,7 @@ class Bracket extends Model
         'phase',
         'number_phase',
         'step',
+        'status',
     ];
 
     protected $hidden = [
@@ -27,8 +28,7 @@ class Bracket extends Model
         return $this->belongsTo(MatchBracket::class);
     }
     
-    public function inscriptions()
-    {
+    public function inscriptions() {
         return $this->hasMany(Inscription::class);
     }
 }

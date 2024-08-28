@@ -25,7 +25,6 @@ class MatchBracket extends Model
         "athlete_id_winner",
         "athlete_id_loser",
         "entry_category_id",
-        "victory_type_id"
     ];
 
     protected $hidden = [

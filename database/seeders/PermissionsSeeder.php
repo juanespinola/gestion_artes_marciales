@@ -36,7 +36,12 @@ class PermissionsSeeder extends Seeder
             "groupcategory",
             "event",
             "typesevent",
-            "statusevent"
+            "statusevent",
+            'new',
+            'request',
+            'place',
+            'permission',
+            'rol'
         ];
 
         $permissions = [];
@@ -66,12 +71,6 @@ class PermissionsSeeder extends Seeder
                 'user.update',
                 'user.delete',
                
-                // category
-                'category.access',
-                'category.create',
-                'category.update',
-                'category.delete',
-
                 // typesevent
                 'typesevent.access',
                 'typesevent.create',
@@ -83,16 +82,29 @@ class PermissionsSeeder extends Seeder
                 'statusevent.create',
                 'statusevent.update',
                 'statusevent.delete',
+
+                // place
+                'place.access',
+                'place.create',
+                'place.update',
+                'place.delete',                
+
+                // rol
+                'rol.access',
+                'rol.create',
+                'rol.update',
+                'rol.delete',
+
+
+                // permission
+                'permission.access',
+                'permission.create',
+                'permission.update',
+                'permission.delete',
             ]);
         
             Role::create(["name" => "federation-admin"])
                 ->givePermissionTo([
-                    // category
-                    'category.access',
-                    'category.create',
-                    'category.update',
-                    'category.delete',
-
                     // user
                     'user.access',
                     'user.create',
@@ -104,29 +116,31 @@ class PermissionsSeeder extends Seeder
                     'association.update',
                     'association.delete',
 
-                    // category
-                    'groupcategory.access',
-                    'groupcategory.create',
-                    'groupcategory.update',
-                    'groupcategory.delete',
-
-                     // event
+                    // event
                     'event.access',
                     'event.create',
                     'event.update',
                     'event.delete',
-                     // statusevent
-                    'statusevent.access',
-                     // typesevent
-                    'typesevent.access',
+                    
+                    // new
+                    'new.access',
+                    'new.create',
+                    'new.update',
+                    'new.delete',
+
+                    // request
+                    'request.access',
+                    'request.create',
+                    'request.update',
+                    'request.delete',
+
+                    "typesevent.access",
+                    "statusevent.access",
+
                 ]);
             Role::create(["name" => "association-admin"])
             ->givePermissionTo([
-                // category
-                'category.access',
-                'category.create',
-                'category.update',
-                'category.delete',
+        
                 // user
                 'user.access',
                 'user.create',
@@ -143,10 +157,20 @@ class PermissionsSeeder extends Seeder
                 'event.update',
                 'event.delete',
 
-                // statusevent
-                'statusevent.access',
-                // typesevent
-                'typesevent.access',
+                // new
+                'new.access',
+                'new.create',
+                'new.update',
+                'new.delete',
+
+                // request
+                'request.access',
+                'request.create',
+                'request.update',
+                'request.delete',
+
+                "typesevent.access",
+                "statusevent.access",
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);

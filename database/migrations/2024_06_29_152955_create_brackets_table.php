@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('number_phase');
             $table->string('phase');
             $table->integer('step');
+            $table->enum('status', ['pendiente', 'finalizado']);
             $table->unsignedBigInteger('type_bracket_id')->nullable(); // nos referimos al tipo de llaves utilizado
             $table->timestamps();
         });
