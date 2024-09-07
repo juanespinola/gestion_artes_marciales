@@ -337,6 +337,13 @@ Route::middleware('auth:sanctum')->prefix('ranking')->group(function (){
 });
 
 
+Route::middleware('auth:sanctum')->prefix('profile')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [UsersController::class, 'getProfile']);
+    Route::post("/", [UsersController::class, 'updateProfile']);
+});
+
+
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
     Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);

@@ -20,10 +20,11 @@ return new class extends Migration
             $table->string('rejected_by')->nullable(); 
             $table->date('date_request');
             $table->date('date_response')->nullable();
-            $table->unsignedBigInteger('request_type_id');
+            $table->unsignedBigInteger('request_type_id')->nullable();
             $table->mediumText('request_text')->nullable();
             $table->mediumText('response_text')->nullable();
             $table->enum('status', ['pendiente', 'respuesta', 'aprobado', 'rechazado'])->default('pendiente');
+            $table->unsignedBigInteger('athlete_id')->nullable(); // para las solicitudes de membresia/cinturon referentes a athletas
             $table->timestamps();
         });
     }

@@ -12,10 +12,20 @@ class MembershipController extends Controller
     public function generateMemberShipFee(Request $request) {
         
         try {
+            
 
             $athlete_id = $request->input('athlete_id');
             $federation_id = $request->input('federation_id');
             $association_id = $request->input('association_id');
+            
+            $existMembership = Membership::where('athlete_id',$athlete_id)
+                                ->where('federation_id', $federation_id)
+                                ->where('association_id', $association_id)
+                                ->toSql();
+
+            if(!$existMembership->isEmply()){
+                return response()->json(["messages" => "El atleta cuenta con Membresia"], 200);
+            }
 
             $typeMembership = TypeMembership::where('status', true)
                 ->first();

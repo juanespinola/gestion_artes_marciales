@@ -192,4 +192,46 @@ class UsersController extends Controller
             throw $th;
         }
     }
+
+
+    public function getProfile(Request $request){
+        $data = User::findOrFail(auth()->user()->id);
+
+        return response()->json($data, 200);
+    }
+
+    public function updateProfile(Request $request){
+        try {
+            if($request->BearerToken()){
+                $validation = Validator::make(
+                    $request->all(), 
+                    [
+                        'name' => 'required|string',
+                        'email' => 'required|string',
+                    ],
+                    [
+                        'name.required' => ':attribute: is Required',
+                        'email.required' => ':attribute: is Required',
+                    ]
+                );
+    
+                if($validation->fails()){
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+    
+                $obj = User::findOrFail(auth()->user()->id);
+                $obj->update([
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                ]);
+    
+                return response()->json($obj, 201);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+
 }
