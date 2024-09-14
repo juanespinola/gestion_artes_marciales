@@ -165,21 +165,15 @@ class OrganizationController extends Controller
         }
     }
 
-    public function getAthleteRanking() {
-        // try {
-            // $ranking = Ranking::getAthleteRanking();
-           
-        //     return response()->json($ranking, 200);
-        // } catch (\Throwable $th) {
-        //     throw $th;
-        // }
-
+    public function getAthleteRanking(Request $request) {
         try {
+
             $rankings = EntryCategory::with([
                     'belt',
                     'ranking.athlete',
                     'ranking'
                 ])
+                ->where('event_id', $request->input('event_id'))
                 ->get();
             
             return response()->json($rankings, 200);

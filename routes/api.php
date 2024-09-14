@@ -71,7 +71,7 @@ Route::get("/events/{event_id}/schedules", [App\Http\Controllers\OrganizationCon
 Route::get("/athleteswinlose", [App\Http\Controllers\OrganizationController::class, 'getAllAthletesWinLose']);
 Route::get("/athleteprofilewinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteProfileWinLose']);
 Route::get("/athleteeventmatchwinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteEventMatchWinLoseInformation']);
-Route::get("/getAthleteRanking", [App\Http\Controllers\OrganizationController::class, 'getAthleteRanking']);
+Route::post("/getAthleteRanking", [App\Http\Controllers\OrganizationController::class, 'getAthleteRanking']);
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
@@ -333,7 +333,7 @@ Route::middleware('auth:sanctum')->prefix('typerequest')->group(function (){
 });
 
 Route::middleware('auth:sanctum')->prefix('ranking')->group(function (){
-    Route::post("/", [RankingController::class, 'update']);
+    Route::get("/", [RankingController::class, 'update']);
 });
 
 
