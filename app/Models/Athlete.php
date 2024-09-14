@@ -22,10 +22,13 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use DB;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 
 class Athlete extends Authenticatable
 {
-    use HasRoles, HasApiTokens, HasFactory, Notifiable;
+    use HasRoles, HasApiTokens, HasFactory, Notifiable, LogsActivity;
 
     protected $fillable = [
         'id',
@@ -262,6 +265,12 @@ class Athlete extends Authenticatable
         }
 
         return $ranking; 
+    }
+
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults(); 
     }
     
 }

@@ -13,6 +13,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.4",
+        "rap2hpoutre/laravel-log-viewer": "^2.4",
+        "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "^6.4",
         "vinkla/hashids": "^11.0"
     },

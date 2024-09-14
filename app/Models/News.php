@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use App\Models\MediaNew;
 
 class News extends Model
 {
     use HasFactory;
+    use LogsActivity;
+
 
     protected $fillable = [
         'id',
@@ -44,6 +47,11 @@ class News extends Model
 
     public function media_new_detail() {
         return $this->belongsTo(MediaNew::class, 'id', 'new_id')->where('type', 'banner_new_detail');      
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults(); 
     }
 
 

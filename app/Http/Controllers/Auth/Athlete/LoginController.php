@@ -56,8 +56,10 @@ class LoginController extends Controller
 
         
             if(auth('athletes')->attempt(array('email' => $input['email'], 'password' => $input['password'] ))){
-                        
+                   
                 $user = auth('athletes')->user();                
+                
+                    
                 
                 $user->city = $user->city()->first();
                 $user->country = $user->country()->first();
@@ -66,9 +68,7 @@ class LoginController extends Controller
                 $federationOfUser = $user->federation($input['federation_id'])->with('association')->first();
 
                 $user->federation = $federationOfUser;
-                
-              
-
+            
 
                 if($user->type !== 'athlete'){
                     return response()->json(['message' => ' Usuario no es Atleta'], 400);
@@ -79,6 +79,12 @@ class LoginController extends Controller
                     'token' => $token,
                 ];
 
+                activity('login')
+                    ->causedBy($user)
+                    ->withProperties(['ip' => $request->ip()])
+                    ->log('Athlete Login');
+                
+
                 return response()->json($response, 200);
             } else {
                 return response()->json(['message' => ' E-mail o Contraseña no correcta'], 400);
@@ -88,5 +94,20 @@ class LoginController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+
+    public function logout(Request $request)
+    {
+        $user = Auth::user();
+
+        activity('logout')
+            ->causedBy($user)
+            ->withProperties(['ip' => $request->ip()])
+            ->log('Athlete Logout');
+
+        Auth::logout();
+
+        return response()->json(["message" => "Usuario desconectado"], 200);
     }
 }

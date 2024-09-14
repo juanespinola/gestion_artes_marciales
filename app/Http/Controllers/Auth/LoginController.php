@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\UserResource;
+use Spatie\Activitylog\Models\Activity;
 
 class LoginController extends Controller
 {
@@ -63,6 +64,12 @@ class LoginController extends Controller
                     // 'user' => $user,
                     'token' => $token,
                 ];
+
+                activity('login')
+                    ->causedBy($user)
+                    ->withProperties(['ip' => $request->ip()])
+                    ->log('Admin Login');
+
                 return response()->json($response, 200);
             } else {
                 return response()->json(['message' => ' E-mail o Contraseña no correcta'], 400);
@@ -73,4 +80,20 @@ class LoginController extends Controller
             throw $th;
         }
     }
+
+
+    public function logout(Request $request)
+    {
+        $user = Auth::user();
+
+        activity('logout')
+            ->causedBy($user)
+            ->withProperties(['ip' => $request->ip()])
+            ->log('Admin Logout');
+
+        Auth::logout();
+
+        return response()->json(["message" => "Usuario desconectado"], 200);
+    }
+
 }

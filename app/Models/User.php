@@ -12,13 +12,15 @@ use App\Enums\UserType;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 use App\Models\Federation;
 use App\Models\Association;
 
 class User extends Authenticatable
 {
-    use HasRoles, HasApiTokens, HasFactory, Notifiable;
+    use HasRoles, HasApiTokens, HasFactory, Notifiable, LogsActivity;
     // protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
@@ -60,6 +62,11 @@ class User extends Authenticatable
 
     private function federation() {
         return $this->hasOne(Federation::class, 'id', 'federation_id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults(); 
     }
 
 

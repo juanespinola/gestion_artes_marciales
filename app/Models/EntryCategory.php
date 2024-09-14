@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class EntryCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
+    
     protected $fillable = [
         'name',
         'age',
@@ -54,6 +57,11 @@ class EntryCategory extends Model
             ->orderBy('match_brackets.quadrilateral')
             ->where('entry_categories.event_id', $event_id)
             ->get();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults(); 
     }
 
 }

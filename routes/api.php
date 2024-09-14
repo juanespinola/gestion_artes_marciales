@@ -48,13 +48,14 @@ use App\Http\Controllers\RankingController;
 |
 */
 
-
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 Route::get("/", function () {
     return "estamos Online";
 });
 Route::post("/login", [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post("/register", [App\Http\Controllers\Auth\RegisterController::class, 'register']);
-
+Route::get("/logout", [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+   
 
 //apartado de usuario offline
 Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 'federations']);
@@ -347,6 +348,9 @@ Route::middleware('auth:sanctum')->prefix('profile')->group(function (){
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
     Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);
+    Route::get("/logout", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'logout']);
+    
+
     // este se genera al registrarse
     Route::post("/generatemembershipfee", [MembershipController::class, 'generateMemberShipFee']);
 
