@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id');
-            $table->timestamps();
+            $table->timestamps();           
         });
     }
     // aca manejamos el tipo de membresia con su precio, que hace generar las cuotas

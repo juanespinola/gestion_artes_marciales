@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            // $table->unsignedBigInteger('sport_id')->nullable();
             $table->unsignedBigInteger('federation_id');
             $table->unsignedBigInteger('association_id')->nullable();
             $table->timestamps();

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('association_id');
             // $table->unsignedBigInteger('payment_id');
             $table->timestamps();
-        });
+        });               
     }
 
     /**

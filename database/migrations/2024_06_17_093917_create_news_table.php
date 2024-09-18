@@ -23,11 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('new_category_id')->nullable()->index('news_new_category_id_foreign');
             $table->timestamps();
 
-            $table->foreign(['created_user_id'])->references(['id'])->on('users')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['updated_user_id'])->references(['id'])->on('users')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['federation_id'])->references(['id'])->on('federations')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['association_id'])->references(['id'])->on('associations')->onUpdate('restrict')->onDelete('restrict');
-            // $table->foreign(['new_category_id'])->references(['id'])->on('category_news')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 

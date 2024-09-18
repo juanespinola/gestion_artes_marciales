@@ -1,0 +1,559 @@
+
+Table "academias" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "federacion_id" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+
+Table "asociaciones" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "federacion_id" bigint [not null]
+  "estado" boolean [not null, default: true]
+  "email" "character varying(255)"
+  "telefono" "character varying(255)"
+  "presidente" "character varying(255)"
+  "vice_presidente" "character varying(255)"
+  "tesorero" "character varying(255)"
+  "facebook" "character varying(255)"
+  "whatsapp" "character varying(255)"
+  "twitter" "character varying(255)"
+  "instagram" "character varying(255)"
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+
+  Indexes {
+    federacion_id [type: btree, name: "asociaciones_federacion_id_foreign"]
+  }
+}
+
+Table "atletas" {
+  "id" bigint [pk, not null]
+  "nombre" "character varying(255)" [not null]
+  "email" "character varying(255)" [unique, not null]
+  "email_verificado_el" timestamp(0)
+  "contrasena" "character varying(255)" [not null]
+  "pais_id" bigint [not null]
+  "ciudad_id" bigint
+  "tipo_documento_id" bigint [not null]
+  "documento" "character varying(50)" [not null]
+  "telefono" "character varying(255)"
+  "genero" "character varying(255)" [not null]
+  "fecha_nacimiento" date [not null]
+  "imagen_perfil" "character varying(255)"
+  "cinturon_id" bigint
+  "tipo" "character varying(255)" [not null, default: `'atleta'::charactervarying`]
+  "academia_id" bigint
+  "recuerda_token" "character varying(100)"
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "historial_cinturones" {
+  "id" bigint [pk, not null]
+  "cinturon_id" bigint [not null]
+  "atleta_id" bigint [not null]
+  "federacion_id" bigint [not null]
+  "logrado_el" date
+  "promoted_by" "character varying(255)"
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "cinturones" {
+  "id" bigint [pk, not null]
+  "color" "character varying(255)" [not null]
+  "federacion_id" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "llaves" {
+  "id" bigint [pk, not null]
+  "combate_llave_id" bigint [not null]
+  "numero_fase" integer [not null]
+  "fase" "character varying(255)" [not null]
+  "paso" integer [not null]
+  "estado" "character varying(255)" [not null]
+  "tipo_llave_id" bigint
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "categorias" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "categoria_noticias" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "ciudades" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "pais_id" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+
+Table "paises" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "entrada_categorias" {
+  "id" bigint [pk, not null]
+  "nombre" "character varying(255)" [not null]
+  "min_edad" integer [not null]
+  "max_edad" integer [not null]
+  "min_peso" doubleprecision
+  "max_peso" doubleprecision
+  "cinturon_id" bigint [not null]
+  "genero" "character varying(255)" [not null]
+  "ropa" "character varying(255)"
+  "evento_id" bigint [not null]
+  "menor_categoria" boolean [not null, default: false]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "eventos" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "lugar_id" bigint [not null]
+  "inicio_fecha" date [not null]
+  "final_fecha" date
+  "inicio_hora" time(0) [not null]
+  "final_hora" time(0)
+  "tipo_evento_id" bigint [not null]
+  "estado_evento_id" bigint [not null]
+  "inscripcion_precio" integer [not null]
+  "total_participantes" integer
+  "disponible_lugares" integer [not null]
+  "creado_usuario_id" bigint [not null]
+  "actualizado_usuario_id" bigint
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint
+  "contenido" text
+  "cantidad_cuadrilatero" integer [not null, default: 0]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+
+Table "federaciones" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "email" "character varying(255)"
+  "telefono" "character varying(255)"
+  "presidente" "character varying(255)"
+  "vice_presidente" "character varying(255)"
+  "tesorero" "character varying(255)"
+  "facebook" "character varying(255)"
+  "whatsapp" "character varying(255)"
+  "twitter" "character varying(255)"
+  "instagram" "character varying(255)"
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "federaciones_atletas" {
+  "id" bigint [pk, not null]
+  "atleta_id" bigint [not null]
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+
+  Indexes {
+    asociacion_id [type: btree, name: "federaciones_atletas_asociacion_id_foreign"]
+    atleta_id [type: btree, name: "federaciones_atletas_atleta_id_foreign"]
+    federacion_id [type: btree, name: "federaciones_atletas_federacion_id_foreign"]
+  }
+}
+
+
+Table "inscripciones" {
+  "id" bigint [pk, not null]
+  "evento_id" bigint [not null]
+  "atleta_id" bigint [not null]
+  "evento_peso" doubleprecision
+  "valida_peso" boolean [not null, default: false]
+  "tarifa_inscripcion_id" bigint [not null]
+  "estado" "character varying(255)" [not null, default: `'pendiente'::charactervarying`]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "lugares" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "ciudad_id" bigint [not null]
+  "direccion" "character varying(255)" [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "combate_llaves" {
+  "id" bigint [pk, not null]
+  "evento_id" bigint [not null]
+  "tipo_victoria_id" bigint
+  "uno_atleta_id" bigint
+  "dos_atleta_id" bigint
+  "cuadrilatero" integer [not null]
+  "combate_fecha" date
+  "combate_hora" time(0)
+  "combate_tiempo" time(0)
+  "puntaje_uno_atleta" integer [not null]
+  "puntaje_dos_atleta" integer [not null]
+  "atleta_id_ganador" bigint
+  "atleta_id_perdedor" bigint
+  "entrada_categoria" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "media_eventos" {
+  "id" bigint [pk, not null]
+  "evento_id" integer [not null]
+  "nombre_archivo" "character varying(255)" [not null]
+  "ruta_archivo" "character varying(255)" [not null]
+  "tipo" "character varying(255)" [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "media_noticias" {
+  "id" bigint [pk, not null]
+  "nombre_archivo" "character varying(255)" [not null]
+  "ruta_archivo" "character varying(255)" [not null]
+  "tipo" "character varying(255)" [not null]
+  "noticia_id" integer [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "membresia" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "numero_cuota" integer [not null]
+  "inicio_fecha_cuota" timestamp(0) [not null]
+  "fin_fecha_cuota" timestamp(0) [not null]
+  "estado" "character varying(255)" [not null]
+  "monto_cuota" integer [not null]
+  "pago_fecha_cuota" timestamp(0)
+  "tipo_membresia_id" bigint [not null]
+  "atleta_id" bigint [not null]
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+
+Table "noticias" {
+  "id" bigint [pk, not null]
+  "titulo" "character varying(255)" [not null]
+  "contenido" text [not null]
+  "estado" "character varying(255)" [not null, default: `'pendiente'::charactervarying`]
+  "creado_usuario_id" bigint [not null]
+  "actualizado_usuario_id" bigint
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint
+  "noticia_categoria_id" bigint
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+
+  Indexes {
+    asociacion_id [type: btree, name: "noticias_asociacion_id_foreign"]
+    creado_usuario_id [type: btree, name: "noticias_creado_usuario_id_foreign"]
+    federacion_id [type: btree, name: "noticias_federacion_id_foreign"]
+    noticia_categoria_id [type: btree, name: "noticias_noticia_categoria_id_foreign"]
+    actualizado_usuario_id [type: btree, name: "noticias_actualizado_usuario_id_foreign"]
+  }
+}
+
+
+Table "pagos" {
+  "id" bigint [pk, not null]
+  "inscripcion_id" bigint
+  "membresia_id" bigint
+  "payment_gateway" "character varying(255)" [not null]
+  "json_request" text
+  "json_response" text
+  "json_rollback" text
+  "estado" "character varying(50)"
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+
+Table "rankings" {
+  "id" bigint [pk, not null]
+  "atleta_id" bigint [not null]
+  "evento_id" bigint [not null]
+  "entrada_categoria" bigint [not null]
+  "posicion" integer
+  "victorias" integer
+  "derrotas" integer
+  "oro" integer
+  "plata" integer
+  "bronce" integer
+  "evento_puntos" integer
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "solicitudes_autorizacion" {
+  "id" bigint [pk, not null]
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint [not null]
+  "solicitado_por" "character varying(255)"
+  "aprobado_por" "character varying(255)"
+  "rechazado_por" "character varying(255)"
+  "fecha_solicitud" date [not null]
+  "fecha_respuesta" date
+  "tipo_solicitud_id" bigint
+  "solicitud_texto" text
+  "respuesta_texto" text
+  "estado" "character varying(255)" [not null, default: `'pendiente'::charactervarying`]
+  "atleta_id" bigint
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+
+
+
+Table "estado_eventos" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "tarifa_inscripciones" {
+  "id" bigint [pk, not null]
+  "entrada_categoria" bigint [not null]
+  "precio" integer [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "tipo_llaves" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "tipo_documentos" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "tipo_membresia" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "precio" integer [not null]
+  "total_numero_cuota" integer [not null]
+  "estado" boolean [not null, default: true]
+  "federacion_id" bigint [not null]
+  "asociacion_id" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "tipo_solicitudes" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "federacion_id" bigint [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "tipo_eventos" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "tipo_victorias" {
+  "id" bigint [pk, not null]
+  "descripcion" "character varying(255)" [not null]
+  "estado" boolean [not null, default: true]
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+Table "usuarios" {
+  "id" bigint [pk, not null]
+  "nombre" "character varying(255)" [not null]
+  "email" "character varying(255)" [unique, not null]
+  "email_verificado_el" timestamp(0)
+  "contrasena" "character varying(255)" [not null]
+  "federacion_id" bigint
+  "asociacion_id" bigint
+  "tipo" "character varying(255)" [not null, default: `'admin'::charactervarying`]
+  "recuerda_token" "character varying(100)"
+  "creado_el" timestamp(0)
+  "actualizado_el" timestamp(0)
+}
+
+
+
+Ref "academias_federacion_id_foreign":"federaciones"."id" < "academias"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "asociaciones_federacion_id_foreign":"federaciones"."id" < "asociaciones"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "atletas_academia_id_foreign":"academias"."id" < "atletas"."academia_id" [update: restrict, delete: restrict]
+
+Ref "atletas_cinturon_id_foreign":"cinturones"."id" < "atletas"."cinturon_id" [update: restrict, delete: restrict]
+
+Ref "atletas_ciudad_id_foreign":"ciudades"."id" < "atletas"."ciudad_id" [update: restrict, delete: restrict]
+
+Ref "atletas_pais_id_foreign":"paises"."id" < "atletas"."pais_id" [update: restrict, delete: restrict]
+
+Ref "atletas_tipo_documento_id_foreign":"tipo_documentos"."id" < "atletas"."tipo_documento_id" [update: restrict, delete: restrict]
+
+Ref "historial_cinturones_atleta_id_foreign":"atletas"."id" < "historial_cinturones"."atleta_id" [update: restrict, delete: restrict]
+
+Ref "historial_cinturones_cinturon_id_foreign":"cinturones"."id" < "historial_cinturones"."cinturon_id" [update: restrict, delete: restrict]
+
+Ref "historial_cinturones_federacion_id_foreign":"federaciones"."id" < "historial_cinturones"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "cinturones_federacion_id_foreign":"federaciones"."id" < "cinturones"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "llaves_combate_llave_id_foreign":"combate_llaves"."id" < "llaves"."combate_llave_id" [update: restrict, delete: restrict]
+
+Ref "llaves_tipo_llave_id_foreign":"tipo_llaves"."id" < "llaves"."tipo_llave_id" [update: restrict, delete: restrict]
+
+Ref "categorias_asociacion_id_foreign":"asociaciones"."id" < "categorias"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "categorias_federacion_id_foreign":"federaciones"."id" < "categorias"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "ciudades_pais_id_foreign":"paises"."id" < "ciudades"."pais_id" [delete: cascade]
+
+Ref "entrada_categorias_cinturon_id_foreign":"cinturones"."id" < "entrada_categorias"."cinturon_id" [update: restrict, delete: restrict]
+
+Ref "entrada_categorias_evento_id_foreign":"eventos"."id" < "entrada_categorias"."evento_id" [update: restrict, delete: restrict]
+
+Ref "eventos_asociacion_id_foreign":"asociaciones"."id" < "eventos"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "eventos_creado_usuario_id_foreign":"usuarios"."id" < "eventos"."creado_usuario_id" [update: restrict, delete: restrict]
+
+Ref "eventos_federacion_id_foreign":"federaciones"."id" < "eventos"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "eventos_lugar_id_foreign":"lugares"."id" < "eventos"."lugar_id" [update: restrict, delete: restrict]
+
+Ref "eventos_estado_evento_id_foreign":"estado_eventos"."id" < "eventos"."estado_evento_id" [update: restrict, delete: restrict]
+
+Ref "eventos_tipo_evento_id_foreign":"tipo_eventos"."id" < "eventos"."tipo_evento_id" [update: restrict, delete: restrict]
+
+Ref "eventos_actualizado_usuario_id_foreign":"usuarios"."id" < "eventos"."actualizado_usuario_id" [update: restrict, delete: restrict]
+
+Ref "federaciones_atletas_asociacion_id_foreign":"asociaciones"."id" < "federaciones_atletas"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "federaciones_atletas_atleta_id_foreign":"atletas"."id" < "federaciones_atletas"."atleta_id" [update: restrict, delete: restrict]
+
+Ref "federaciones_atletas_federacion_id_foreign":"federaciones"."id" < "federaciones_atletas"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "inscripciones_atleta_id_foreign":"atletas"."id" < "inscripciones"."atleta_id" [update: restrict, delete: restrict]
+
+Ref "inscripciones_evento_id_foreign":"eventos"."id" < "inscripciones"."evento_id" [update: restrict, delete: restrict]
+
+Ref "inscripciones_tarifa_inscripcion_id_foreign":"tarifa_inscripciones"."id" < "inscripciones"."tarifa_inscripcion_id" [update: restrict, delete: restrict]
+
+Ref "lugares_ciudad_id_foreign":"ciudades"."id" < "lugares"."ciudad_id" [update: restrict, delete: restrict]
+
+Ref "combate_llaves_atleta_id_perdedor_foreign":"atletas"."id" < "combate_llaves"."atleta_id_perdedor" [update: restrict, delete: restrict]
+
+Ref "combate_llaves_atleta_id_ganador_foreign":"atletas"."id" < "combate_llaves"."atleta_id_ganador" [update: restrict, delete: restrict]
+
+Ref "combate_llaves_entrada_categoria_foreign":"entrada_categorias"."id" < "combate_llaves"."entrada_categoria" [update: restrict, delete: restrict]
+
+Ref "combate_llaves_evento_id_foreign":"eventos"."id" < "combate_llaves"."evento_id" [update: restrict, delete: restrict]
+
+Ref "combate_llaves_uno_atleta_id_foreign":"atletas"."id" < "combate_llaves"."uno_atleta_id" [update: restrict, delete: restrict]
+
+Ref "combate_llaves_dos_atleta_id_foreign":"atletas"."id" < "combate_llaves"."dos_atleta_id" [update: restrict, delete: restrict]
+
+Ref "combate_llaves_tipo_victoria_id_foreign":"tipo_victorias"."id" < "combate_llaves"."tipo_victoria_id" [update: restrict, delete: restrict]
+
+Ref "media_noticias_noticia_id_foreign":"noticias"."id" < "media_noticias"."noticia_id" [update: restrict, delete: restrict]
+
+Ref "membresia_asociacion_id_foreign":"asociaciones"."id" < "membresia"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "membresia_atleta_id_foreign":"atletas"."id" < "membresia"."atleta_id" [update: restrict, delete: restrict]
+
+Ref "membresia_federacion_id_foreign":"federaciones"."id" < "membresia"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "membresia_tipo_membresia_id_foreign":"tipo_membresia"."id" < "membresia"."tipo_membresia_id" [update: restrict, delete: restrict]
+
+Ref "noticias_asociacion_id_foreign":"asociaciones"."id" < "noticias"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "noticias_creado_usuario_id_foreign":"usuarios"."id" < "noticias"."creado_usuario_id" [update: restrict, delete: restrict]
+
+Ref "noticias_federacion_id_foreign":"federaciones"."id" < "noticias"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "noticias_noticia_categoria_id_foreign":"categoria_noticias"."id" < "noticias"."noticia_categoria_id" [update: restrict, delete: restrict]
+
+Ref "noticias_actualizado_usuario_id_foreign":"usuarios"."id" < "noticias"."actualizado_usuario_id" [update: restrict, delete: restrict]
+
+Ref "pagos_asociacion_id_foreign":"asociaciones"."id" < "pagos"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "pagos_federacion_id_foreign":"federaciones"."id" < "pagos"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "pagos_inscripcion_id_foreign":"inscripciones"."id" < "pagos"."inscripcion_id" [update: restrict, delete: restrict]
+
+Ref "rankings_atleta_id_foreign":"atletas"."id" < "rankings"."atleta_id" [update: restrict, delete: restrict]
+
+Ref "rankings_entrada_categoria_foreign":"entrada_categorias"."id" < "rankings"."entrada_categoria" [update: restrict, delete: restrict]
+
+Ref "rankings_evento_id_foreign":"eventos"."id" < "rankings"."evento_id" [update: restrict, delete: restrict]
+
+Ref "solicitudes_autorizacion_asociacion_id_foreign":"asociaciones"."id" < "solicitudes_autorizacion"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "solicitudes_autorizacion_atleta_id_foreign":"atletas"."id" < "solicitudes_autorizacion"."atleta_id" [update: restrict, delete: restrict]
+
+Ref "solicitudes_autorizacion_federacion_id_foreign":"federaciones"."id" < "solicitudes_autorizacion"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "solicitudes_autorizacion_tipo_solicitud_id_foreign":"tipo_solicitudes"."id" < "solicitudes_autorizacion"."tipo_solicitud_id" [update: restrict, delete: restrict]
+
+Ref "tarifa_inscripciones_entrada_categoria_foreign":"entrada_categorias"."id" < "tarifa_inscripciones"."entrada_categoria" [update: restrict, delete: restrict]
+
+Ref "tipo_membresia_asociacion_id_foreign":"asociaciones"."id" < "tipo_membresia"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "tipo_membresia_federacion_id_foreign":"federaciones"."id" < "tipo_membresia"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "tipo_solicitudes_federacion_id_foreign":"federaciones"."id" < "tipo_solicitudes"."federacion_id" [update: restrict, delete: restrict]
+
+Ref "usuarios_asociacion_id_foreign":"asociaciones"."id" < "usuarios"."asociacion_id" [update: restrict, delete: restrict]
+
+Ref "usuarios_federacion_id_foreign":"federaciones"."id" < "usuarios"."federacion_id" [update: restrict, delete: restrict]

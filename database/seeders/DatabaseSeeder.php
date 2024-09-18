@@ -15,38 +15,35 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            // tablas iniciales
             FederationSeeder::class,
-            CreateUsersSeeder::class,
             AssociationSeeder::class,
-            PermissionsSeeder::class,
-            SportSeeder::class,
-            CategorySeeder::class,
-            GroupCategorySeeder::class,
-            EventSeeder::class,
-            LocationSeeder::class,
             StatusEventSeeder::class,
             TypesEventSeeder::class,
-            EntryCategorySeeder::class,
-            ClassCategorySeeder::class,
-            ValueCategorySeeder::class,
-            RuleCategorySeeder::class,
-            BeltSeeder::class,
-            AthleteSeeder::class,
-            InscriptionSeeder::class,
-            TariffInscriptionSeeder::class,
             CitySeeder::class,
-            FederationsAthletesSeeder::class,
-            // NewsSeeder::class,
-            MediaNewsSeeder::class,
+            LocationSeeder::class,
+            BeltSeeder::class,
             CategoryNewSeeder::class,
             TypeBracketSeeder::class,
             TypeVictorySeeder::class,
-            AcademySeeder::class,
             TypeDocumentSeeder::class,
-            BeltHistorySeeder::class,
-            // RequestAutorizationSeeder::class,
             TypesRequestSeeder::class,
             TypesMembershipsSeeder::class,
+            // tablas iniciales
+            
+            // tablas principales
+            CreateUsersSeeder::class,
+            AthleteSeeder::class,
+            FederationsAthletesSeeder::class,
+            PermissionsSeeder::class,
+            AcademySeeder::class,
+            EventSeeder::class,
+            EntryCategorySeeder::class,
+            TariffInscriptionSeeder::class,
+            InscriptionSeeder::class,
+            BeltHistorySeeder::class,
+            MediaNewsSeeder::class,
+            // tablas principales
 
         ]);
     }

@@ -22,7 +22,7 @@ class AthleteFactory extends Factory
             'password' => bcrypt('123456'),  // Puedes cambiarlo si quieres contraseñas aleatorias
             'country_id' => $this->faker->numberBetween(1, 1),
             'city_id' => $this->faker->numberBetween(1, 10), // Similar a country_id, ajusta según tu necesidad
-            'type_document_id' => $this->faker->randomElement([1, 2, 3]), // Puedes agregar más tipos de documentos
+            'type_document_id' => $this->faker->randomElement([1, 2]), // Puedes agregar más tipos de documentos
             'document' => $this->faker->numerify('########'), // Genera un número aleatorio de 8 dígitos
             'phone' => $this->faker->phoneNumber, // Genera un número de teléfono aleatorio
             'gender' => $this->faker->randomElement(['masculino', 'femenino']), // Elige entre masculino o femenino

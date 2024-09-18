@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('achieved')->nullable();
             $table->string('promoted_by')->nullable();
             $table->timestamps();
-        });
+        });            
     }
 
     /**

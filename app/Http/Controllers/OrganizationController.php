@@ -48,7 +48,8 @@ class OrganizationController extends Controller
 
     public function event_detail($event_id) {
         try {
-            $data = Event::with('media_event', 'location', 'federation', 'association')->findOrFail($event_id);
+            $data = Event::with('media_event', 'location', 'federation', 'association')
+                    ->findOrFail($event_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;
@@ -177,6 +178,20 @@ class OrganizationController extends Controller
                 ->get();
             
             return response()->json($rankings, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+    public function pastEvents($federation_id) {
+        try {
+            $data = Event::with('federation', 'association', 'status_event', 'type_event')
+                ->where('federation_id', $federation_id)
+                ->latest('id')
+                ->take(5)
+                ->get();
+            return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;
         }
