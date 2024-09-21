@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('max_age');
             $table->double('min_weight')->nullable(); // si es null, se refiere a categoria maxima, absoluto
             $table->double('max_weight')->nullable(); // si es null, se refiere a categoria maxima, absoluto
-            $table->unsignedBigInteger('belt_id');
+            $table->unsignedBigInteger('belt_id')->unique();
             $table->string('gender');
             $table->string('clothes')->nullable();
             $table->unsignedBigInteger('event_id');

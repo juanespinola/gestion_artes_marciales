@@ -14,10 +14,12 @@ class EntryCategory extends Model
     
     protected $fillable = [
         'name',
-        'age',
-        'weight',
+        'min_age',
+        'max_age',
+        'min_weight',
+        'max_weight',
         'belt_id',
-        'sex',
+        'gender',
         'clothes',
         'event_id',
         'minor_category'
