@@ -21,8 +21,8 @@ class Event extends Model
         'final_date',
         'initial_time',
         'final_time',
-        'event_type_id',
-        'event_status_id',
+        'type_event_id',
+        'status_event_id',
         'inscription_fee',
         'total_participants',
         'available_slots',
@@ -80,4 +80,6 @@ class Event extends Model
     {
         return LogOptions::defaults(); 
     }
+
+    
 }

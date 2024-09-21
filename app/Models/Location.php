@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use App\Models\City;
 
 class Location extends Model
 {
@@ -26,5 +27,9 @@ class Location extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults(); 
+    }
+
+    public function city(){
+        return $this->belongsTo(City::class);
     }
 }

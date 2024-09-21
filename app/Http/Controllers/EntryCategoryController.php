@@ -45,13 +45,15 @@ class EntryCategoryController extends Controller
                 $request->all(), 
                 [
                     'name' => 'required|string',
-                    'age' => 'required|integer',
+                    'min_age' => 'required|integer',
+                    'max_age' => 'required|integer',
                     'belt_id' => 'required|integer',
                     'sex' => 'required|string',
                 ],
                 [
                     'name.required' => ':attribute: is Required',
-                    'age.required' => ':attribute: is Required',                    
+                    'min_age.required' => ':attribute: is Required',                    
+                    'max_age.required' => ':attribute: is Required',                    
                     'belt_id.required' => ':attribute: is Required',                    
                     'sex.required' => ':attribute: is Required',                    
                 ]
@@ -64,8 +66,10 @@ class EntryCategoryController extends Controller
             
             $obj = EntryCategory::create([
                 'name' => $request->input('name'),
-                'age' => $request->input('age'),
-                'weight' => $request->input('weight'),
+                'min_age' => $request->input('min_age'),
+                'max_age' => $request->input('max_age'),
+                'min_weight' => $request->input('min_weight'),
+                'max_weight' => $request->input('max_weight'),
                 'belt_id' => $request->input('belt_id'),
                 'sex' => $request->input('sex'),
                 'clothes' => $request->input('clothes'),

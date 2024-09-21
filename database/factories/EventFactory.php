@@ -28,6 +28,7 @@ class EventFactory extends Factory
             'created_user_id' => $this->faker->numberBetween(3, 4), // ID del usuario que creó el evento
             'federation_id' => 1, // ID de federación aleatorio
             'quantity_quadrilateral' => $this->faker->numberBetween(1, 4), // Cantidad de cuadriláteros entre 1 y 4
+            'content' => $this->faker->text()
         ];
     }   
 }

@@ -48,7 +48,7 @@ class OrganizationController extends Controller
 
     public function event_detail($event_id) {
         try {
-            $data = Event::with('media_event', 'location', 'federation', 'association')
+            $data = Event::with('media_event', 'location.city.country', 'federation', 'association')
                     ->findOrFail($event_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
