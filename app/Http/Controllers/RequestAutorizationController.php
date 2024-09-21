@@ -78,7 +78,17 @@ class RequestAutorizationController extends Controller
             }
 
             
+            
             if($request->input('athlete_id')) {
+                
+                $haveMemberShip = RequestAutorization::where('athlete_id', $request->input('athlete_id'))
+                        ->where('request_text', 'like','%Solicitud de Membresia%') 
+                        ->get();
+                
+                if($haveMemberShip->count() > 0){
+                    return response()->json(["messages" => "Ya tiene una membresia activa o se encuentra en pendiente de aprobación", "data" => "membresia_activa"], 200);
+                }
+
                 $obj = RequestAutorization::create([
                     'requested_by' => $request->input('requested_by'),
                     'date_request' => $request->input('date_request') ? Carbon::parse($request->input('date_request'))->format('Y-m-d') : null,
@@ -167,8 +177,9 @@ class RequestAutorizationController extends Controller
                 ]);
 
                 if( $request->input('status') == 'aprobado'){
-                    $this->generateMemberShipFee($request);
+                    return $this->generateMemberShipFee($request);
                 }
+                return response()->json(["messages" => "Registro Actualizado Correctamente", "data" => $obj] , 201);
 
             } else {
                 $obj->update([
@@ -181,9 +192,9 @@ class RequestAutorizationController extends Controller
                     'status' => $request->input('status'),
                     
                 ]);
+                return response()->json(["messages" => "Registro Actualizado Correctamente", "data" => $obj] , 201);
             }
 
-            return response()->json($obj, 201);
             
         } catch (\Throwable $th) {
             throw $th;
@@ -212,7 +223,7 @@ class RequestAutorizationController extends Controller
                     ->get();
 
             if($existMembership->isNotEmpty()){
-                return response()->json(["messages" => "El atleta cuenta con Membresia"], 200);
+                return response()->json(["messages" => "El atleta cuenta con Membresia", "data" => "membresia_activa"], 200);
             }
 
             $typeMembership = TypeMembership::where('status', true)
@@ -253,11 +264,11 @@ class RequestAutorizationController extends Controller
                     ]);
                 }
             } else {
-                return response()->json(["messages" => "No se encuentra el tipo de membresia"], 400);
+                return response()->json(["messages" => "No se encuentra el tipo de membresia", "data" => "type_membreship"], 400);
             }
 
 
-            return response()->json(["messages" => "Cuotas Generadas Correctamente"], 200);
+            return response()->json(["messages" => "Cuotas Generadas Correctamente",  "data" => "fee_membership"], 200);
 
         } catch (\Throwable $th) {
             throw $th;
