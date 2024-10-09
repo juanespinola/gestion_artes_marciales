@@ -272,5 +272,17 @@ class Athlete extends Authenticatable
     {
         return LogOptions::defaults(); 
     }
+
+
+    public  static function athlete_federation($federation_id, $association_id = null) {
+        $data = self::join('federations_athletes as fa', 'fa.athlete_id', '=', 'athletes.id')
+            ->where('federation_id', $federation_id);
+        
+        if($association_id){
+            $data = $data->where('association_id', $association_id);
+        }
+
+        return $data;
+    }
     
 }

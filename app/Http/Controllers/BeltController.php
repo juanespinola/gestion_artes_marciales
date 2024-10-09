@@ -78,10 +78,10 @@ class BeltController extends Controller
 
     public function getBelts(Request $request) {
         try {
-            if($request->BearerToken()){
+            // if($request->BearerToken()){
                 $data = Belt::where('federation_id', $request->input('federation_id'))->get();
                 return response()->json($data, 200);
-            }
+            // }
 
         } catch (\Throwable $th) {
             throw $th;

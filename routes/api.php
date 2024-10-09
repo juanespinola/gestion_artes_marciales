@@ -75,6 +75,7 @@ Route::get("/athleteeventmatchwinlose/{athlete_id}", [App\Http\Controllers\Organ
 Route::post("/getAthleteRanking", [App\Http\Controllers\OrganizationController::class, 'getAthleteRanking']);
 Route::get("/pastevents/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'pastEvents']);
 
+
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
     Route::get("/", [AssociationController::class, 'index']);
@@ -346,6 +347,19 @@ Route::middleware('auth:sanctum')->prefix('profile')->group(function (){
 });
 
 
+Route::middleware('auth:sanctum')->prefix('athlete')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [AthleteController::class, 'index']);
+    // Route::get($idInThePath, [AthleteController::class, 'show']);
+    // Route::post("/", [AthleteController::class, 'store']);
+    // Route::put($idInThePath, [AthleteController::class, 'update']);
+    // Route::delete($idInThePath, [AthleteController::class, 'destroy']);
+});
+
+
+
+
+// parte de atletas
 Route::group(['prefix'=>'athlete'], function () {
     Route::post("/login", [App\Http\Controllers\Auth\Athlete\LoginController::class, 'login']);
     Route::post("/register", [App\Http\Controllers\Auth\Athlete\RegisterController::class, 'register']);
@@ -360,6 +374,7 @@ Route::group(['prefix'=>'athlete'], function () {
     Route::get("/countries", [CountryController::class, 'getCountries']);
     Route::get("/typesdocument", [TypeDocumentController::class, 'getTypesDocument']);
     Route::get("/academies", [AcademyController::class, 'getAcademies']);
+    Route::post("/belts", [BeltController::class, 'getBelts']);
     
     Route::post("/payment/create", [PaymentController::class, 'createPayment']);
     Route::withoutMiddleware('throttle:60,1')->group(function () {
@@ -391,7 +406,7 @@ Route::group(['prefix'=>'athlete'], function () {
         Route::get("/profile", [AthleteController::class, 'getProfile']);
         Route::post("/profile", [AthleteController::class, 'updateProfile']);
 
-        Route::post("/belts", [BeltController::class, 'getBelts']);
+       
         Route::post("/updatebelthistory", [AthleteController::class, 'updateBeltHistory']);
         
         Route::post("/getathletemembershipfee", [AthleteController::class, 'getAthleteMembershipFee']);

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('location_id');
             $table->date('initial_date');
             $table->date('final_date')->nullable();
-            $table->time('initial_time', $precision = 0);
-            $table->time('final_time', $precision = 0)->nullable();
+            $table->string('initial_time');
+            $table->string('final_time')->nullable();
             $table->unsignedBigInteger('type_event_id');
             $table->unsignedBigInteger('status_event_id');
             $table->integer('inscription_fee'); // precio de inscripcion

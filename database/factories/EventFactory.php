@@ -20,7 +20,7 @@ class EventFactory extends Factory
             'description' => $this->faker->sentence(3), // Genera una descripción aleatoria
             'location_id' => $this->faker->numberBetween(1, 2), // Genera un ID de localización aleatorio
             'initial_date' => Carbon::now(), // Fecha aleatoria hasta finales de 2024
-            'initial_time' => Carbon::now()->toTimeString(), // Hora actual
+            'initial_time' => Carbon::now()->format('H:i'), // Hora actual
             'type_event_id' => $this->faker->numberBetween(1, 3), // Genera un tipo de evento aleatorio
             'status_event_id' => $this->faker->numberBetween(1, 1), // Genera un estado aleatorio
             'inscription_fee' => $this->faker->numberBetween(0, 0), // Cuota de inscripción entre 0 y 500

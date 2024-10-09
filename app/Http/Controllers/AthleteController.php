@@ -287,4 +287,42 @@ class AthleteController extends Controller
         } 
     }
 
+
+
+    public function index(Request $request) {
+        try {
+            if($request->BearerToken()){
+                
+                // if (!auth()->user()->hasPermissionTo('groupcategory.access')) {
+                //     return response()->json(['Unauthorized, you don\'t have access.'], 400);
+                // }
+
+                // if(isset(auth()->user()->federation_id) && !isset(auth()->user()->association_id)){
+                //     $data = Athlete::with(['federation', 'association'])
+                //     ->where('federation_id', auth()->user()->federation_id)
+                //     ->where('association_id', null)
+                //     ->get();
+    
+                //     return response()->json($data, 200);    
+                // }
+    
+                // if( isset(auth()->user()->federation_id) && isset(auth()->user()->association_id) ){
+                //     $data = Athlete::with(['federation', 'association'])
+                //     ->where('federation_id', auth()->user()->federation_id)
+                //     ->where('association_id', auth()->user()->association_id)
+                //     ->get();
+    
+                //     return response()->json($data, 200);    
+                // }
+
+                $data = Athlete::athlete_federation(auth()->user()->federation_id)
+                        ->with(['academy', 'country', 'city', 'belt'])
+                        ->get();
+                return response()->json($data, 200);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }
