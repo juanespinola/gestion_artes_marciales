@@ -17,9 +17,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // $table->unsignedBigInteger('federation_id');
-            // $table->unsignedBigInteger('association_id')->nullable();
-            // $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('city_id')->nullable();
             $table->unsignedBigInteger('type_document_id');
@@ -32,6 +29,8 @@ return new class extends Migration
             $table->unsignedBigInteger('belt_id')->nullable();
             $table->string('type')->default('athlete');
             $table->unsignedBigInteger('academy_id')->nullable();
+            $table->boolean('is_minor')->default(false);
+            $table->boolean('minor_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

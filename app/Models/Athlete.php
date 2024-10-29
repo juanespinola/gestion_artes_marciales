@@ -39,6 +39,12 @@ class Athlete extends Authenticatable
         "city_id",
         "country_id",
         'belt_id',
+        'type_document_id',
+        'is_minor',
+        'minor_verified',
+        'document',
+        'gender',
+        'birthdate',
     ];
 
     /**

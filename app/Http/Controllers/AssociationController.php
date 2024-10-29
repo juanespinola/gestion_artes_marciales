@@ -203,4 +203,14 @@ class AssociationController extends Controller
             throw $th;
         }
     }
+
+
+        // funcion para obtener federacion sin token, para login de athleta
+        public function getAssociations($federation_id){
+            return Association::where([
+                    ['status', true],
+                    ['federation_id', $federation_id]
+                ])
+                ->get();
+        }
 }

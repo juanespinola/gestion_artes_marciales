@@ -16,7 +16,7 @@ class MediaNewsSeeder extends Seeder
     {
         // MediaNew::factory()->count(10)->create();
 
-        $newIds = News::factory()->count(10)->create()->pluck('id');
+        $newIds = News::factory()->count(1)->create()->pluck('id');
 
         foreach ($newIds as $newId) {
             MediaNew::factory()->withBothImageTypes($newId);

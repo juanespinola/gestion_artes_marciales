@@ -59,8 +59,6 @@ class LoginController extends Controller
                    
                 $user = auth('athletes')->user();                
                 
-                    
-                
                 $user->city = $user->city()->first();
                 $user->country = $user->country()->first();
                 $user->typeDocument = $user->typeDocument()->first();
@@ -88,7 +86,6 @@ class LoginController extends Controller
                 return response()->json($response, 200);
             } else {
                 return response()->json(['message' => ' E-mail o Contraseña no correcta'], 400);
-            
             }
         
         } catch (\Throwable $th) {

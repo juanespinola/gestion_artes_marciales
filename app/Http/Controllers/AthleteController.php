@@ -325,4 +325,9 @@ class AthleteController extends Controller
         }
     }
 
+    public function getMinorAuthorization(Request $request) {
+
+        return Athlete::findOrFail(auth()->user()->id); 
+    }
+
 }

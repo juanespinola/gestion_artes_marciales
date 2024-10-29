@@ -35,6 +35,7 @@ use App\Http\Controllers\TypeRequestController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RankingController;
+use App\Http\Controllers\MinorAuthorizationController;
 
 
 /*
@@ -356,6 +357,15 @@ Route::middleware('auth:sanctum')->prefix('athlete')->group(function (){
     // Route::delete($idInThePath, [AthleteController::class, 'destroy']);
 });
 
+Route::middleware('auth:sanctum')->prefix('minor_authorization')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [MinorAuthorizationController::class, 'index']);
+    Route::get($idInThePath, [MinorAuthorizationController::class, 'edit']);
+    Route::put($idInThePath, [MinorAuthorizationController::class, 'update']);
+    Route::post("/uploaddocument", [MinorAuthorizationController::class, 'uploadDocument']);
+
+});
+
 
 
 
@@ -370,6 +380,7 @@ Route::group(['prefix'=>'athlete'], function () {
     Route::post("/generatemembershipfee", [MembershipController::class, 'generateMemberShipFee']);
 
     Route::get("/federations", [FederationController::class, "getFederations"]);
+    Route::get("/associations/{federation_id}", [AssociationController::class, "getAssociations"]);
     Route::post("/cities", [CityController::class, 'getCities']);
     Route::get("/countries", [CountryController::class, 'getCountries']);
     Route::get("/typesdocument", [TypeDocumentController::class, 'getTypesDocument']);
@@ -416,6 +427,8 @@ Route::group(['prefix'=>'athlete'], function () {
         Route::post("/getathleteinscriptionpayment", [AthleteController::class, 'getAthleteInscriptionPayment']);
         Route::get("/getmembershipfee/{id}", [MembershipController::class, 'getMemberShipFee']);
         Route::get("/getinscription/{id}", [InscriptionController::class, 'getInscription']);
+        Route::get("/minor_authorization", [AthleteController::class, 'getMinorAuthorization']);
+        
     });
 
 

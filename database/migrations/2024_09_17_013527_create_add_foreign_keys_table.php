@@ -145,7 +145,12 @@ return new class extends Migration
             $table->foreign(['event_id'])->references(['id'])->on('events')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign(['entry_category_id'])->references(['id'])->on('entry_categories')->onUpdate('restrict')->onDelete('restrict');
         });
-
+        
+        Schema::table('minor_authorizations', function (Blueprint $table) {
+            $table->foreign(['athlete_id'])->references(['id'])->on('athletes')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign(['federation_id'])->references(['id'])->on('federations')->onUpdate('restrict')->onDelete('restrict');
+        });
     }
 
     /**
