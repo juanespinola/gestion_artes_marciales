@@ -222,7 +222,7 @@ class EventController extends Controller
                 'content' => $request->input('content'),
                 'updated_user_id' => auth()->user()->id,
             ]);
-            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj, 'aca es' => 'opa'], 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

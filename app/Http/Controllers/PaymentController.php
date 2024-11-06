@@ -202,6 +202,7 @@ class PaymentController extends Controller
             $association_id = $request->input('association_id');
             $payment_for = $request->input('payment_for'); // si el pago es para membresia o para inscripcion
             $total_payment = $request->input('total_payment');
+            $json_request = $request->input('json_request');
 
             $type_payment = 'single_buy';
 
@@ -211,7 +212,13 @@ class PaymentController extends Controller
 
             //aqui necesitamos colocar los datos del pago, por ejemplo el precio y que se va a pagar
 
+            $existPayment = Payment::where('inscription_id', $inscription_id)
+                ->orWhere('membership_id', $membership_id)
+                ->first();
 
+            if($existPayment) {
+                return response()->json(["messages" => "Pago existente", "data" => 'existPayment'], 200);
+            }
             if ($payment_gateway == 'transferencia') {
                 $status = true;
 
@@ -220,9 +227,10 @@ class PaymentController extends Controller
                     'inscription_id' => $inscription_id,
                     'membership_id' => $membership_id,
                     'payment_gateway' => $payment_gateway,
-                    'status' => 'pendiente',
+                    'status' => 'confirmado',
                     'federation_id' => $federation_id,
                     'association_id' => $association_id,
+                    'json_request' => json_encode($json_request),
                 ]);
 
 
