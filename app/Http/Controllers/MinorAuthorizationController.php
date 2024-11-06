@@ -107,19 +107,30 @@ class MinorAuthorizationController extends Controller
 
         if($request->hasFile('file')) {
             
-            $file = MinorAuthorization::where([
+            $existMinorAuthorization = MinorAuthorization::where([
                 ['athlete_id', auth()->user()->id]
             ])
             ->first();
 
-            if(isset($file)){
-                Storage::delete($file->name_file);
-                $file->delete();
+            if(isset($existMinorAuthorization) && isset($existMinorAuthorization->name_file)){
+                Storage::delete($existMinorAuthorization->name_file);
+                // $existMinorAuthorization->delete();
             }
             
             $name = uploadPdfNew($request->file);
 
             $imageUri = Storage::url($name);
+
+            if($existMinorAuthorization){
+                $existMinorAuthorization->update([
+                    'athlete_id' => auth()->user()->id,
+                    'name_file' => $name,
+                    'route_file' => asset($imageUri),
+                    'federation_id' => $request->input('federation_id'),
+
+                ]);
+                return response()->json(["messages" => "Registro Actualizado Correctamente!"], 201);
+            } 
 
             $product_media = new MinorAuthorization;
 

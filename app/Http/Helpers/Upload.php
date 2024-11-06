@@ -55,7 +55,7 @@ if(!function_exists('uploadPdfNew')) {
     function uploadPdfNew($file): string
     {
         $generated = md5(date('YmdHis'));
-        $name = "public/minor_autorization/{$generated}.pdf";
+        $name = "public/minor_autorization/{$generated}";
         Storage::put($name, $file);
         // $file->storeAs('public/minor_autorization', "{$generated}.pdf");
         return $name;      
