@@ -36,6 +36,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\MinorAuthorizationController;
+use App\Http\Controllers\SanctionController;
 
 
 /*
@@ -364,6 +365,15 @@ Route::middleware('auth:sanctum')->prefix('minor_authorization')->group(function
     Route::put($idInThePath, [MinorAuthorizationController::class, 'update']);
     Route::post("/uploaddocument", [MinorAuthorizationController::class, 'uploadDocument']);
 
+});
+
+Route::middleware('auth:sanctum')->prefix('sanction')->group(function (){
+    $idInThePath = '/{id}';
+    // Route::post("/", [SanctionController::class, ['index', 'store']]);
+    Route::get($idInThePath, [SanctionController::class, 'edit']);
+    Route::post("/", [SanctionController::class, 'store']);
+    Route::put($idInThePath, [SanctionController::class, 'update']);
+    Route::delete($idInThePath, [SanctionController::class, 'destroy']);
 });
 
 
