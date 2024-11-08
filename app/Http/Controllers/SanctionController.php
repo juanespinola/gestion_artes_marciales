@@ -11,12 +11,12 @@ class SanctionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, $athlete_id)
     {
         try {
             if($request->BearerToken()){
                 
-                $data = Sanction::where("athlete_id", $request->input('athlete_id'))
+                $data = Sanction::where("athlete_id", $athlete_id)
                     ->get();
                 return response()->json($data, 200);
             }
@@ -39,20 +39,20 @@ class SanctionController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->input('athlete_id')){
+        // if($request->input('athlete_id')){
 
-            try {
-                if($request->BearerToken()){
+        //     try {
+        //         if($request->BearerToken()){
                     
-                    $data = Sanction::where("athlete_id", $request->input('athlete_id'))
-                        ->get();
-                    return response()->json($data, 200);
-                }
+        //             $data = Sanction::where("athlete_id", $request->input('athlete_id'))
+        //                 ->get();
+        //             return response()->json($data, 200);
+        //         }
 
-            } catch (\Throwable $th) {
-                throw $th;
-            }
-        }
+        //     } catch (\Throwable $th) {
+        //         throw $th;
+        //     }
+        // }
         
         
         try {

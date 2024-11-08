@@ -369,7 +369,7 @@ Route::middleware('auth:sanctum')->prefix('minor_authorization')->group(function
 
 Route::middleware('auth:sanctum')->prefix('sanction')->group(function (){
     $idInThePath = '/{id}';
-    // Route::post("/", [SanctionController::class, ['index', 'store']]);
+    Route::get("/{athlete_id}/athletes", [SanctionController::class, 'index']);
     Route::get($idInThePath, [SanctionController::class, 'edit']);
     Route::post("/", [SanctionController::class, 'store']);
     Route::put($idInThePath, [SanctionController::class, 'update']);
