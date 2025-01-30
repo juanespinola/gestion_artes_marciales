@@ -57,7 +57,7 @@ class RolController extends Controller
             
             $obj = Role::create([
                 'name' => $request->input('name'),
-                'guard_name' => "web"
+                'guard_name' => "admins"
             ]);
             $obj->givePermissionTo($request->input('rolePermissionArray'));
 
@@ -121,6 +121,7 @@ class RolController extends Controller
             $obj->update([
                 'name' => $request->input('name'),
             ]);
+            // $obj->revokePermissionTo($request->input('rolePermissionArray'));
             $obj->givePermissionTo($request->input('rolePermissionArray'));
 
             return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);

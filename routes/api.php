@@ -231,7 +231,7 @@ Route::middleware('auth:sanctum')->prefix('mediaevent')->group(function (){
 
 Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
     $idInThePath = '/{id}';
-    Route::get("/", [EntryCategoryController::class, 'index']);
+    Route::get("/event/{event_id}", [EntryCategoryController::class, 'index']);
     Route::get($idInThePath, [EntryCategoryController::class, 'edit']);
     Route::post("/", [EntryCategoryController::class, 'store']);
     Route::put($idInThePath, [EntryCategoryController::class, 'update']);
@@ -247,10 +247,11 @@ Route::middleware('auth:sanctum')->prefix('belt')->group(function (){
     Route::delete($idInThePath, [BeltController::class, 'destroy']);
 });
 
+Route::post("/inscription", [InscriptionController::class, 'index']);
 // falta separar el admin del atleta, porque estan juntos
 Route::middleware('auth:sanctum')->prefix('inscription')->group(function (){
     $idInThePath = '/{id}';
-    Route::post("/", [InscriptionController::class, 'index']);
+    // Route::post("/", [InscriptionController::class, 'index']);
     Route::get($idInThePath, [InscriptionController::class, 'edit']);
     // Route::post("/", [InscriptionController::class, 'store']);
     Route::put($idInThePath, [InscriptionController::class, 'update']);
@@ -303,7 +304,7 @@ Route::middleware('auth:sanctum')->prefix('academy')->group(function (){
 
 Route::middleware('auth:sanctum')->prefix('city')->group(function (){
     $idInThePath = '/{id}';
-    Route::get("/", [CityController::class, 'index']);
+    Route::get("/bycountry".$idInThePath, [CityController::class, 'index']);
     Route::get($idInThePath, [CityController::class, 'edit']);
     Route::post("/", [CityController::class, 'store']);
     Route::put($idInThePath, [CityController::class, 'update']);

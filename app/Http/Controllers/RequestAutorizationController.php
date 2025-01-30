@@ -64,12 +64,12 @@ class RequestAutorizationController extends Controller
                 [
                     'requested_by' => 'required|string',
                     // 'request_type_id' => 'required|integer',
-                    'request_text' => 'required|string',
+                    // 'request_text' => 'required|string',
                 ],
                 [
                     'requested_by.required' => ':attribute: is Required',
                     // 'request_type_id.required' => ':attribute: is Required',
-                    'request_text.required' => ':attribute: is Required',
+                    // 'request_text.required' => ':attribute: is Required',
                 ]
             );
 
@@ -150,11 +150,11 @@ class RequestAutorizationController extends Controller
                 $request->all(), 
                 [      
                     'date_response' => 'required|date',
-                    'response_text' => 'required|string',
+                    // 'response_text' => 'required|string',
                 ],
                 [
                     'date_response.required' => ':attribute: is Required',
-                    'request_text.required' => ':attribute: is Required',
+                    // 'request_text.required' => ':attribute: is Required',
                 ]
             );
 

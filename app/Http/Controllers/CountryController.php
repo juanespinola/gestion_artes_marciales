@@ -41,17 +41,23 @@ class CountryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Country $country)
+    public function show($id)
     {
-        //
+       
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Country $country)
+    public function edit($id)
     {
-        //
+        try {
+            $data = Country::findOrFail($id);
+            return response()->json($data, 200);
+    
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**

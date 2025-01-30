@@ -68,8 +68,13 @@ class Event extends Model
     public function status_event() {
         return $this->belongsTo(StatusEvent::class);
     }
+    
     public function type_event() {
         return $this->belongsTo(TypesEvent::class);
+    }
+
+    public function entrycategory() {
+        return $this->belongsTo(EntryCategory::class);
     }
 
     public function matchBrackets() {

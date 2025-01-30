@@ -60,7 +60,7 @@ class FederationController extends Controller
         //     return response()->json($th, 400);
         // }
         try {
-            $data = Federation::where('status', true)->get();
+            $data = Federation::get();
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;
@@ -163,6 +163,7 @@ class FederationController extends Controller
             $obj->update([
                 'description' => $request->input('description'),
                 'email' => $request->input('email'),
+                'status' => $request->has('status') ? $request->input('status') : true,
                 'phone_number' => $request->input('phone_number'),
                 'president' => $request->input('president'),
                 'vice_president' => $request->input('vice_president'),

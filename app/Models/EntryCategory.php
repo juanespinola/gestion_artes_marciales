@@ -49,6 +49,10 @@ class EntryCategory extends Model
 
     public function ranking() {
         return $this->hasMany(Ranking::class);
+    }
+
+    public function event() {
+        return $this->hasOne(Event::class, 'id', 'event_id');
     }    
 
     public static function ringMatMatchBracket($event_id) {

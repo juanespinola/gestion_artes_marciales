@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Inscription;
 use App\Models\EntryCategory;
-use App\Models\TariffInscription;
 
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class InscriptionController extends Controller
@@ -22,54 +20,38 @@ class InscriptionController extends Controller
     {
         // este es para el listado de admin de las personas inscriptas
         try {
-            
 
-            if($request->BearerToken()){
+            if ($request->BearerToken()) {
+
+                // $data = EntryCategory::with([
+                //             'belt',
+                //             'tariff_inscription.inscriptions.athlete',
+                //             'matchBracket',        
+                //         ])
+                //         ->where('event_id', $request->input('event_id'))
+                //         ->get()
+                //         ->groupBy([
+                //             function ($item) {
+                //                 return $item->minor_category ? 'Menores' : 'Mayores';
+                //             },
+                //             'gender',
+                //             'belt.color', 
+                //             'name'
+                //         ])
+                //         ->sortByDesc('belt.color');
+
 
                 $data = EntryCategory::with([
-                            'belt',
-                            'tariff_inscription.inscriptions.athlete',
-                            'matchBracket',        
-                        ])
-                        ->where('event_id', $request->input('event_id'))
-                        ->get()
-                        ->groupBy([
-                            function ($item) {
-                                return $item->minor_category ? 'Menores' : 'Mayores';
-                            },
-                            'gender',
-                            'belt.color', 
-                            'name'
-                        ])
-                        ->sortByDesc('belt.color');
+                    'belt',
+                    'tariff_inscription.inscriptions.athlete',
+                    'matchBracket',
+                    'event',
+                ])
+                    ->where('event_id', $request->input('event_id'))
+                    ->get();
 
-                // $data = Inscription::with([
-                //         'athlete',
-                //         'tariff_inscription.entry_category.belt',
-                //         'tariff_inscription.entry_category',
-                //         'tariff_inscription.entry_category.matchBracket',
-                //     ])
-                //     ->get()
-                //     ->where('event_id', $request->input('event_id'))
-                //     ->groupBy([
-                //         'tariff_inscription.entry_category.minor_category',
-                //         'tariff_inscription.entry_category.gender',
-                //         'tariff_inscription.entry_category.belt.color', 
-                //         'tariff_inscription.entry_category.name',
-                //     ])
-                //     ->sortByDesc('tariff_inscription.entry_category.belt.color');
-                
-                // return response()->json($data, 200);
 
-                // $data = TariffInscription::with([
-                //                             'entry_category', 
-                //                             'inscriptions.athlete'
-                //                             ])
-                //                     ->get()
-                //                     ->where('entry_category.event_id', $request->input('event_id'))
-                //                     ->groupBy(['entry_category.minor_category','entry_category.gender','entry_category.belt.color', 'entry_category.name'])
-                //                     ->sortByDesc('belt.color');   
-                
+
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -88,10 +70,7 @@ class InscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-       
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
@@ -117,7 +96,7 @@ class InscriptionController extends Controller
         try {
 
             $validation = Validator::make(
-                $request->all(), 
+                $request->all(),
                 [
                     'event_weight' => 'required|integer',
                 ],
@@ -126,7 +105,7 @@ class InscriptionController extends Controller
                 ]
             );
 
-            if($validation->fails()){
+            if ($validation->fails()) {
                 return response()->json(["messages" => $validation->errors()], 400);
             }
 
@@ -139,16 +118,15 @@ class InscriptionController extends Controller
                     ['entry_categories.max_weight', '>=', $request->input('event_weight')],
                     ['tariff_inscriptions.id', '=', $obj->tariff_inscription->id]
                 ])
-                ->select('*')                
+                ->select('*')
                 ->get();
-            
+
             $obj->update([
                 'event_weight' => $request->input('event_weight'),
                 'valid_weight' => count($valid_weight) > 0
             ]);
 
             return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
-
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -163,16 +141,17 @@ class InscriptionController extends Controller
     }
 
 
-    public function setEntryForRegistratioAthlete(Request $request) {
+    public function setEntryForRegistratioAthlete(Request $request)
+    {
         try {
-            
+
             foreach ($request->input('selectEntryForPayment') as $key => $value) {
 
                 $athlete = auth()->user();
-                $validation = Validator::make(   
-                    [ 
-                        'event_id' => $value['event_id'], 
-                        'athlete_id' => $athlete->id, 
+                $validation = Validator::make(
+                    [
+                        'event_id' => $value['event_id'],
+                        'athlete_id' => $athlete->id,
                         'tariff_inscription_id' =>  $value['tariff_inscription']['id']
                     ],
                     [
@@ -187,14 +166,14 @@ class InscriptionController extends Controller
                     ]
                 );
 
-                if($validation->fails()){
+                if ($validation->fails()) {
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
 
                 // // Verificamos si el atleta ya tiene una inscripción con el mismo tariff_inscription_id
                 $existing_inscription = Inscription::where([
                     ['athlete_id', '=', $athlete->id],
-                    ['tariff_inscription_id', '=',  $value['tariff_inscription']['id'] ]
+                    ['tariff_inscription_id', '=',  $value['tariff_inscription']['id']]
                 ])->first();
 
                 if ($existing_inscription) {
@@ -209,13 +188,13 @@ class InscriptionController extends Controller
                 ]);
             }
             return response()->json(["messages" => "Registro creado Correctamente!", "response" => true], 200);
-            
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public function getInscription($id) {
+    public function getInscription($id)
+    {
         try {
             $obj = Inscription::with('event', 'tariff_inscription')
                 ->findOrFail($id);

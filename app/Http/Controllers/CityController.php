@@ -10,11 +10,11 @@ class CityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, $country_id)
     {
         try {
             if($request->BearerToken()){
-                $data = City::where('country_id', $request->input('country_id'))
+                $data = City::where('country_id', $country_id)
                     ->get();
                 return response()->json($data, 200);
             }

@@ -12,13 +12,33 @@ class EntryCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, $event_id)
     {
         try {
-            if($request->BearerToken()){
-                $data = EntryCategory::all()
-                ->load('belt')
-                ->groupBy('belt.color');
+            if ($request->BearerToken()) {
+                // $data = EntryCategory::all()
+                // ->load('belt')
+                // ->groupBy('belt.color');
+
+                // return response()->json($data, 200);
+                $data = EntryCategory::where('event_id', $event_id)
+                ->with('belt') // Asegúrate de que 'belt' es la relación correcta
+                ->get()
+                ->groupBy(function ($item) {
+                    return $item->belt->id; // Agrupa por el id del cinturón
+                })
+                ->map(function ($group, $beltId) {
+                    $belt = $group->first()->belt; // Obtén los datos del cinturón del primer elemento
+                    return [
+                        "cinturon" => [
+                            "id" => $belt->id,
+                            "color" => $belt->color,
+                        ],
+                        "categories" => $group->values()->toArray(),
+                    ];
+                })
+                ->values() // Convierte a un array sin claves
+                ->toArray();
                 
                 return response()->json($data, 200);
             }
@@ -42,7 +62,7 @@ class EntryCategoryController extends Controller
     {
         try {
             $validation = Validator::make(
-                $request->all(), 
+                $request->all(),
                 [
                     'name' => 'required|string',
                     'min_age' => 'required|integer',
@@ -52,18 +72,18 @@ class EntryCategoryController extends Controller
                 ],
                 [
                     'name.required' => ':attribute: is Required',
-                    'min_age.required' => ':attribute: is Required',                    
-                    'max_age.required' => ':attribute: is Required',                    
-                    'belt_id.required' => ':attribute: is Required',                    
-                    'gender.required' => ':attribute: is Required',                    
+                    'min_age.required' => ':attribute: is Required',
+                    'max_age.required' => ':attribute: is Required',
+                    'belt_id.required' => ':attribute: is Required',
+                    'gender.required' => ':attribute: is Required',
                 ]
             );
 
-            if($validation->fails()){
+            if ($validation->fails()) {
                 return response()->json(["messages" => $validation->errors()], 400);
             }
 
-            
+
             $obj = EntryCategory::create([
                 'name' => $request->input('name'),
                 'min_age' => $request->input('min_age'),
@@ -109,9 +129,9 @@ class EntryCategoryController extends Controller
     public function update(Request $request, $id)
     {
         try {
-        
+
             $validation = Validator::make(
-                $request->all(), 
+                $request->all(),
                 [
                     'name' => 'required|string',
                     'min_age' => 'required|integer',
@@ -121,14 +141,14 @@ class EntryCategoryController extends Controller
                 ],
                 [
                     'name.required' => ':attribute: is Required',
-                    'min_age.required' => ':attribute: is Required',                    
-                    'max_age.required' => ':attribute: is Required',                    
-                    'belt_id.required' => ':attribute: is Required',                    
-                    'gender.required' => ':attribute: is Required',                     
+                    'min_age.required' => ':attribute: is Required',
+                    'max_age.required' => ':attribute: is Required',
+                    'belt_id.required' => ':attribute: is Required',
+                    'gender.required' => ':attribute: is Required',
                 ]
             );
 
-            if($validation->fails()){
+            if ($validation->fails()) {
                 return response()->json(["messages" => $validation->errors()], 400);
             }
 
@@ -157,22 +177,22 @@ class EntryCategoryController extends Controller
     public function destroy($id)
     {
         try {
-        
+
             $obj = EntryCategory::findOrFail($id);
             $obj->delete();
-    
+
             return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
-            
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
 
-    public function getEntryForRegistratioAthlete(Request $request) {
+    public function getEntryForRegistratioAthlete(Request $request)
+    {
         try {
-            if($request->BearerToken()){
-                
+            if ($request->BearerToken()) {
+
                 $athlete = auth()->user();
 
                 $data = EntryCategory::where([
@@ -181,11 +201,11 @@ class EntryCategoryController extends Controller
                     ["belt_id", "=", $athlete->belt_id],
                     ["gender", "=", $athlete->gender],
                 ])
-                ->with('tariff_inscription')
-                ->get()
-                ->load('belt')
-                ->groupBy('belt.color');
-                
+                    ->with('tariff_inscription')
+                    ->get()
+                    ->load('belt')
+                    ->groupBy('belt.color');
+
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
