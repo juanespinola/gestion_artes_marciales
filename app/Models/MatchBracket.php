@@ -39,7 +39,7 @@ class MatchBracket extends Model
     }
 
     public function bracket() {
-        return $this->hasOne(Bracket::class);
+        return $this->hasOne(Bracket::class, 'match_bracket_id', 'id');
     }
 
      // Relación con Athlete

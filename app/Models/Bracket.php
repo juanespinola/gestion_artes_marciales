@@ -27,12 +27,19 @@ class Bracket extends Model
 
      // Relación con MatchBracket
     public function matchBrackets() {
-        return $this->belongsTo(MatchBracket::class);
+        return $this->belongsTo(MatchBracket::class, 'match_bracket_id', 'id');
     }
+
+     // Relación con MatchBracket
+    //  public function matchBracket() {
+    //     return $this->hasOne(MatchBracket::class, 'id', 'match_bracket_id');
+    // }
     
     public function inscriptions() {
         return $this->hasMany(Inscription::class);
     }
+
+
 
     public function getActivitylogOptions(): LogOptions
     {

@@ -111,6 +111,7 @@ class InscriptionController extends Controller
 
             $obj = Inscription::with(['tariff_inscription'])->findOrFail($id);
 
+            // TODO: queda verificar cuando es absoluto
             $valid_weight = DB::table('tariff_inscriptions')
                 ->join('entry_categories', 'tariff_inscriptions.entry_category_id', '=', 'entry_categories.id')
                 ->where([
