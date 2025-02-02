@@ -12,8 +12,7 @@ class MatchBracket extends Model
 {
     use HasFactory, LogsActivity;
 
-    protected $fillable = [
-        
+    protected $fillable = [ 
         'event_id',
         'victory_type_id',
         'one_athlete_id',

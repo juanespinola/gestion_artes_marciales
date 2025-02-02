@@ -15,57 +15,26 @@ class MatchBracketController extends Controller
     public function index(Request $request)
     {
         try {
-            
-            $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
-            ->where([
-                ['entry_category_id', $request->input('entry_category_id')],
-                ['event_id', $request->input('event_id')],
-            ])
-            ->orderBy('id')
-            ->get()
-            ->groupBy('bracket.number_phase') // Agrupamos por fase
-            ->map(function ($group) {
-                return [
-                    'number_phase' => $group->first()->bracket->number_phase,
-                    'phase' => $group->first()->bracket->phase,
-                    'matches' => $group
-                ];
-            })
-            ->values(); 
-        
-
-            // Si deseas devolver el resultado como una respuesta JSON
-            return response()->json($data);
-
-
-            // $brackets = Bracket::with('matchBrackets')
-            // ->whereHas('matchBrackets', function ($query) use ($request) {
-            //     $query->where('entry_category_id', $request->input('entry_category_id'))
-            //         ->where('event_id', $request->input('event_id'));
-            //     })
-            //     ->select('number_phase' , 'phase')
-            //     ->groupBy(['phase', 'number_phase'])
-            //     ->orderBy('number_phase')
-            //     ->get();
-            // $matchBracketIds = Bracket::pluck('match_bracket_id')->toArray();
-            // $matchBrackets = MatchBracket::whereIn('id', $matchBracketIds)
-            //     ->where([
-            //         ['entry_category_id', $request->input('entry_category_id')],
-            //         ['event_id', $request->input('event_id')],
-            //     ])
-            //     ->with(['athleteOne', 'athleteTwo'])
-            //     ->get();
-
-            // podrias agripar por cada bracket, todos los match en base a la phase
-
-            // return response()->json([
-            //     'brackets' => $brackets,
-            //     'match_brackets' => $matchBrackets
-            // ], 200);
-
-            return response()->json($data, 200);
-
             if ($request->BearerToken()) {
+                $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
+                    ->where([
+                        ['entry_category_id', $request->input('entry_category_id')],
+                        ['event_id', $request->input('event_id')],
+                    ])
+                    ->orderBy('id')
+                    ->get()
+                    ->groupBy('bracket.number_phase') // Agrupamos por fase
+                    ->map(function ($group) {
+                        return [
+                            'number_phase' => $group->first()->bracket->number_phase,
+                            'phase' => $group->first()->bracket->phase,
+                            'matches' => $group
+                        ];
+                    })
+                    ->values();
+
+                return response()->json($data, 200);
+
                 // $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
                 //         ->where([
                 //             ['entry_category_id', $request->input('entry_category_id')],
@@ -74,10 +43,7 @@ class MatchBracketController extends Controller
                 //         ->orderBy('id')
                 //         ->get();
 
-                $data = Bracket::with('matchBrackets')
-                    ->orderBy('id')
-                    ->get();
-                return response()->json($data, 200);
+                // return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -352,168 +318,53 @@ class MatchBracketController extends Controller
 
     public function finishMatchBracket(Request $request)
     {
+        $match_bracket = MatchBracket::findOrFail($request->input('match_bracket_id'));
 
-        $match_bracket_id = $request->input('match_bracket_id');
-        $puntaje_1 = $request->input('score_one_athlete');
-        $puntaje_2 = $request->input('score_two_athlete');
-        $winner = $request->input('athlete_id_winner');
-        $loser = $request->input('athlete_id_loser');
-        $match_timer = $request->input('match_timer');
+        // Actualizar los datos del combate
+        $match_bracket->update([
+            'score_one_athlete'  => $request->input('score_one_athlete'),
+            'score_two_athlete'  => $request->input('score_two_athlete'),
+            'athlete_id_winner'  => $request->input('athlete_id_winner'),
+            'athlete_id_loser'   => $request->input('athlete_id_loser'),
+            'match_timer'        => $request->input('match_timer'),
+            'victory_type_id'    => $request->input('victory_type_id'),
+        ]);
 
-        $match_bracket = MatchBracket::findOrFail($match_bracket_id);
+        // Marcar el bracket como finalizado
+        Bracket::where('match_bracket_id', $match_bracket->id)->update(['status' => 'finalizado']);
 
-        $bracket = Bracket::where('match_bracket_id', $match_bracket_id)
-            ->update([
-                'status' => 'finalizado'
-            ]);
+        // Generar el siguiente enfrentamiento
+        $next = $this->generateNextPhase($match_bracket);
 
-        $match_bracket->score_one_athlete = $puntaje_1;
-        $match_bracket->score_two_athlete = $puntaje_2;
-        $match_bracket->athlete_id_winner = $winner;
-        $match_bracket->athlete_id_loser = $loser;
-        $match_bracket->match_timer = $match_timer;
-
-        $match_bracket->save();
-
-        // Lógica para actualizar los enfrentamientos futuros según el ganador
-        $this->generateNextPhase($match_bracket, $winner);
-
-        return response()->json(['message' => 'Resultado actualizado correctamente', 'data' => $match_bracket]);
+        return response()->json(['message' => 'Resultado actualizado correctamente', 'data' => $next]);
+        // return response()->json(['message' => 'Resultado actualizado correctamente', 'data' => $match_bracket]);
     }
 
-    private function generateNextPhase($match_bracket, $winner)
+    private function generateNextPhase($match_bracket)
     {
-        $bracket = Bracket::where('match_bracket_id', $match_bracket->id)->first();
+        // Obtener el Bracket actual
+        $bracket = Bracket::where('match_bracket_id', $match_bracket->id)->firstOrFail();
+
+        // Buscar el siguiente combate en la siguiente fase con espacio libre
         $nextMatchBracket = MatchBracket::join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
             ->where('brackets.number_phase', $bracket->number_phase + 1)
             ->where('brackets.status', 'pendiente')
+            ->where(function ($query) {
+                $query->whereNull('match_brackets.one_athlete_id')
+                    ->orWhereNull('match_brackets.two_athlete_id');
+            })
+            ->orderBy('brackets.step') // Asegurar que se asigna al primer combate disponible
+            ->select('match_brackets.*')
             ->first();
 
+        // return $nextMatchBracket;
         if ($nextMatchBracket) {
-
-
-            if ($nextMatchBracket->one_athlete_id === null) {
-                $nextMatchBracket->one_athlete_id = $winner;
-            } elseif ($nextMatchBracket->two_athlete_id === null) {
-                $nextMatchBracket->two_athlete_id = $winner;
-            } else if ($nextMatchBracket->one_athlete_id && $nextMatchBracket->two_athlete_id) {
-
-                $nextMatchBracketStep = MatchBracket::join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
-                    ->whereNull('one_athlete_id')
-                    ->whereNull('two_athlete_id')
-                    ->where('brackets.number_phase', $bracket->number_phase + 1)
-                    ->where('brackets.status', 'pendiente')
-                    ->first();
-
-                if ($nextMatchBracketStep->one_athlete_id === null) {
-                    $nextMatchBracketStep->one_athlete_id = $winner;
-                } elseif ($nextMatchBracketStep->two_athlete_id === null) {
-                    $nextMatchBracketStep->two_athlete_id = $winner;
-                }
-                $nextMatchBracketStep->save();
-                return;
+            if (is_null($nextMatchBracket->one_athlete_id)) {
+                $nextMatchBracket->one_athlete_id = $match_bracket->athlete_id_winner;
+            } else {
+                $nextMatchBracket->two_athlete_id = $match_bracket->athlete_id_winner;
             }
-
-
-
             $nextMatchBracket->save();
-            return;
         }
-        // $currentNumberPhase = $bracket->number_phase;
-        // $currentStep = $bracket->step;
-
-        // while (true) {
-        //     // Buscar el siguiente `step` dentro del mismo `number_phase`
-        //     $nextMatchBracket = MatchBracket::join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
-        //         ->where('brackets.number_phase', $currentNumberPhase)
-        //         ->where('brackets.step', $currentStep + 1)  // Busca el siguiente step
-        //         ->where('brackets.status', 'pendiente')
-        //         ->first();
-
-        //     if ($nextMatchBracket) {
-        //         // Si se encuentra un `MatchBracket` con al menos una posición vacía, asignar el ganador
-        //         if ($nextMatchBracket->one_athlete_id === null) {
-        //             $nextMatchBracket->one_athlete_id = $winner;
-        //             $nextMatchBracket->save();
-        //             break;
-        //         } elseif ($nextMatchBracket->two_athlete_id === null) {
-        //             $nextMatchBracket->two_athlete_id = $winner;
-        //             $nextMatchBracket->save();
-        //             break;
-        //         } else {
-        //             // Si ambos lugares están ocupados, pasa al siguiente `step`
-        //             $currentStep++;
-        //         }
-        //     } else {
-        //         // Si no hay más `steps` en el `number_phase` actual, avanzar al siguiente `number_phase`
-        //         $currentNumberPhase++;
-        //         $currentStep = 1; // Reiniciar el step para el nuevo `number_phase`
-
-        //         // Buscar el primer `step` del nuevo `number_phase`
-        //         $nextMatchBracket = MatchBracket::join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
-        //             ->where('brackets.number_phase', $currentNumberPhase)
-        //             ->where('brackets.step', $currentStep)
-        //             ->where('brackets.status', 'pendiente')
-        //             ->first();
-
-        //         if ($nextMatchBracket) {
-        //             // Asegurarse de que el `MatchBracket` no esté vacío antes de asignar el ganador
-        //             if ($nextMatchBracket->one_athlete_id === null || $nextMatchBracket->two_athlete_id === null) {
-        //                 if ($nextMatchBracket->one_athlete_id === null) {
-        //                     $nextMatchBracket->one_athlete_id = $winner;
-        //                 } elseif ($nextMatchBracket->two_athlete_id === null) {
-        //                     $nextMatchBracket->two_athlete_id = $winner;
-        //                 }
-        //                 $nextMatchBracket->save();
-        //                 break;
-        //             } else {
-        //                 // Si ambos lugares están ocupados, incrementa el `step` para seguir buscando
-        //                 $currentStep++;
-        //             }
-        //         } else {
-        //             // Si no hay más enfrentamientos pendientes en ningún `number_phase`, terminar el bucle
-        //             break;
-        //         }
-        //     }
-        // }
-
-        // if (!$nextMatchBracket) {
-        //     return response()->json(['error' => 'No hay enfrentamientos pendientes disponibles para asignar al ganador.'], 400);
-        // }
-
-
-        // $bracket = Bracket::where('match_bracket_id', $match_bracket->id)        
-        //         ->first();
-
-        // $numberphaseStep = DB::table('brackets')
-        //     ->select('number_phase', DB::raw('MAX(step) as max_step'))
-        //     // ->where('number_phase', $bracket->number_phase)
-        //     ->groupBy('number_phase')
-        //     ->get();
-
-        //     // echo "<pre>";
-        //     // print_r($numberphaseStep);
-        //     // echo "</pre>";
-
-        //     foreach ($numberphaseStep as $value) {
-
-        //         $nextMatchBracket = MatchBracket::join('brackets', 'match_brackets.id', '=', 'brackets.match_bracket_id')
-        //             ->where('brackets.number_phase', $value->number_phase)
-        //             ->where('brackets.step', $value->max_step)
-        //             ->where('brackets.status', 'pendiente')
-        //             ->whereNull('one_athlete_id')
-        //             ->orWhereNull('two_athlete_id')
-        //             ->first();
-        //             // if(){
-
-        //             // }
-
-        //         // echo "np= ".$i." step= ".$j;
-        //         echo "<pre>";
-        //         print_r($nextMatchBracket);
-        //         echo "</pre>";
-        //     }
-
-
     }
 }

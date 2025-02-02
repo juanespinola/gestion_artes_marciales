@@ -276,14 +276,14 @@ Route::middleware('auth:sanctum')->prefix('medianew')->group(function (){
     Route::delete($idInThePath, [MediaNewController::class, 'destroy']);
 });
 
-Route::post("/matchbracket", [MatchBracketController::class, 'index']);
-Route::post("/matchbracket/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
+// Route::post("/matchbracket", [MatchBracketController::class, 'index']);
+// Route::post("/matchbracket/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
 Route::middleware('auth:sanctum')->prefix('matchbracket')->group(function (){
     $idInThePath = '/{id}';
-    // Route::post("/", [MatchBracketController::class, 'index']);
+    Route::post("/", [MatchBracketController::class, 'index']);
     Route::post("/check", [MatchBracketController::class, 'checkMathBracket']);
     Route::post("/generate", [MatchBracketController::class, 'generateMatchBrackets']);
-    // Route::post("/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
+    Route::post("/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
 });
 
 Route::middleware('auth:sanctum')->prefix('typevictory')->group(function (){
