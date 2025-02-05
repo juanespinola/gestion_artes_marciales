@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name_file');
             $table->string('route_file');
             $table->enum('type', ['banner_new_list', 'banner_new_detail']);
-            $table->unsignedInteger('new_id');
+            $table->unsignedBigInteger('new_id');
             $table->timestamps();
         });
     }
