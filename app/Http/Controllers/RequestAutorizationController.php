@@ -64,12 +64,12 @@ class RequestAutorizationController extends Controller
                 [
                     'requested_by' => 'required|string',
                     // 'request_type_id' => 'required|integer',
-                    // 'request_text' => 'required|string',
+                    'request_text' => 'required|string',
                 ],
                 [
                     'requested_by.required' => ':attribute: is Required',
                     // 'request_type_id.required' => ':attribute: is Required',
-                    // 'request_text.required' => ':attribute: is Required',
+                    'request_text.required' => ':attribute: is Required',
                 ]
             );
 
@@ -131,7 +131,7 @@ class RequestAutorizationController extends Controller
     public function edit($id)
     {
         try {
-            $data = RequestAutorization::findOrFail($id);
+            $data = RequestAutorization::with('approvedByUser', 'rejectedByUser')->findOrFail($id);
             return response()->json($data, 200);
     
         } catch (\Throwable $th) {

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('belts', function (Blueprint $table) {
             $table->id();
             $table->string('color');
+            $table->string('color_hexadecimal');
             $table->unsignedBigInteger('federation_id');
             $table->timestamps();
         });

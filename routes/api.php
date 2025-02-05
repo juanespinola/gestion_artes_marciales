@@ -416,15 +416,6 @@ Route::group(['prefix'=>'athlete'], function () {
     });
 
     
-    Route::middleware('auth:sanctum')->prefix('belthistory')->group(function (){
-        $idInThePath = '/{id}';
-        Route::get("/", [BeltHistoryController::class, 'index']);
-        Route::get($idInThePath, [BeltHistoryController::class, 'edit']);
-        Route::post("/", [BeltHistoryController::class, 'store']);
-        Route::put($idInThePath, [BeltHistoryController::class, 'update']);
-        Route::delete($idInThePath, [BeltHistoryController::class, 'destroy']);
-    });
-    
     Route::middleware('auth:sanctum')->group(function (){
         //si el atleta esta conectado
         Route::get("/profile", [AthleteController::class, 'getProfile']);
@@ -442,6 +433,18 @@ Route::group(['prefix'=>'athlete'], function () {
         Route::get("/getinscription/{id}", [InscriptionController::class, 'getInscription']);
         Route::get("/minor_authorization", [AthleteController::class, 'getMinorAuthorization']);
         
+
+
+
+        Route::middleware('auth:sanctum')->prefix('belthistory')->group(function (){
+            $idInThePath = '/{id}';
+            Route::get("/", [BeltHistoryController::class, 'index']);
+            Route::get($idInThePath, [BeltHistoryController::class, 'edit']);
+            Route::post("/", [BeltHistoryController::class, 'store']);
+            Route::put($idInThePath, [BeltHistoryController::class, 'update']);
+            Route::delete($idInThePath, [BeltHistoryController::class, 'destroy']);
+        });
+
     });
 
 

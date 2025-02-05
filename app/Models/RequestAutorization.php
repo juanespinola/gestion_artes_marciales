@@ -41,6 +41,14 @@ class RequestAutorization extends Model
         return $this->belongsTo(TypeRequest::class, 'request_type_id', 'id');
     }
 
+    public function approvedByUser(){
+        return $this->belongsTo(User::class, 'approved_by', 'id');
+    }
+
+    public function rejectedByUser(){
+        return $this->belongsTo(User::class, 'rejected_by', 'id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults(); 
