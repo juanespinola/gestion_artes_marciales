@@ -138,6 +138,7 @@ return new class extends Migration
             $table->foreign(['federation_id'])->references(['id'])->on('federations')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign(['association_id'])->references(['id'])->on('associations')->onUpdate('restrict')->onDelete('restrict');
             $table->foreign(['inscription_id'])->references(['id'])->on('inscriptions')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign(['athlete_id'])->references(['id'])->on('athletes')->onUpdate('restrict')->onDelete('restrict');
         });
 
         Schema::table('rankings', function (Blueprint $table) {
