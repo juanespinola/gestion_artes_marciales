@@ -432,6 +432,7 @@ Route::group(['prefix'=>'athlete'], function () {
         Route::get("/getmembershipfee/{id}", [MembershipController::class, 'getMemberShipFee']);
         Route::get("/getinscription/{id}", [InscriptionController::class, 'getInscription']);
         Route::get("/minor_authorization", [AthleteController::class, 'getMinorAuthorization']);
+        Route::post("/getPayments", [AthleteController::class, 'getPayments']);
         
 
 

@@ -194,6 +194,8 @@ class PaymentController extends Controller
     public function createPayment(Request $request)
     {
         try {
+
+            // TODO: necesitamos cambiar el estado de lo que se pago, por ejemplo inscripcion
             
             $payment_gateway = $request->input('payment_gateway');
             $inscription_id = $request->input('inscription_id') ? $request->input('inscription_id') : null;

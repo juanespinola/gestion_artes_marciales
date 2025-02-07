@@ -10,23 +10,26 @@ use Carbon\Carbon;
 use App\Models\Membership;
 use App\Models\TypeMembership;
 use App\Models\Inscription;
+use App\Models\Payment;
 use DB;
 
 class AthleteController extends Controller
 {
-    
-    public function getProfile(Request $request){
+
+    public function getProfile(Request $request)
+    {
         $data = Athlete::with('belt')
             ->findOrFail(auth()->user()->id);
         return response()->json($data, 200);
     }
 
 
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         try {
-            if($request->BearerToken()){
+            if ($request->BearerToken()) {
                 $validation = Validator::make(
-                    $request->all(), 
+                    $request->all(),
                     [
                         'name' => 'required|string',
                         'email' => 'required|string',
@@ -52,11 +55,11 @@ class AthleteController extends Controller
                         'belt_id.required' => ':attribute: is Required',
                     ]
                 );
-    
-                if($validation->fails()){
+
+                if ($validation->fails()) {
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
-    
+
                 $obj = Athlete::findOrFail(auth()->user()->id);
                 $obj->update([
                     'name' => $request->input('name'),
@@ -71,7 +74,7 @@ class AthleteController extends Controller
                     'belt_id' => $request->input('belt_id'),
                     'academy_id' => $request->input('academy_id'),
                 ]);
-    
+
                 return response()->json($obj, 201);
             }
         } catch (\Throwable $th) {
@@ -79,11 +82,12 @@ class AthleteController extends Controller
         }
     }
 
-    public function updateBeltHistory(Request $request){
+    public function updateBeltHistory(Request $request)
+    {
         try {
-            if($request->BearerToken()){
+            if ($request->BearerToken()) {
                 $validation = Validator::make(
-                    $request->all(), 
+                    $request->all(),
                     [
                         'belt_id' => 'required|integer',
                         'athlete_id' => 'required|integer',
@@ -96,17 +100,17 @@ class AthleteController extends Controller
                         'federation_id.required' => ':attribute: is Required',
                     ]
                 );
-    
-                if($validation->fails()){
+
+                if ($validation->fails()) {
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
-    
+
                 $existBelt = BeltHistory::where([
                     ['belt_id', $request->input('belt_id')],
                     ['athlete_id', $request->input('athlete_id')],
                 ])->first();
-                
-                if($existBelt){
+
+                if ($existBelt) {
                     return response()->json(["messages" => "Ya cuentas con ese cinturón"], 400);
                 }
 
@@ -124,7 +128,7 @@ class AthleteController extends Controller
                 ]);
 
 
-    
+
                 return response()->json($obj, 201);
             }
         } catch (\Throwable $th) {
@@ -133,11 +137,12 @@ class AthleteController extends Controller
     }
 
 
-    public function getAthleteMembershipFee(Request $request) {
+    public function getAthleteMembershipFee(Request $request)
+    {
         try {
-            if($request->BearerToken()){
+            if ($request->BearerToken()) {
                 $validation = Validator::make(
-                    $request->all(), 
+                    $request->all(),
                     [
                         'athlete_id' => 'required|integer',
                         'federation_id' => 'required|integer',
@@ -150,8 +155,8 @@ class AthleteController extends Controller
                         'association_id.required' => ':attribute: is Required',
                     ]
                 );
-    
-                if($validation->fails()){
+
+                if ($validation->fails()) {
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
 
@@ -163,10 +168,10 @@ class AthleteController extends Controller
                     ['athlete_id', $athlete_id],
                     ['federation_id', $federation_id],
                     ['association_id', $association_id],
-                    ['status', '<>','pagado']
+                    ['status', '<>', 'pagado']
                 ])
-                ->orderBy('end_date_fee', 'asc')
-                ->get();
+                    ->orderBy('end_date_fee', 'asc')
+                    ->get();
 
                 return response()->json($memberships, 200);
             }
@@ -175,11 +180,12 @@ class AthleteController extends Controller
         }
     }
 
-    public function getAthleteMembershipFeePayment(Request $request) {
+    public function getAthleteMembershipFeePayment(Request $request)
+    {
         try {
-            if($request->BearerToken()){
+            if ($request->BearerToken()) {
                 $validation = Validator::make(
-                    $request->all(), 
+                    $request->all(),
                     [
                         'athlete_id' => 'required|integer',
                         'federation_id' => 'required|integer',
@@ -192,8 +198,8 @@ class AthleteController extends Controller
                         'association_id.required' => ':attribute: is Required',
                     ]
                 );
-    
-                if($validation->fails()){
+
+                if ($validation->fails()) {
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
 
@@ -207,8 +213,8 @@ class AthleteController extends Controller
                     ['association_id', $association_id],
                     ['status', 'pagado']
                 ])
-                ->orderBy('end_date_fee', 'asc')
-                ->get();
+                    ->orderBy('end_date_fee', 'asc')
+                    ->get();
 
                 return response()->json($memberships, 200);
             }
@@ -217,11 +223,12 @@ class AthleteController extends Controller
         }
     }
 
-    public function getAthleteInscriptionPayment(Request $request) {
+    public function getAthleteInscriptionPayment(Request $request)
+    {
         try {
-            if($request->BearerToken()){
+            if ($request->BearerToken()) {
                 $validation = Validator::make(
-                    $request->all(), 
+                    $request->all(),
                     [
                         'athlete_id' => 'required|integer',
                     ],
@@ -229,8 +236,8 @@ class AthleteController extends Controller
                         'athlete_id.required' => ':attribute: is Required',
                     ]
                 );
-    
-                if($validation->fails()){
+
+                if ($validation->fails()) {
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
 
@@ -248,15 +255,16 @@ class AthleteController extends Controller
             }
         } catch (\Throwable $th) {
             throw $th;
-        } 
+        }
     }
 
 
-    public function getAthleteParticipatedEvents(Request $request) {
+    public function getAthleteParticipatedEvents(Request $request)
+    {
         try {
-            if($request->BearerToken()){
+            if ($request->BearerToken()) {
                 $validation = Validator::make(
-                    $request->all(), 
+                    $request->all(),
                     [
                         'athlete_id' => 'required|integer',
                     ],
@@ -264,8 +272,8 @@ class AthleteController extends Controller
                         'athlete_id.required' => ':attribute: is Required',
                     ]
                 );
-    
-                if($validation->fails()){
+
+                if ($validation->fails()) {
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
 
@@ -284,15 +292,16 @@ class AthleteController extends Controller
             }
         } catch (\Throwable $th) {
             throw $th;
-        } 
+        }
     }
 
 
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         try {
-            if($request->BearerToken()){
-                
+            if ($request->BearerToken()) {
+
                 // if (!auth()->user()->hasPermissionTo('groupcategory.access')) {
                 //     return response()->json(['Unauthorized, you don\'t have access.'], 400);
                 // }
@@ -302,22 +311,22 @@ class AthleteController extends Controller
                 //     ->where('federation_id', auth()->user()->federation_id)
                 //     ->where('association_id', null)
                 //     ->get();
-    
+
                 //     return response()->json($data, 200);    
                 // }
-    
+
                 // if( isset(auth()->user()->federation_id) && isset(auth()->user()->association_id) ){
                 //     $data = Athlete::with(['federation', 'association'])
                 //     ->where('federation_id', auth()->user()->federation_id)
                 //     ->where('association_id', auth()->user()->association_id)
                 //     ->get();
-    
+
                 //     return response()->json($data, 200);    
                 // }
 
                 $data = Athlete::athlete_federation(auth()->user()->federation_id)
-                        ->with(['academy', 'country', 'city', 'belt'])
-                        ->get();
+                    ->with(['academy', 'country', 'city', 'belt'])
+                    ->get();
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -325,9 +334,53 @@ class AthleteController extends Controller
         }
     }
 
-    public function getMinorAuthorization(Request $request) {
+    public function getMinorAuthorization(Request $request)
+    {
 
-        return Athlete::findOrFail(auth()->user()->id); 
+        return Athlete::findOrFail(auth()->user()->id);
     }
 
+
+    public function getPayments(Request $request)
+    {
+        try {
+            if ($request->BearerToken()) {
+                $validation = Validator::make(
+                    $request->all(),
+                    [
+                        'athlete_id' => 'required|integer',
+                        'federation_id' => 'required|integer',
+                        'association_id' => 'required|integer',
+
+                    ],
+                    [
+                        'athlete_id.required' => ':attribute: is Required',
+                        'federation_id.required' => ':attribute: is Required',
+                        'association_id.required' => ':attribute: is Required',
+                    ]
+                );
+
+                if ($validation->fails()) {
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+
+                $athlete_id = $request->input('athlete_id');
+                $federation_id = $request->input('federation_id');
+                $association_id = $request->input('association_id');
+
+                $memberships = Payment::where([
+                    ['athlete_id', $athlete_id],
+                    ['federation_id', $federation_id],
+                    ['association_id', $association_id],
+                    ['status', 'confirmado']
+                ])
+                    ->with('inscription.tariff_inscription', 'membership')
+                    ->get();
+
+                return response()->json($memberships, 200);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

@@ -22,12 +22,22 @@ class Payment extends Model
         'status',
         'federation_id',
         'association_id',
+        'athlete_id',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
+
+
+    public function membership()  {
+        return $this->belongsTo(Membership::class, 'membership_id', 'id');
+    }
+
+    public function inscription()  {
+        return $this->belongsTo(Inscription::class, 'inscription_id', 'id');
+    }
 
     public function getActivitylogOptions(): LogOptions
     {
