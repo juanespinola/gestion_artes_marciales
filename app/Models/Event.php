@@ -74,7 +74,11 @@ class Event extends Model
     }
 
     public function entrycategory() {
-        return $this->belongsTo(EntryCategory::class);
+        return $this->belongsTo(EntryCategory::class, 'id', 'event_id');
+    }
+
+    public function entry_category() {
+        return $this->hasMany(EntryCategory::class);
     }
 
     public function matchBrackets() {

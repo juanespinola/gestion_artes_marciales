@@ -36,7 +36,7 @@ class OrganizationController extends Controller
 
     public function events($federation_id) {
         try {
-            $data = Event::with('federation', 'association', 'status_event', 'type_event')
+            $data = Event::with('federation', 'association', 'status_event', 'type_event', 'location.city.country', 'media_event')
                 ->where('federation_id', $federation_id)
                 ->orderBy('initial_date', 'desc')
                 ->get();
@@ -48,7 +48,7 @@ class OrganizationController extends Controller
 
     public function event_detail($event_id) {
         try {
-            $data = Event::with('media_event', 'location.city.country', 'federation', 'association')
+            $data = Event::with('media_event', 'location.city.country', 'federation', 'association', 'status_event', 'type_event', 'entry_category')
                     ->findOrFail($event_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
