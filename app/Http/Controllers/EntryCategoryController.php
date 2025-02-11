@@ -194,17 +194,37 @@ class EntryCategoryController extends Controller
             if ($request->BearerToken()) {
 
                 $athlete = auth()->user();
+                $event_id = $request->input('event_id');
 
-                $data = EntryCategory::where([
-                    ["min_age", "<=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
-                    ["max_age", ">=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
+                // $data = EntryCategory::where([
+                //     ["min_age", "<=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
+                //     ["max_age", ">=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
+                //     ["belt_id", "=", $athlete->belt_id],
+                //     ["gender", "=", $athlete->gender],
+                //     // ["event_id", "=", $event_id],
+                // ])
+                //     ->with('tariff_inscription')
+                //     ->get()
+                //     ->load('belt')
+                //     ->groupBy('belt.color');
+
+                $entries = EntryCategory::where([
+                    ["min_age", "<=", Carbon::parse($athlete->birthdate)->age], 
+                    ["max_age", ">=", Carbon::parse($athlete->birthdate)->age], 
                     ["belt_id", "=", $athlete->belt_id],
                     ["gender", "=", $athlete->gender],
+                    ["event_id", "=", $event_id],
                 ])
-                    ->with('tariff_inscription')
-                    ->get()
-                    ->load('belt')
-                    ->groupBy('belt.color');
+                    ->with(['tariff_inscription.entry_category', 'belt'])
+                    ->get();
+    
+              
+                $data = $entries->groupBy('belt.color')->map(function ($categories, $beltColor) {
+                    return [
+                        "belt" => $beltColor,
+                        "categories" => $categories->values(),
+                    ];
+                })->values(); 
 
                 return response()->json($data, 200);
             }

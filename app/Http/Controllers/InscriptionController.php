@@ -153,36 +153,57 @@ class InscriptionController extends Controller
                     [
                         'event_id' => $value['event_id'],
                         'athlete_id' => $athlete->id,
-                        'tariff_inscription_id' =>  $value['tariff_inscription']['id']
+                        'tariff_inscription_id' => $value['tariff_inscription']['id'],
+                        'name' => $value['tariff_inscription']['entry_category']['name'],
                     ],
                     [
                         'event_id' => 'required|integer',
                         'athlete_id' => 'required|integer',
                         'tariff_inscription_id' => 'required|integer',
+                        'name' => 'required|string'
                     ],
                     [
                         'event_id.required' => ':attribute: is Required',
                         'athlete_id.required' => ':attribute: is Required',
                         'tariff_inscription_id.required' => ':attribute: is Required',
+                        'name.required' => ':attribute: is Required',
                     ]
                 );
 
                 if ($validation->fails()) {
-                    return response()->json(["messages" => $validation->errors()], 400);
+                    return response()->json(["messages" => $validation->errors()], 200);
                 }
 
-                // // Verificamos si el atleta ya tiene una inscripción con el mismo tariff_inscription_id
-                $existing_inscription = Inscription::where([
-                    ['athlete_id', '=', $athlete->id],
-                    ['tariff_inscription_id', '=',  $value['tariff_inscription']['id']]
-                ])->first();
+                // 🔍 Convertir a minúsculas y eliminar espacios extra
+                $categoryName = strtolower(trim($value['tariff_inscription']['entry_category']['name']));
 
-                if ($existing_inscription) {
-                    return response()->json(["messages" => "El atleta ya tiene una inscripción con esta Categoría.", "response" => false], 400);
+                // 🔍 1️⃣ Buscar todas las inscripciones del atleta en el evento
+                $existing_inscriptions = Inscription::where('athlete_id', $athlete->id)
+                    ->where('event_id', $value['event_id'])
+                    ->get();
+
+                // 🔍 2️⃣ Revisar si el atleta ya está inscrito en una categoría regular
+                $hasRegularCategory = $existing_inscriptions->filter(function ($inscription) {
+                    return strtolower(trim($inscription->tariff_inscription->entry_category->name)) !== 'absoluto';
+                })->isNotEmpty();
+
+                // 🔍 3️⃣ Si ya está inscrito en una categoría regular y quiere inscribirse en otra, lo evitamos
+                if ($hasRegularCategory && $categoryName !== 'absoluto') {
+                    return response()->json(["messages" => "Solo puedes inscribirte en una categoría regular y en absoluto.", "response" => false], 200);
                 }
 
-                // queda realizar las funcionalidades para obtener los cinturones por atleta
-                $obj = Inscription::create([
+                // 🔍 4️⃣ Si ya está inscrito en "absoluto" y quiere inscribirse de nuevo en "absoluto", lo evitamos
+                $hasAbsoluto = $existing_inscriptions->filter(function ($inscription) {
+                    return strtolower(trim($inscription->tariff_inscription->entry_category->name)) === 'absoluto';
+                })->isNotEmpty();
+
+                if ($hasAbsoluto && $categoryName === 'absoluto') {
+                    return response()->json(["messages" => "Ya estás inscrito en la categoría absoluto.", "response" => false], 200);
+                }
+
+
+                // ✅ Permitir inscripción
+                Inscription::create([
                     'event_id' => $value['event_id'],
                     'athlete_id' => $athlete->id,
                     'tariff_inscription_id' => $value['tariff_inscription']['id']

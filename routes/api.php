@@ -408,7 +408,8 @@ Route::group(['prefix'=>'athlete'], function () {
     // requiere que el atleta este conectado para registrarse
     Route::middleware('auth:sanctum')->prefix('entrycategories')->group(function (){
         $idInThePath = '/{id}';
-        Route::get("/", [EntryCategoryController::class, 'getEntryForRegistratioAthlete']);
+        // Route::get("/", [EntryCategoryController::class, 'getEntryForRegistratioAthlete']);
+        Route::post("/", [EntryCategoryController::class, 'getEntryForRegistratioAthlete']);
     });
     
     Route::middleware('auth:sanctum')->prefix('inscription')->group(function (){
