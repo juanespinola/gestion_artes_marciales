@@ -135,7 +135,7 @@ class OrganizationController extends Controller
     }
 
 
-    public function getAllAthletesWinLose() {
+    public function getAthleteWinMedalsInformation() {
         try {
             $athletes = Athlete::getAthleteWinLoseInformation();
             return response()->json($athletes, 200);
@@ -144,12 +144,26 @@ class OrganizationController extends Controller
         }
     }
 
+    public function getAthleteWinLoseDifference() {
+        try {
+            $athletes = Athlete::getAthleteWinLoseDifference();
+            return response()->json($athletes, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function getAthleteMostActive() {
+        try {
+            $athletes = Athlete::getAthleteMostActive();
+            return response()->json($athletes, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function getAthleteProfileWinLose($id) {
         try {
-            // $athletes = [
-                // "history_match" => Athlete::getAthleteEventWinLoseInformation($id),
-                // "profile" => Athlete::getAthleteInformation($id)
-            // ];
             $athlete = Athlete::getAthleteProfileWinLose($id);
             return response()->json($athlete, 200);
         } catch (\Throwable $th) {

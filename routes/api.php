@@ -71,7 +71,10 @@ Route::post("/events/{event_id}/matchbrackets", [App\Http\Controllers\Organizati
 Route::post("/events/{event_id}/groupbrackets", [App\Http\Controllers\OrganizationController::class, 'groupBrackets']);
 Route::get("/events/{event_id}/registered", [App\Http\Controllers\OrganizationController::class, 'athletesInscription']);
 Route::get("/events/{event_id}/schedules", [App\Http\Controllers\OrganizationController::class, 'schedules']);
-Route::get("/athleteswinlose", [App\Http\Controllers\OrganizationController::class, 'getAllAthletesWinLose']);
+Route::get("/athleteswinlose", [App\Http\Controllers\OrganizationController::class, 'getAthleteWinMedalsInformation']);
+Route::get("/athleteswinmedals", [App\Http\Controllers\OrganizationController::class, 'getAthleteWinMedalsInformation']);
+Route::get("/athleteswinlosedifference", [App\Http\Controllers\OrganizationController::class, 'getAthleteWinLoseDifference']);
+Route::get("/athletesmostactive", [App\Http\Controllers\OrganizationController::class, 'getAthleteMostActive']);
 Route::get("/athleteprofilewinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteProfileWinLose']);
 Route::get("/athleteeventmatchwinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteEventMatchWinLoseInformation']);
 Route::post("/getAthleteRanking", [App\Http\Controllers\OrganizationController::class, 'getAthleteRanking']);

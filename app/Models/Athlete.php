@@ -120,16 +120,70 @@ class Athlete extends Authenticatable
             DB::raw("SUM(CASE WHEN athletes.id = mb.athlete_id_winner AND b.phase = 'Final' THEN 1 ELSE 0 END) as gold"),
             DB::raw("SUM(CASE WHEN athletes.id = mb.athlete_id_loser AND b.phase = 'Final' THEN 1 ELSE 0 END) as silver"),
             DB::raw("SUM(CASE WHEN athletes.id = mb.athlete_id_loser AND b.phase = 'Semifinal' THEN 1 ELSE 0 END) as bronze"),
-            'athletes.profile_image'
+            'athletes.profile_image',
+            DB::raw('(SELECT COUNT(DISTINCT event_id) FROM match_brackets 
+                      WHERE match_brackets.one_athlete_id = athletes.id 
+                         OR match_brackets.two_athlete_id = athletes.id) as eventparticipated')
         )
         ->join('match_brackets as mb', function($join) {
             $join->on('athletes.id', '=', 'mb.one_athlete_id')
                  ->orOn('athletes.id', '=', 'mb.two_athlete_id');
         })
         ->join('brackets as b', 'mb.id', '=', 'b.match_bracket_id')
-        ->groupBy('athletes.id', 'athletes.name')
-        ->orderBy('athletes.id')
+        ->groupBy('athletes.id', 'athletes.name', 'athletes.profile_image') 
+        ->orderBy('gold', 'desc')
+        ->limit(10)
         ->get();
+    }
+
+    public static function getAthleteWinLoseDifference() {
+        return Athlete::select(
+            'athletes.id',
+            'athletes.name',
+            'athletes.profile_image',
+            DB::raw('SUM(CASE WHEN athletes.id = mb.athlete_id_winner THEN 1 ELSE 0 END) as Wins'),
+            DB::raw('SUM(CASE WHEN athletes.id = mb.athlete_id_loser THEN 1 ELSE 0 END) as Losses'),
+            DB::raw('(SELECT COUNT(DISTINCT event_id) FROM match_brackets 
+                      WHERE match_brackets.one_athlete_id = athletes.id 
+                         OR match_brackets.two_athlete_id = athletes.id) as eventparticipated'),
+            DB::raw('(SUM(CASE WHEN athletes.id = mb.athlete_id_winner THEN 1 ELSE 0 END) 
+                     - SUM(CASE WHEN athletes.id = mb.athlete_id_loser THEN 1 ELSE 0 END)) as difference')
+        )
+        ->join('match_brackets as mb', function($join) {
+            $join->on('athletes.id', '=', 'mb.one_athlete_id')
+                 ->orOn('athletes.id', '=', 'mb.two_athlete_id');
+        })
+        ->join('brackets as b', 'mb.id', '=', 'b.match_bracket_id')
+        ->groupBy('athletes.id', 'athletes.name', 'athletes.profile_image') 
+        ->orderBy('difference', 'desc') // Ordenar por diferencia de victorias y derrotas
+        ->limit(10)
+        ->get();
+        
+    }
+
+    public static function getAthleteMostActive() {
+        return Athlete::select(
+            'athletes.id',
+            'athletes.name',
+            'athletes.profile_image',
+            DB::raw('SUM(CASE WHEN athletes.id = mb.athlete_id_winner THEN 1 ELSE 0 END) as Wins'),
+            DB::raw('SUM(CASE WHEN athletes.id = mb.athlete_id_loser THEN 1 ELSE 0 END) as Losses'),
+            DB::raw('(SELECT COUNT(DISTINCT event_id) FROM match_brackets 
+                      WHERE match_brackets.one_athlete_id = athletes.id 
+                         OR match_brackets.two_athlete_id = athletes.id) as eventparticipated'),
+            DB::raw('(SUM(CASE WHEN athletes.id = mb.athlete_id_winner THEN 1 ELSE 0 END) 
+                    + SUM(CASE WHEN athletes.id = mb.athlete_id_loser THEN 1 ELSE 0 END)) as total_matches')
+        )
+        ->join('match_brackets as mb', function($join) {
+            $join->on('athletes.id', '=', 'mb.one_athlete_id')
+                 ->orOn('athletes.id', '=', 'mb.two_athlete_id');
+        })
+        ->join('brackets as b', 'mb.id', '=', 'b.match_bracket_id')
+        ->groupBy('athletes.id', 'athletes.name', 'athletes.profile_image') 
+        ->orderBy('total_matches', 'desc') // Ordenar por total de partidos jugados
+        ->limit(10)
+        ->get();
+        
     }
 
     public static function getAthleteEventWinLoseInformation($id) {
