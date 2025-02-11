@@ -130,6 +130,9 @@ class Athlete extends Authenticatable
                  ->orOn('athletes.id', '=', 'mb.two_athlete_id');
         })
         ->join('brackets as b', 'mb.id', '=', 'b.match_bracket_id')
+        ->join('events as e', 'e.id', '=', 'mb.event_id')
+        ->join('status_events as sa', 'sa.id', '=', 'e.status_event_id')
+        ->whereRaw("LOWER(sa.description) = 'finalizado'")
         ->groupBy('athletes.id', 'athletes.name', 'athletes.profile_image') 
         ->orderBy('gold', 'desc')
         ->limit(10)
@@ -154,6 +157,9 @@ class Athlete extends Authenticatable
                  ->orOn('athletes.id', '=', 'mb.two_athlete_id');
         })
         ->join('brackets as b', 'mb.id', '=', 'b.match_bracket_id')
+        ->join('events as e', 'e.id', '=', 'mb.event_id')
+        ->join('status_events as sa', 'sa.id', '=', 'e.status_event_id')
+        ->whereRaw("LOWER(sa.description) = 'finalizado'")
         ->groupBy('athletes.id', 'athletes.name', 'athletes.profile_image') 
         ->orderBy('difference', 'desc') // Ordenar por diferencia de victorias y derrotas
         ->limit(10)
@@ -179,6 +185,9 @@ class Athlete extends Authenticatable
                  ->orOn('athletes.id', '=', 'mb.two_athlete_id');
         })
         ->join('brackets as b', 'mb.id', '=', 'b.match_bracket_id')
+        ->join('events as e', 'e.id', '=', 'mb.event_id')
+        ->join('status_events as sa', 'sa.id', '=', 'e.status_event_id')
+        ->whereRaw("LOWER(sa.description) = 'finalizado'")
         ->groupBy('athletes.id', 'athletes.name', 'athletes.profile_image') 
         ->orderBy('total_matches', 'desc') // Ordenar por total de partidos jugados
         ->limit(10)
