@@ -42,17 +42,32 @@ class TariffInscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TariffInscription $tariffInscription)
+    public function edit($id)
     {
-        //
+        try {
+            $data = TariffInscription::where([
+                ["entry_category_id", $id]
+            ])->first();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TariffInscription $tariffInscription)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $data = TariffInscription::updateOrCreate(
+                ["entry_category_id" => $id], // este es el entry_category_id
+                [ 'price' => $request->input('price') ]
+            );
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**

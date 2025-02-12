@@ -37,7 +37,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\MinorAuthorizationController;
 use App\Http\Controllers\SanctionController;
-
+use App\Http\Controllers\TariffInscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ Route::get("/athleteprofilewinlose/{athlete_id}", [App\Http\Controllers\Organiza
 Route::get("/athleteeventmatchwinlose/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteEventMatchWinLoseInformation']);
 Route::post("/getAthleteRanking", [App\Http\Controllers\OrganizationController::class, 'getAthleteRanking']);
 Route::get("/pastevents/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'pastEvents']);
-
+Route::get("/ranking", [RankingController::class, 'index']);
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
@@ -153,14 +153,14 @@ Route::middleware('auth:sanctum')->prefix('permissionsbygroup')->group(function 
     Route::get($idInThePath, [PermissionController::class, 'getPermissionsByGroupName']);
 });
 
-Route::middleware('auth:sanctum')->prefix('sport')->group(function (){
-    $idInThePath = '/{id}';
-    Route::get("/", [SportController::class, 'index']);
-    Route::get($idInThePath, [SportController::class, 'edit']);
-    Route::post("/", [SportController::class, 'store']);
-    Route::put($idInThePath, [SportController::class, 'update']);
-    Route::delete($idInThePath, [SportController::class, 'destroy']);
-});
+// Route::middleware('auth:sanctum')->prefix('sport')->group(function (){
+//     $idInThePath = '/{id}';
+//     Route::get("/", [SportController::class, 'index']);
+//     Route::get($idInThePath, [SportController::class, 'edit']);
+//     Route::post("/", [SportController::class, 'store']);
+//     Route::put($idInThePath, [SportController::class, 'update']);
+//     Route::delete($idInThePath, [SportController::class, 'destroy']);
+// });
 
 Route::middleware('auth:sanctum')->prefix('category')->group(function (){
     $idInThePath = '/{id}';
@@ -169,6 +169,15 @@ Route::middleware('auth:sanctum')->prefix('category')->group(function (){
     Route::post("/", [CategoryController::class, 'store']);
     Route::put($idInThePath, [CategoryController::class, 'update']);
     Route::delete($idInThePath, [CategoryController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('tariffinscription')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [TariffInscriptionController::class, 'index']);
+    Route::get($idInThePath, [TariffInscriptionController::class, 'edit']);
+    Route::post("/", [TariffInscriptionController::class, 'store']);
+    Route::put($idInThePath, [TariffInscriptionController::class, 'update']);
+    Route::delete($idInThePath, [TariffInscriptionController::class, 'destroy']);
 });
 
 Route::middleware('auth:sanctum')->prefix('groupcategory')->group(function (){
@@ -344,7 +353,8 @@ Route::middleware('auth:sanctum')->prefix('typerequest')->group(function (){
 });
 
 Route::middleware('auth:sanctum')->prefix('ranking')->group(function (){
-    Route::get("/", [RankingController::class, 'update']);
+    
+    Route::get("/update", [RankingController::class, 'update']);
 });
 
 

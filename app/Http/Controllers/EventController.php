@@ -25,6 +25,7 @@ class EventController extends Controller
                     $data = Event::where('federation_id', auth()->user()->federation_id)
                     ->where('association_id', null)
                     ->with(['location'])
+                    ->orderBy('id', 'asc')
                     ->get();
     
                     return response()->json($data, 200);    
@@ -34,12 +35,15 @@ class EventController extends Controller
                     $data = Event::where('federation_id', auth()->user()->federation_id)
                     ->where('association_id', auth()->user()->association_id)
                     ->with(['location'])
+                    ->orderBy('id', 'asc')
                     ->get();
     
                     return response()->json($data, 200);    
                 }
 
-                $data = Event::with(['location'])->get();
+                $data = Event::with(['location'])
+                    ->orderBy('id', 'asc')
+                    ->get();
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
