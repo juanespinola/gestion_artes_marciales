@@ -88,7 +88,7 @@ class FederationController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -110,7 +110,7 @@ class FederationController extends Controller
                 'instagram' => $request->input('instagram'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -151,7 +151,7 @@ class FederationController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -174,7 +174,7 @@ class FederationController extends Controller
                 'instagram' => $request->input('instagram'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -208,7 +208,7 @@ class FederationController extends Controller
                 'treasurer' => $request->input('treasurer'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -228,7 +228,7 @@ class FederationController extends Controller
                 'instagram' => $request->input('instagram'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

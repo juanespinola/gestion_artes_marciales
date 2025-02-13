@@ -67,9 +67,9 @@ class RequestAutorizationController extends Controller
                     'request_text' => 'required|string',
                 ],
                 [
-                    'requested_by.required' => ':attribute: is Required',
-                    // 'request_type_id.required' => ':attribute: is Required',
-                    'request_text.required' => ':attribute: is Required',
+                    'requested_by.required' => ':attribute: es Obligatorio',
+                    // 'request_type_id.required' => ':attribute: es Obligatorio',
+                    'request_text.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -110,7 +110,7 @@ class RequestAutorizationController extends Controller
                 ]);
             }
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -153,8 +153,8 @@ class RequestAutorizationController extends Controller
                     // 'response_text' => 'required|string',
                 ],
                 [
-                    'date_response.required' => ':attribute: is Required',
-                    // 'request_text.required' => ':attribute: is Required',
+                    'date_response.required' => ':attribute: es Obligatorio',
+                    // 'request_text.required' => ':attribute: es Obligatorio',
                 ]
             );
 

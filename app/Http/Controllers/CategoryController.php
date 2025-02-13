@@ -61,7 +61,7 @@ class CategoryController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                     
                 ]
             );
@@ -117,7 +117,7 @@ class CategoryController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                 ]
             );
 

@@ -51,9 +51,9 @@ class BeltHistoryController extends Controller
 
                     ],
                     [
-                        'belt_id.required' => ':attribute: is Required',
-                        'athlete_id.required' => ':attribute: is Required',
-                        'federation_id.required' => ':attribute: is Required',
+                        'belt_id.required' => ':attribute: es Obligatorio',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
+                        'federation_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
     
@@ -133,9 +133,9 @@ class BeltHistoryController extends Controller
 
                     ],
                     [
-                        'belt_id.required' => ':attribute: is Required',
-                        'athlete_id.required' => ':attribute: is Required',
-                        'federation_id.required' => ':attribute: is Required',
+                        'belt_id.required' => ':attribute: es Obligatorio',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
+                        'federation_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
     

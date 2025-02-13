@@ -70,10 +70,10 @@ class GroupCategoryController extends Controller
                    
                 ],
                 [
-                    'group_category.required' => ':attribute: is Required',
-                    'initial_value.required' => ':attribute: is Required',
-                    'final_value.required' => ':attribute: is Required',
-                    'category_id.required' => ':attribute: is Required',
+                    'group_category.required' => ':attribute: es Obligatorio',
+                    'initial_value.required' => ':attribute: es Obligatorio',
+                    'final_value.required' => ':attribute: es Obligatorio',
+                    'category_id.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -135,10 +135,10 @@ class GroupCategoryController extends Controller
                    
                 ],
                 [
-                    'group_category.required' => ':attribute: is Required',
-                    'initial_value.required' => ':attribute: is Required',
-                    'final_value.required' => ':attribute: is Required',
-                    'category_id.required' => ':attribute: is Required',
+                    'group_category.required' => ':attribute: es Obligatorio',
+                    'initial_value.required' => ':attribute: es Obligatorio',
+                    'final_value.required' => ':attribute: es Obligatorio',
+                    'category_id.required' => ':attribute: es Obligatorio',
                 ]
             );
 

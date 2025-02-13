@@ -57,7 +57,7 @@ class AssociationController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -80,7 +80,7 @@ class AssociationController extends Controller
                 'federation_id' => auth()->user()->federation_id,
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -121,7 +121,7 @@ class AssociationController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -144,7 +144,7 @@ class AssociationController extends Controller
                 'federation_id' => auth()->user()->federation_id,
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -160,7 +160,7 @@ class AssociationController extends Controller
             $obj = Association::findOrFail($id);
             $obj->delete();
     
-            return response()->json($obj, 200);
+            return response()->json(["messages" => "Registro eliminado Correctamente!", "data" => $obj], 200);
             
         } catch (\Throwable $th) {
             throw $th;

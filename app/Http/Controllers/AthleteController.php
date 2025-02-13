@@ -43,16 +43,16 @@ class AthleteController extends Controller
                         'belt_id' => 'required|integer',
                     ],
                     [
-                        'name.required' => ':attribute: is Required',
-                        'email.required' => ':attribute: is Required',
-                        'document.required' => ':attribute: is Required',
-                        'phone.required' => ':attribute: is Required',
-                        'gender.required' => ':attribute: is Required',
-                        'birthdate.required' => ':attribute: is Required',
-                        'country_id.required' => ':attribute: is Required',
-                        'city_id.required' => ':attribute: is Required',
-                        'type_document_id.required' => ':attribute: is Required',
-                        'belt_id.required' => ':attribute: is Required',
+                        'name.required' => ':attribute: es Obligatorio',
+                        'email.required' => ':attribute: es Obligatorio',
+                        'document.required' => ':attribute: es Obligatorio',
+                        'phone.required' => ':attribute: es Obligatorio',
+                        'gender.required' => ':attribute: es Obligatorio',
+                        'birthdate.required' => ':attribute: es Obligatorio',
+                        'country_id.required' => ':attribute: es Obligatorio',
+                        'city_id.required' => ':attribute: es Obligatorio',
+                        'type_document_id.required' => ':attribute: es Obligatorio',
+                        'belt_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
 
@@ -75,7 +75,7 @@ class AthleteController extends Controller
                     'academy_id' => $request->input('academy_id'),
                 ]);
 
-                return response()->json($obj, 201);
+                return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -95,9 +95,9 @@ class AthleteController extends Controller
 
                     ],
                     [
-                        'belt_id.required' => ':attribute: is Required',
-                        'athlete_id.required' => ':attribute: is Required',
-                        'federation_id.required' => ':attribute: is Required',
+                        'belt_id.required' => ':attribute: es Obligatorio',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
+                        'federation_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
 
@@ -129,7 +129,7 @@ class AthleteController extends Controller
 
 
 
-                return response()->json($obj, 201);
+                return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -150,9 +150,9 @@ class AthleteController extends Controller
 
                     ],
                     [
-                        'athlete_id.required' => ':attribute: is Required',
-                        'federation_id.required' => ':attribute: is Required',
-                        'association_id.required' => ':attribute: is Required',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
+                        'federation_id.required' => ':attribute: es Obligatorio',
+                        'association_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
 
@@ -193,9 +193,9 @@ class AthleteController extends Controller
 
                     ],
                     [
-                        'athlete_id.required' => ':attribute: is Required',
-                        'federation_id.required' => ':attribute: is Required',
-                        'association_id.required' => ':attribute: is Required',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
+                        'federation_id.required' => ':attribute: es Obligatorio',
+                        'association_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
 
@@ -233,7 +233,7 @@ class AthleteController extends Controller
                         'athlete_id' => 'required|integer',
                     ],
                     [
-                        'athlete_id.required' => ':attribute: is Required',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
 
@@ -269,7 +269,7 @@ class AthleteController extends Controller
                         'athlete_id' => 'required|integer',
                     ],
                     [
-                        'athlete_id.required' => ':attribute: is Required',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
 
@@ -354,9 +354,9 @@ class AthleteController extends Controller
 
                     ],
                     [
-                        'athlete_id.required' => ':attribute: is Required',
-                        'federation_id.required' => ':attribute: is Required',
-                        'association_id.required' => ':attribute: is Required',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
+                        'federation_id.required' => ':attribute: es Obligatorio',
+                        'association_id.required' => ':attribute: es Obligatorio',
                     ]
                 );
 

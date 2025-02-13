@@ -79,7 +79,7 @@ class MatchBracketController extends Controller
 
             $data = $this->generateMatchBracketsByType($athletes, $type_bracket, $event_id, $quadrilateral, $date, $entry_category_id, $match_timer);
 
-            return response()->json($data, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $data], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

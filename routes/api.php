@@ -38,6 +38,7 @@ use App\Http\Controllers\RankingController;
 use App\Http\Controllers\MinorAuthorizationController;
 use App\Http\Controllers\SanctionController;
 use App\Http\Controllers\TariffInscriptionController;
+use App\Http\Controllers\TypeMembershipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -390,6 +391,16 @@ Route::middleware('auth:sanctum')->prefix('sanction')->group(function (){
     Route::post("/", [SanctionController::class, 'store']);
     Route::put($idInThePath, [SanctionController::class, 'update']);
     Route::delete($idInThePath, [SanctionController::class, 'destroy']);
+});
+
+
+Route::middleware('auth:sanctum')->prefix('typemembership')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [TypeMembershipController::class, 'index']);
+    Route::get($idInThePath, [TypeMembershipController::class, 'edit']);
+    Route::post("/", [TypeMembershipController::class, 'store']);
+    Route::put($idInThePath, [TypeMembershipController::class, 'update']);
+    Route::delete($idInThePath, [TypeMembershipController::class, 'destroy']);
 });
 
 

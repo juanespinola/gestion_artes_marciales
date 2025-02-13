@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('total_number_fee');
             $table->boolean('status')->default(true);
             $table->unsignedBigInteger('federation_id');
-            $table->unsignedBigInteger('association_id');
+            $table->unsignedBigInteger('association_id')->nullable();
             $table->timestamps();           
         });
     }

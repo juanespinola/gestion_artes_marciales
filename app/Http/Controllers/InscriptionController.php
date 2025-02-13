@@ -101,7 +101,7 @@ class InscriptionController extends Controller
                     'event_weight' => 'required|integer',
                 ],
                 [
-                    'event_weight.required' => ':attribute: is Required',
+                    'event_weight.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -163,10 +163,10 @@ class InscriptionController extends Controller
                         'name' => 'required|string'
                     ],
                     [
-                        'event_id.required' => ':attribute: is Required',
-                        'athlete_id.required' => ':attribute: is Required',
-                        'tariff_inscription_id.required' => ':attribute: is Required',
-                        'name.required' => ':attribute: is Required',
+                        'event_id.required' => ':attribute: es Obligatorio',
+                        'athlete_id.required' => ':attribute: es Obligatorio',
+                        'tariff_inscription_id.required' => ':attribute: es Obligatorio',
+                        'name.required' => ':attribute: es Obligatorio',
                     ]
                 );
 

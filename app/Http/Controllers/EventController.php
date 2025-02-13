@@ -78,14 +78,14 @@ class EventController extends Controller
                     'quantity_quadrilateral' => 'required|integer',   
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'location_id.required' => ':attribute: is Required',
-                    'initial_date.required' => ':attribute: is Required',
-                    'initial_time.required' => ':attribute: is Required',
-                    // 'status_event_id.required' => ':attribute: is Required',
-                    'inscription_fee.required' => ':attribute: is Required',
-                    'available_slots.required' => ':attribute: is Required',                  
-                    'quantity_quadrilateral.required' => ':attribute: is Required',                  
+                    'description.required' => ':attribute: es Obligatorio',
+                    'location_id.required' => ':attribute: es Obligatorio',
+                    'initial_date.required' => ':attribute: es Obligatorio',
+                    'initial_time.required' => ':attribute: es Obligatorio',
+                    // 'status_event_id.required' => ':attribute: es Obligatorio',
+                    'inscription_fee.required' => ':attribute: es Obligatorio',
+                    'available_slots.required' => ':attribute: es Obligatorio',                  
+                    'quantity_quadrilateral.required' => ':attribute: es Obligatorio',                  
                 ]
             );
 
@@ -160,15 +160,15 @@ class EventController extends Controller
                     'quantity_quadrilateral' => 'required|integer',                   
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'location_id.required' => ':attribute: is Required',
-                    'initial_date.required' => ':attribute: is Required',
-                    'initial_time.required' => ':attribute: is Required',
-                    'type_event_id.required' => ':attribute: is Required',
-                    'status_event_id.required' => ':attribute: is Required',
-                    'inscription_fee.required' => ':attribute: is Required',
-                    'available_slots.required' => ':attribute: is Required',                  
-                    'quantity_quadrilateral.required' => ':attribute: is Required',                  
+                    'description.required' => ':attribute: es Obligatorio',
+                    'location_id.required' => ':attribute: es Obligatorio',
+                    'initial_date.required' => ':attribute: es Obligatorio',
+                    'initial_time.required' => ':attribute: es Obligatorio',
+                    'type_event_id.required' => ':attribute: es Obligatorio',
+                    'status_event_id.required' => ':attribute: es Obligatorio',
+                    'inscription_fee.required' => ':attribute: es Obligatorio',
+                    'available_slots.required' => ':attribute: es Obligatorio',                  
+                    'quantity_quadrilateral.required' => ':attribute: es Obligatorio',                  
                 ]
             );
 

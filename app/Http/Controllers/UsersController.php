@@ -74,10 +74,10 @@ class UsersController extends Controller
     
                     ],
                     [
-                        'name.required' => ':attribute: is Required',
-                        'email.required' => ':attribute: is Required',
-                        'password.required' => ':attribute: is Required',
-                        'rol.required' => ':attribute: is Required',
+                        'name.required' => ':attribute: es Obligatorio',
+                        'email.required' => ':attribute: es Obligatorio',
+                        'password.required' => ':attribute: es Obligatorio',
+                        'rol.required' => ':attribute: es Obligatorio',
                     ]
                 );
 
@@ -96,9 +96,7 @@ class UsersController extends Controller
                     $obj->assignRole($rol["name"]);
                 }
                 
-
-
-                return response()->json($obj, 201);
+                return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -148,10 +146,10 @@ class UsersController extends Controller
 
                 ],
                 [
-                    'name.required' => ':attribute: is Required',
-                    'email.required' => ':attribute: is Required',
-                    // 'password.required' => ':attribute: is Required',
-                    'rol.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: es Obligatorio',
+                    'email.required' => ':attribute: es Obligatorio',
+                    // 'password.required' => ':attribute: es Obligatorio',
+                    'rol.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -210,8 +208,8 @@ class UsersController extends Controller
                         'email' => 'required|string',
                     ],
                     [
-                        'name.required' => ':attribute: is Required',
-                        'email.required' => ':attribute: is Required',
+                        'name.required' => ':attribute: es Obligatorio',
+                        'email.required' => ':attribute: es Obligatorio',
                     ]
                 );
     
@@ -225,7 +223,7 @@ class UsersController extends Controller
                     'email' => $request->input('email'),
                 ]);
     
-                return response()->json($obj, 201);
+                return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
             }
         } catch (\Throwable $th) {
             throw $th;

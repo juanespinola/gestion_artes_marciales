@@ -64,8 +64,8 @@ class SanctionController extends Controller
                     'comments' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'comments.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
+                    'comments.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -80,7 +80,7 @@ class SanctionController extends Controller
                 'comments' => $request->input('comments'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -115,8 +115,8 @@ class SanctionController extends Controller
                     'comments' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'comments.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
+                    'comments.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -131,7 +131,7 @@ class SanctionController extends Controller
                 'comments' => $request->input('comments'),
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

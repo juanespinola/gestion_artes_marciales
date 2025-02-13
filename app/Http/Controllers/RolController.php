@@ -46,7 +46,7 @@ class RolController extends Controller
                     'name' => 'required|string',
                 ],
                 [
-                    'name.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -62,7 +62,7 @@ class RolController extends Controller
             $obj->givePermissionTo($request->input('rolePermissionArray'));
 
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -109,7 +109,7 @@ class RolController extends Controller
                     'name' => 'required|string',
                 ],
                 [
-                    'name.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: es Obligatorio',
                 ]
             );
 

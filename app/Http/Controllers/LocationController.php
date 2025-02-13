@@ -20,7 +20,7 @@ class LocationController extends Controller
                 //     return response()->json(['Unauthorized, you don\'t have access.'],400);
                 // }
 
-                $data = Location::all();
+                $data = Location::with('city.country')->get();
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -51,9 +51,9 @@ class LocationController extends Controller
                     'address' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'city_id.required' => ':attribute: is Required',
-                    'address.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
+                    'city_id.required' => ':attribute: es Obligatorio',
+                    'address.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -110,9 +110,9 @@ class LocationController extends Controller
                     'address' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
-                    'city_id.required' => ':attribute: is Required',
-                    'address.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
+                    'city_id.required' => ':attribute: es Obligatorio',
+                    'address.required' => ':attribute: es Obligatorio',
                 ]
             );
 

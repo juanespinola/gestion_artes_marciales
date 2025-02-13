@@ -49,7 +49,7 @@ class StatusEventController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -102,7 +102,7 @@ class StatusEventController extends Controller
                     'description' => 'required|string',
                 ],
                 [
-                    'description.required' => ':attribute: is Required',
+                    'description.required' => ':attribute: es Obligatorio',
                 ]
             );
 

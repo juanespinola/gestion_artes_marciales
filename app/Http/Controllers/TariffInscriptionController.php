@@ -60,11 +60,11 @@ class TariffInscriptionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $data = TariffInscription::updateOrCreate(
+            $obj = TariffInscription::updateOrCreate(
                 ["entry_category_id" => $id], // este es el entry_category_id
                 [ 'price' => $request->input('price') ]
             );
-            return response()->json($data, 200);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }

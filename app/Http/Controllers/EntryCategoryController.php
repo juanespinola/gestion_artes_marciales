@@ -71,11 +71,11 @@ class EntryCategoryController extends Controller
                     'gender' => 'required|string',
                 ],
                 [
-                    'name.required' => ':attribute: is Required',
-                    'min_age.required' => ':attribute: is Required',
-                    'max_age.required' => ':attribute: is Required',
-                    'belt_id.required' => ':attribute: is Required',
-                    'gender.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: es Obligatorio',
+                    'min_age.required' => ':attribute: es Obligatorio',
+                    'max_age.required' => ':attribute: es Obligatorio',
+                    'belt_id.required' => ':attribute: es Obligatorio',
+                    'gender.required' => ':attribute: es Obligatorio',
                 ]
             );
 
@@ -140,11 +140,11 @@ class EntryCategoryController extends Controller
                     'gender' => 'required|string',
                 ],
                 [
-                    'name.required' => ':attribute: is Required',
-                    'min_age.required' => ':attribute: is Required',
-                    'max_age.required' => ':attribute: is Required',
-                    'belt_id.required' => ':attribute: is Required',
-                    'gender.required' => ':attribute: is Required',
+                    'name.required' => ':attribute: es Obligatorio',
+                    'min_age.required' => ':attribute: es Obligatorio',
+                    'max_age.required' => ':attribute: es Obligatorio',
+                    'belt_id.required' => ':attribute: es Obligatorio',
+                    'gender.required' => ':attribute: es Obligatorio',
                 ]
             );
 

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 class MembershipController extends Controller
 {
+
     public function generateMemberShipFee(Request $request) {
         
         try {

@@ -67,8 +67,8 @@ class NewsController extends Controller
                     'content' => 'required|string',
                 ],
                 [
-                    'title.required' => ':attribute: is Required',
-                    'content.required' => ':attribute: is Required',
+                    'title.required' => 'Titulo es Obligatorio',
+                    'content.required' => 'Contenido es Obligatorio',
                 ]
             );
 
@@ -85,7 +85,7 @@ class NewsController extends Controller
                 'association_id' => auth()->user()->association_id,
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -127,8 +127,8 @@ class NewsController extends Controller
                     'content' => 'required|string',
                 ],
                 [
-                    'title.required' => ':attribute: is Required',
-                    'content.required' => ':attribute: is Required',
+                    'title.required' => 'Titulo es Obligatorio',
+                    'content.required' => 'Contenido es Obligatorio',
                 ]
             );
 
@@ -146,7 +146,7 @@ class NewsController extends Controller
                 'association_id' => auth()->user()->association_id,
             ]);
 
-            return response()->json($obj, 201);
+            return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -161,7 +161,7 @@ class NewsController extends Controller
             $obj = News::findOrFail($id);
             $obj->delete();
     
-            return response()->json($obj, 200);
+            return response()->json(["messages" => "Registro eliminado Correctamente!", "data" => $obj], 200);
 
         }  catch (\Throwable $th) {
             throw $th;

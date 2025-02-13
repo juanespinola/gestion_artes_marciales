@@ -15,7 +15,7 @@ class TypeMembership extends Model
         'id',
         'description',
         'price',
-        'number_fee',
+        'total_number_fee',
         'federation_id',
         'association_id',
     ];
