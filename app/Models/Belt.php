@@ -13,6 +13,7 @@ class Belt extends Model
     
     protected $fillable = [
         'color',
+        'color_hexadecimal',
         'federation_id',
     ];
 

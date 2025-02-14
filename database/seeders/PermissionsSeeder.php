@@ -30,18 +30,19 @@ class PermissionsSeeder extends Seeder
             "user", 
             "federation", 
             "association", 
-            "customer", 
-            "sport",
-            "category",
-            "groupcategory",
+            "athlete", 
+            "belt",
+            "membershiptypes",
+            "minorauthorizations",
             "event",
+            "country",
             "typesevent",
             "statusevent",
             'new',
             'request',
-            'place',
             'permission',
-            'rol'
+            'rol',
+            'location',
         ];
 
         $permissions = [];
@@ -83,11 +84,11 @@ class PermissionsSeeder extends Seeder
                 'statusevent.update',
                 'statusevent.delete',
 
-                // place
-                'place.access',
-                'place.create',
-                'place.update',
-                'place.delete',                
+                // location
+                'location.access',
+                'location.create',
+                'location.update',
+                'location.delete',                
 
                 // rol
                 'rol.access',
@@ -101,6 +102,20 @@ class PermissionsSeeder extends Seeder
                 'permission.create',
                 'permission.update',
                 'permission.delete',
+                
+                //country
+                'country.access',
+                'country.create',
+                'country.update',
+                'country.delete',
+
+
+                //belt
+                'belt.access',
+                'belt.create',
+                'belt.update',
+                'belt.delete',
+
             ]);
         
             Role::create(["name" => "federation-admin"])
@@ -133,10 +148,19 @@ class PermissionsSeeder extends Seeder
                     'request.create',
                     'request.update',
                     'request.delete',
-
-                    "typesevent.access",
-                    "statusevent.access",
-
+                    
+                    // membershiptypes
+                    'membershiptypes.access',
+                    'membershiptypes.create',
+                    'membershiptypes.update',
+                    'membershiptypes.delete',
+                   
+                    // minorauthorizations
+                    'minorauthorizations.access',
+                    'minorauthorizations.create',
+                    'minorauthorizations.update',
+                    'minorauthorizations.delete',
+                    
                 ]);
             Role::create(["name" => "association-admin"])
             ->givePermissionTo([
@@ -146,11 +170,7 @@ class PermissionsSeeder extends Seeder
                 'user.create',
                 'user.update',
                 'user.delete',
-                // category
-                'groupcategory.access',
-                'groupcategory.create',
-                'groupcategory.update',
-                'groupcategory.delete',
+               
                 // event
                 'event.access',
                 'event.create',
@@ -169,8 +189,6 @@ class PermissionsSeeder extends Seeder
                 'request.update',
                 'request.delete',
 
-                "typesevent.access",
-                "statusevent.access",
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);
