@@ -22,6 +22,11 @@ class Country extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+    
+
 
     public function city() {
         return $this->belongsTo(Country::class);

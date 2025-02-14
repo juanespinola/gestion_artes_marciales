@@ -26,6 +26,9 @@ class MinorAuthorization extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'authorized' => 'boolean',
+    ];
 
     public function user(){
         return $this->belongsTo(User::class);

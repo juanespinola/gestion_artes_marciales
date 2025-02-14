@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -88,7 +90,7 @@ class LocationController extends Controller
     public function edit($id)
     {
         try {
-            $data = Location::findOrFail($id);
+            $data = Location::with('city.country')->findOrFail($id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             throw $th;

@@ -19,6 +19,11 @@ class Bracket extends Model
         'status',
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+    
+
     protected $hidden = [
         'created_at',
         'updated_at',

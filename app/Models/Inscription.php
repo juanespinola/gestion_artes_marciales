@@ -27,6 +27,10 @@ class Inscription extends Model
         'tariff_inscription_id',
     ];
 
+    protected $casts = [
+        'valid_weight' => 'boolean',
+    ];
+
     public function event()  {
         return $this->belongsTo(Event::class);      
     }

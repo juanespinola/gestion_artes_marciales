@@ -419,7 +419,7 @@ Route::group(['prefix'=>'athlete'], function () {
     Route::get("/federations", [FederationController::class, "getFederations"]);
     Route::get("/associations/{federation_id}", [AssociationController::class, "getAssociations"]);
     Route::post("/cities", [CityController::class, 'getCities']);
-    Route::get("/countries", [CountryController::class, 'getCountries']);
+    Route::post("/countries", [CountryController::class, 'getCountries']);
     Route::get("/typesdocument", [TypeDocumentController::class, 'getTypesDocument']);
     Route::get("/academies", [AcademyController::class, 'getAcademies']);
     Route::post("/belts", [BeltController::class, 'getBelts']);

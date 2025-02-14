@@ -25,6 +25,11 @@ class Association extends Model
         'instagram',
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+    
+
     protected $hidden = [
         'created_at',
         'updated_at',

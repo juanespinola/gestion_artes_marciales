@@ -18,6 +18,11 @@ class City extends Model
         'country_id',
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+    
+
     protected $hidden = [
         'created_at',
         'updated_at',

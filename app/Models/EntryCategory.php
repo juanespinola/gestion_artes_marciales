@@ -25,6 +25,12 @@ class EntryCategory extends Model
         'minor_category'
     ];
 
+
+    protected $casts = [
+        'minor_category' => 'boolean',
+    ];
+    
+
     protected $hidden = [
         'created_at',
         'updated_at',

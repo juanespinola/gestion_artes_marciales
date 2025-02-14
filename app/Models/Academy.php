@@ -18,6 +18,11 @@ class Academy extends Model
         'federation_id'
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+    
+
     protected $hidden = [
         'created_at',
         'updated_at',
