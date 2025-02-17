@@ -26,9 +26,9 @@ class Membership extends Model
         'association_id',
     ];
 
-    protected $casts = [
-        'status' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'status' => 'boolean',
+    // ];
 
     protected $hidden = [
         'created_at',

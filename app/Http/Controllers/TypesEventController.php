@@ -15,10 +15,10 @@ class TypesEventController extends Controller
     {
         try {
             if($request->BearerToken()){
-                $user = auth()->user();
-                if (!$user->hasPermissionTo("typesevent.access")) {
-                    return response()->json(['Unauthorized, you don\'t have access.'],400);
-                }
+                // $user = auth()->user();
+                // if (!$user->hasPermissionTo("typesevent.access")) {
+                //     return response()->json(['Unauthorized, you don\'t have access.'],400);
+                // }
 
                 $data = TypesEvent::all();
                 return response()->json($data, 200);

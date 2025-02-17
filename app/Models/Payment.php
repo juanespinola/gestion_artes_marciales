@@ -39,6 +39,10 @@ class Payment extends Model
         return $this->belongsTo(Inscription::class, 'inscription_id', 'id');
     }
 
+    public function athlete()  {
+        return $this->belongsTo(Athlete::class, 'athlete_id', 'id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults(); 

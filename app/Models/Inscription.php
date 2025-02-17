@@ -18,6 +18,7 @@ class Inscription extends Model
         'tariff_inscription_id',
         'event_weight',
         'valid_weight',
+        'status',
     ];
 
     protected $hidden = [

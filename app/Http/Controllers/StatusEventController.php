@@ -15,10 +15,10 @@ class StatusEventController extends Controller
     {
         try {
             if($request->BearerToken()){
-                $user = auth()->user();
-                if (!$user->hasPermissionTo("statusevent.access")) {
-                    return response()->json(['Unauthorized, you don\'t have access.'],400);
-                }
+                // $user = auth()->user();
+                // if (!$user->hasPermissionTo("statusevent.access")) {
+                //     return response()->json(['Unauthorized, you don\'t have access.'],400);
+                // }
 
                 $data = StatusEvent::all();
                 return response()->json($data, 200);

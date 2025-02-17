@@ -27,9 +27,9 @@ class News extends Model
         'created_at',
     ];
 
-    protected $casts = [
-        'status' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'status' => 'boolean',
+    // ];
 
     protected $hidden = [
         'federation_id',

@@ -403,7 +403,11 @@ Route::middleware('auth:sanctum')->prefix('typemembership')->group(function (){
     Route::delete($idInThePath, [TypeMembershipController::class, 'destroy']);
 });
 
-
+Route::middleware('auth:sanctum')->prefix('payment')->group(function (){
+    Route::get("/", [PaymentController::class, 'index']);
+    Route::get("/{id}", [PaymentController::class, 'edit']);
+    Route::put("/{id}", [PaymentController::class, 'confirmPaymentAthlete']);
+});
 
 
 // parte de atletas

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inscription;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
 class PaymentController extends Controller
 {
-   
-   /**
+
+    /**
      * Forma de pago
      */
     private $gateway_payment;
@@ -45,8 +46,7 @@ class PaymentController extends Controller
     private $athlete_id;
 
 
-    public function __construct() {
-    }
+    public function __construct() {}
     /**
      * Setear forma de pago
      */
@@ -187,7 +187,7 @@ class PaymentController extends Controller
     }
 
 
-     /**
+    /**
      * Se crear una compra temporal, que retonar el id de la tabla Sale, con ese dato
      * se realizan las operaciones con la plataforma de pago o de forma gratuita.
      */
@@ -196,7 +196,7 @@ class PaymentController extends Controller
         try {
 
             // TODO: necesitamos cambiar el estado de lo que se pago, por ejemplo inscripcion
-            
+
             $payment_gateway = $request->input('payment_gateway');
             $inscription_id = $request->input('inscription_id') ? $request->input('inscription_id') : null;
             $membership_id = $request->input('membership_id') ? $request->input('membership_id') : null;
@@ -214,20 +214,20 @@ class PaymentController extends Controller
             $data = null;
 
             //aqui necesitamos colocar los datos del pago, por ejemplo el precio y que se va a pagar
-            if($inscription_id) {
+            if ($inscription_id) {
                 $existPayment = Payment::where('inscription_id', $inscription_id)
                     ->first();
 
-                if($existPayment) {
+                if ($existPayment) {
                     return response()->json(["messages" => "Pago existente", "data" => $existPayment], 200);
                 }
             }
 
-            if($membership_id) {
+            if ($membership_id) {
                 $existPayment = Payment::where('membership_id', $membership_id)
                     ->first();
 
-                if($existPayment) {
+                if ($existPayment) {
                     return response()->json(["messages" => "Pago existente", "data" => $existPayment], 200);
                 }
             }
@@ -241,7 +241,7 @@ class PaymentController extends Controller
                     'inscription_id' => $inscription_id,
                     'membership_id' => $membership_id,
                     'payment_gateway' => $payment_gateway,
-                    'status' => 'confirmado',
+                    'status' => 'pendiente',
                     'federation_id' => $federation_id,
                     'association_id' => $association_id,
                     'athlete_id' => $athlete_id,
@@ -254,7 +254,6 @@ class PaymentController extends Controller
                 $obj->data_error = "Ocurrió un error que no sabemos";
 
                 return response()->json(["messages" => "Pago creado correctamente", "data" => $obj], 200);
-
             } else if ($payment_gateway == 'vpos') {
                 $status = true;
 
@@ -287,7 +286,7 @@ class PaymentController extends Controller
                         $zimple,
                         $payment_for
                     );
-                    
+
                     if ($bancard->isSuccess()) {
                         $data =  $bancard->getData();
                     } else {
@@ -296,7 +295,7 @@ class PaymentController extends Controller
                         $status = false;
                     }
                 }
-            } 
+            }
 
 
             $this->process = $status;
@@ -308,7 +307,7 @@ class PaymentController extends Controller
             $obj->process_id = $this->data;
             $obj->data_error = $this->data_error;
 
-           return response()->json(["messages" => "Pago creado correctamente", "data" => $obj], 200);
+            return response()->json(["messages" => "Pago creado correctamente", "data" => $obj], 200);
         } catch (\Throwable $th) {
             throw $th;
             return response()->json(["messages" => "Epaaaa"], 400);
@@ -321,7 +320,7 @@ class PaymentController extends Controller
         $operation = new \StdClass;
         $operation->status = false;
         $operation->msj = 'No hubo registro';
-    
+
         try {
             DB::beginTransaction();
 
@@ -336,7 +335,6 @@ class PaymentController extends Controller
             if ($bancard->isSuccess()) {
                 $operation->status = true;
                 $payment->status = 'cancelado';
-
             } else {
                 $operation->status = false;
                 $err = $bancard->getErrorData();
@@ -391,12 +389,12 @@ class PaymentController extends Controller
     public static function confirmPaymentBancard()
     {
         // $status = 'OK';
-        
+
         $operation = (object)request()->operation;
-        $shop_process_id = $operation->shop_process_id; 
+        $shop_process_id = $operation->shop_process_id;
         $amount = $operation->amount;
         $token = $operation->token;
-        
+
 
         try {
             $bancard = new BancardGateway;
@@ -412,13 +410,61 @@ class PaymentController extends Controller
                 $status = self::reason_cancel($response_code);
                 return response()->json($status, 200);
             }
-           
         } catch (\Exception $e) {
             return response()->json(['messages' => $e->getMessage()], 400);
         }
     }
 
 
-    
+    public function confirmPaymentAthlete(Request $request, $id)
+    {
+        try {
+            
+            $payment = Payment::findOrFail($id);
+            $payment->status = 'confirmado';
 
+            if ($payment->inscription_id) {
+                $inscription = Inscription::findOrFail($payment->inscription_id);
+                $inscription->update([
+                    'status' => 'pagado'
+                ]);
+            }
+
+            $payment->save();
+            // return ["messages" => "Pago Confirmado Correctamente"];
+            return response()->json(["messages" => "Pago creado correctamente"], 200);
+        } catch (\Exception $e) {
+            return response()->json(['messages' => $e->getMessage()], 400);
+        }
+    }
+
+    public function index(Request $request) {
+        try {
+            if($request->BearerToken()){
+                // $user = auth()->user();
+                // if (!$user->hasPermissionTo("statusevent.access")) {
+                    // return response()->json(['Unauthorized, you don\'t have access.'],400);
+                // }
+
+                $data = Payment::where('federation_id', auth()->user()->federation_id)
+                ->with('membership', 'inscription', 'athlete')
+                ->get();
+                return response()->json($data, 200);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function edit($id)
+    {
+        try {
+            $data = Payment::with('membership', 'inscription', 'athlete')
+                ->findOrFail($id);
+            return response()->json($data, 200);
+    
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
