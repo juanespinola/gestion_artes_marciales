@@ -62,11 +62,11 @@ return new class extends Migration
             $table->foreign(['entry_category_id'])->references(['id'])->on('entry_categories')->onUpdate('restrict')->onDelete('restrict');
         });
 
-        Schema::table('level_belts', function (Blueprint $table) {
-            $table->foreign(['belt_id'])->references(['id'])->on('belts')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['athlete_id'])->references(['id'])->on('athletes')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['event_id'])->references(['id'])->on('events')->onUpdate('restrict')->onDelete('restrict');
-        });
+        // Schema::table('level_belts', function (Blueprint $table) {
+        //     $table->foreign(['belt_id'])->references(['id'])->on('belts')->onUpdate('restrict')->onDelete('restrict');
+        //     $table->foreign(['athlete_id'])->references(['id'])->on('athletes')->onUpdate('restrict')->onDelete('restrict');
+        //     $table->foreign(['event_id'])->references(['id'])->on('events')->onUpdate('restrict')->onDelete('restrict');
+        // });
 
         Schema::table('cities', function (Blueprint $table) {
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
