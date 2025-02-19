@@ -187,9 +187,7 @@ class EventController extends Controller
                         return response()->json(['messages' => "La categoría '{$category->name}' no tiene tarifa de inscripción."], 400);
                     }
                 }
-            } else {
-                return response()->json(['messages' => "Debes cargar el costo del Evento."], 400);
-            }
+            } 
 
             $obj->update([
                 'description' => $request->input('description'),
@@ -226,12 +224,14 @@ class EventController extends Controller
             $obj->delete();
 
             return response()->json(["messages" => "Registro eliminado Correctamente!"], 200);
-        } catch (QueryException $e) {
-            if ($e->getCode() == "23503") { // Código de error SQL para violación de clave foránea
-                return response()->json(['error' => 'No se puede eliminar el registro porque está relacionado con otros datos.'], 409);
-            }
-            return response()->json(['error' => 'Error en la base de datos.'], 500);
-        } catch (\Throwable $th) {
+        } 
+        // catch (QueryException $e) {
+        //     if ($e->getCode() == "23503") { // Código de error SQL para violación de clave foránea
+        //         return response()->json(['error' => 'No se puede eliminar el registro porque está relacionado con otros datos.'], 409);
+        //     }
+        //     return response()->json(['error' => 'Error en la base de datos.'], 500);
+        // } 
+        catch (\Throwable $th) {
             throw $th;
         }
     }

@@ -19,9 +19,9 @@ class Bracket extends Model
         'status',
     ];
 
-    protected $casts = [
-        'status' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'status' => 'boolean',
+    // ];
     
 
     protected $hidden = [
