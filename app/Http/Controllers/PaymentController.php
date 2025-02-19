@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Inscription;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -215,7 +216,10 @@ class PaymentController extends Controller
 
             //aqui necesitamos colocar los datos del pago, por ejemplo el precio y que se va a pagar
             if ($inscription_id) {
-                $existPayment = Payment::where('inscription_id', $inscription_id)
+                $existPayment = Payment::where([
+                        [ 'inscription_id', $inscription_id ],
+                        // [ 'status' , 'pagado']
+                    ])
                     ->first();
 
                 if ($existPayment) {
@@ -224,7 +228,10 @@ class PaymentController extends Controller
             }
 
             if ($membership_id) {
-                $existPayment = Payment::where('membership_id', $membership_id)
+                $existPayment = Payment::where([
+                    ['membership_id', $membership_id],
+                    // [ 'status' , 'pagado']
+                ])
                     ->first();
 
                 if ($existPayment) {
@@ -419,20 +426,26 @@ class PaymentController extends Controller
     public function confirmPaymentAthlete(Request $request, $id)
     {
         try {
-            
+            $total_participants = 0;
             $payment = Payment::findOrFail($id);
             $payment->status = 'confirmado';
 
-            if ($payment->inscription_id) {
+            if ($payment->inscription_id && $payment->save()) {
                 $inscription = Inscription::findOrFail($payment->inscription_id);
                 $inscription->update([
                     'status' => 'pagado'
                 ]);
+
+                $event = Event::findOrFail($inscription->event_id);
+                $total_participants = $event->$total_participants + 1;
+                $event->update([
+                    'total_participants' => $total_participants 
+                ]);
+                
             }
 
-            $payment->save();
-            // return ["messages" => "Pago Confirmado Correctamente"];
-            return response()->json(["messages" => "Pago creado correctamente"], 200);
+            // $payment->save();
+            return response()->json(["messages" => "Pago creado correctamente", $event, $total_participants], 200);
         } catch (\Exception $e) {
             return response()->json(['messages' => $e->getMessage()], 400);
         }

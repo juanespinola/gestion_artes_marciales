@@ -22,24 +22,40 @@ class EntryCategoryController extends Controller
 
                 // return response()->json($data, 200);
                 $data = EntryCategory::where('event_id', $event_id)
-                ->with('belt') // Asegúrate de que 'belt' es la relación correcta
-                ->get()
-                ->groupBy(function ($item) {
-                    return $item->belt->id; // Agrupa por el id del cinturón
-                })
-                ->map(function ($group, $beltId) {
-                    $belt = $group->first()->belt; // Obtén los datos del cinturón del primer elemento
-                    return [
-                        "cinturon" => [
-                            "id" => $belt->id,
-                            "color" => $belt->color,
-                        ],
-                        "categories" => $group->values()->toArray(),
-                    ];
-                })
-                ->values() // Convierte a un array sin claves
-                ->toArray();
-                
+                    ->with('belt') // Asegúrate de que 'belt' es la relación correcta
+                    ->get()
+                    ->groupBy(function ($item) {
+                        return $item->belt->id; // Agrupa por el id del cinturón
+                    })
+                    ->map(function ($group, $beltId) {
+                        $belt = $group->first()->belt; // Obtén los datos del cinturón del primer elemento
+                        return [
+                            "cinturon" => [
+                                "id" => $belt->id,
+                                "color" => $belt->color,
+                            ],
+                            // "categories" => $group->values()->toArray(),
+                            "categories" => $group->map(function ($category) {
+                                return [
+                                    "id" => $category->id,
+                                    "name" => $category->name,
+                                    "min_age" => $category->min_age,
+                                    "max_age" => $category->max_age,
+                                    "min_weight" => $category->min_weight,
+                                    "max_weight" => $category->max_weight,
+                                    "belt_id" => $category->belt_id,
+                                    "gender" => $category->gender,
+                                    "clothes" => $category->clothes,
+                                    "event_id" => $category->event_id,
+                                    "minor_category" => $category->minor_category,
+                                    "belt" => $category->belt,
+                                    "tariff_inscription" => $category->tariff_inscription // Asegura que se incluya la relación
+                                ];
+                            })->values()->toArray(),
+                        ];
+                    })->values() // Convierte a un array sin claves
+                    ->toArray();
+
                 return response()->json($data, 200);
             }
         } catch (\Throwable $th) {
@@ -196,35 +212,23 @@ class EntryCategoryController extends Controller
                 $athlete = auth()->user();
                 $event_id = $request->input('event_id');
 
-                // $data = EntryCategory::where([
-                //     ["min_age", "<=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
-                //     ["max_age", ">=", Carbon::parse($athlete->birthdate)->age], // edad del athleta del auth
-                //     ["belt_id", "=", $athlete->belt_id],
-                //     ["gender", "=", $athlete->gender],
-                //     // ["event_id", "=", $event_id],
-                // ])
-                //     ->with('tariff_inscription')
-                //     ->get()
-                //     ->load('belt')
-                //     ->groupBy('belt.color');
-
                 $entries = EntryCategory::where([
-                    ["min_age", "<=", Carbon::parse($athlete->birthdate)->age], 
-                    ["max_age", ">=", Carbon::parse($athlete->birthdate)->age], 
+                    ["min_age", "<=", Carbon::parse($athlete->birthdate)->age],
+                    ["max_age", ">=", Carbon::parse($athlete->birthdate)->age],
                     ["belt_id", "=", $athlete->belt_id],
                     ["gender", "=", $athlete->gender],
                     ["event_id", "=", $event_id],
                 ])
                     ->with(['tariff_inscription.entry_category', 'belt'])
                     ->get();
-    
-              
+
+
                 $data = $entries->groupBy('belt.color')->map(function ($categories, $beltColor) {
                     return [
                         "belt" => $beltColor,
                         "categories" => $categories->values(),
                     ];
-                })->values(); 
+                })->values();
 
                 return response()->json($data, 200);
             }

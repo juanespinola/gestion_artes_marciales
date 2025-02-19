@@ -52,14 +52,39 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'
-                // , 'confirmed'
+        
+        return Validator::make(
+            $data, 
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8',
+                'birthdate' => 'required|date',
             ],
-            'birthdate' => ['required', 'date'],
-        ]);
+            [
+                'name.required' => ':attribute: es Obligatorio',
+                'email.required' => ':attribute: es Obligatorio',
+                'password.required' => ':attribute: es Obligatorio',
+                'birthdate.required' => ':attribute: es Obligatorio',
+            ]
+        );
+        // $validation = Validator::make($data, [
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => [
+        //         'required',
+        //         'string',
+        //         'min:8'
+        //         // , 'confirmed'
+        //     ],
+        //     'birthdate' => ['required', 'date'],
+        // ]);
+
+        // if($validation->fails()){
+        //     return response()->json(["messages" => $validation->errors()], 400);
+        // }
+        
+        // return $validation;
     }
 
     /**
@@ -70,43 +95,48 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        
-        $athlete = Athlete::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'birthdate' => $data['birthdate'],
-            'document' => $data['document'],
-            'gender' => $data['gender'],
-            'is_minor' => $this->isMinor($data['birthdate']),
-            'country_id' => $data['country_id'],
-            'type_document_id' => $data['type_document_id'],
-            'city_id' => $data['city_id'],
-            'academy_id' => $data['academy_id'],
-            'belt_id' => $data['belt_id'],
-            'phone' => $data['phone'],
-        ]);
-
-        // TODO:falta agregar la federacion y associacion
-        $federationAthletes = FederationsAthletes::create([
-            'athlete_id' => $athlete->id,
-            'federation_id' => $data['federation_id'],
-            'association_id' => $data['association_id']
-        ]);
-
-        if($this->isMinor($data['birthdate'])){
-            MinorAuthorization::create([
-                'athlete_id' => $athlete->id,
-                'federation_id' => $data['federation_id']
+        try {
+           
+            $athlete = Athlete::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'birthdate' => $data['birthdate'],
+                'document' => $data['document'],
+                'gender' => $data['gender'],
+                'is_minor' => $this->isMinor($data['birthdate']),
+                'country_id' => $data['country_id'],
+                'type_document_id' => $data['type_document_id'],
+                'city_id' => $data['city_id'],
+                'academy_id' => $data['academy_id'],
+                'belt_id' => $data['belt_id'],
+                'phone' => $data['phone'],
             ]);
-        }
 
-        return $athlete;
+            // TODO:falta agregar la federacion y associacion
+            FederationsAthletes::create([
+                'athlete_id' => $athlete->id,
+                'federation_id' => $data['federation_id'],
+                'association_id' => $data['association_id']
+            ]);
+
+            if ($this->isMinor($data['birthdate'])) {
+                MinorAuthorization::create([
+                    'athlete_id' => $athlete->id,
+                    'federation_id' => $data['federation_id']
+                ]);
+            }
+
+            // return response()->json(['message' => 'Registro Correcto!', 'data' => $athlete], 200);
+            return $athlete;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
         // return auth('athletes')->loginUsingId($athlete->id);
         // if( auth('athletes')->loginUsingId($athlete->id)){
-                   
+
         //     $user = auth('athletes')->user();                
-            
+
         //     $user->city = $user->city()->first();
         //     $user->country = $user->country()->first();
         //     $user->typeDocument = $user->typeDocument()->first();
@@ -114,7 +144,7 @@ class RegisterController extends Controller
         //     $federationOfUser = $user->federation($data['federation_id'])->with('association')->first();
 
         //     $user->federation = $federationOfUser;
-        
+
 
         //     if($user->type !== 'athlete'){
         //         return response()->json(['message' => ' Usuario no es Atleta'], 400);
@@ -129,7 +159,7 @@ class RegisterController extends Controller
         //         ->causedBy($user)
         //         ->withProperties(['ip' => request()->ip()])
         //         ->log('Athlete Login');
-            
+
 
         //     return response()->json($response, 200);
         // } else {
@@ -137,7 +167,8 @@ class RegisterController extends Controller
         // }
     }
 
-    private function isMinor($birthdate) {
+    private function isMinor($birthdate)
+    {
         return Carbon::parse($birthdate)->age < 18;
     }
 }

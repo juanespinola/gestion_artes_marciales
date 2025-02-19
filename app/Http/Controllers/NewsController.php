@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -162,6 +163,35 @@ class NewsController extends Controller
             $obj->delete();
     
             return response()->json(["messages" => "Registro eliminado Correctamente!", "data" => $obj], 200);
+
+        } catch (QueryException $e) {
+
+            if ($e->getCode() == "23503") { // PostgreSQL: Error de clave foránea
+                return response()->json([
+                    'messages' => 'No se puede eliminar el registro porque está relacionado con otros datos.'
+                ], 409); // Código 409 (Conflicto)
+            }
+            
+            if ($e->getCode() == "23000") { // Código general de restricción de clave foránea
+                $errorMessage = $e->getMessage();
+    
+                if (str_contains($errorMessage, '1451')) { // No se puede eliminar porque tiene registros relacionados
+                    return response()->json([
+                        'messages' => 'No se puede eliminar el registro porque está relacionado con otros datos.'
+                    ], 409);
+                }
+    
+                if (str_contains($errorMessage, '1452')) { // No se puede insertar/actualizar porque la clave foránea no existe
+                    return response()->json([
+                        'messages' => 'No se puede crear o actualizar el registro porque la clave foránea no existe.'
+                    ], 400);
+                }
+            }
+    
+            return response()->json([
+                'messages' => 'Error en la base de datos.',
+                'code' => $e->getCode()
+            ], 500);
 
         }  catch (\Throwable $th) {
             throw $th;
