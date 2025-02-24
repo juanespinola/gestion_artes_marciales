@@ -25,36 +25,70 @@ class RankingController extends Controller
     public function index(Request $request)
     {
         try {
+            // $rankings = DB::table('rankings')
+            //     ->join('entry_categories', 'rankings.entry_category_id', '=', 'entry_categories.id')
+            //     ->join('belts', 'entry_categories.belt_id', '=', 'belts.id')
+            //     ->join('athletes', 'rankings.athlete_id', '=', 'athletes.id')
+            //     ->select(
+            //         'belts.id as belt_id',
+            //         DB::raw('LOWER(belts.color) as belt_color'),
+            //         'entry_categories.id as category_id',
+            //         DB::raw('LOWER(entry_categories.name) as category_name'),
+            //         'rankings.athlete_id',
+            //         'athletes.*',
+            //         DB::raw('SUM(rankings.event_points) as total_points'),
+            //         DB::raw('SUM(rankings.victories) as total_victories'),
+            //         DB::raw('SUM(rankings.defeats) as total_defeats'),
+            //         DB::raw('SUM(rankings.gold) as gold_medals'),
+            //         DB::raw('SUM(rankings.silver) as silver_medals'),
+            //         DB::raw('SUM(rankings.bronze) as bronze_medals')
+            //     )
+            //     ->groupBy(
+            //         'belts.id',
+            //         'belt_color',
+            //         'entry_categories.id',
+            //         'category_name',
+            //         'rankings.athlete_id',
+            //         'athletes.id'
+            //     )
+            //     ->orderBy('belts.id')
+            //     ->orderBy('category_id')
+            //     ->orderByDesc('total_points')
+            //     ->get();
+
             $rankings = DB::table('rankings')
-                ->join('entry_categories', 'rankings.entry_category_id', '=', 'entry_categories.id')
-                ->join('belts', 'entry_categories.belt_id', '=', 'belts.id')
-                ->join('athletes', 'rankings.athlete_id', '=', 'athletes.id')
-                ->select(
-                    'belts.id as belt_id',
-                    DB::raw('LOWER(belts.color) as belt_color'),
-                    'entry_categories.id as category_id',
-                    DB::raw('LOWER(entry_categories.name) as category_name'),
-                    'rankings.athlete_id',
-                    'athletes.*',
-                    DB::raw('SUM(rankings.event_points) as total_points'),
-                    DB::raw('SUM(rankings.victories) as total_victories'),
-                    DB::raw('SUM(rankings.defeats) as total_defeats'),
-                    DB::raw('SUM(rankings.gold) as gold_medals'),
-                    DB::raw('SUM(rankings.silver) as silver_medals'),
-                    DB::raw('SUM(rankings.bronze) as bronze_medals')
-                )
-                ->groupBy(
-                    'belts.id',
-                    'belt_color',
-                    'entry_categories.id',
-                    'category_name',
-                    'rankings.athlete_id',
-                    'athletes.id'
-                )
-                ->orderBy('belts.id')
-                ->orderBy('category_id')
-                ->orderByDesc('total_points')
-                ->get();
+            ->selectRaw('
+                belts.id AS belt_id, 
+                LOWER(belts.color) AS belt_color, 
+                entry_categories.id AS category_id, 
+                LOWER(entry_categories.name) AS category_name, 
+                rankings.athlete_id, 
+                athletes.id AS athlete_id,
+                athletes.name,
+                athletes.profile_image, 
+                SUM(rankings.event_points) AS total_points, 
+                SUM(rankings.victories) AS total_victories, 
+                SUM(rankings.defeats) AS total_defeats, 
+                SUM(rankings.gold) AS gold_medals, 
+                SUM(rankings.silver) AS silver_medals, 
+                SUM(rankings.bronze) AS bronze_medals
+            ')
+            ->join('entry_categories', 'rankings.entry_category_id', '=', 'entry_categories.id')
+            ->join('belts', 'entry_categories.belt_id', '=', 'belts.id')
+            ->join('athletes', 'rankings.athlete_id', '=', 'athletes.id')
+            ->groupBy([
+                'belts.id', 
+                'belts.color', 
+                'entry_categories.id', 
+                'entry_categories.name', 
+                'rankings.athlete_id',
+                'athletes.id'
+            ])
+            ->orderBy('belts.id', 'asc')
+            ->orderBy('category_id', 'asc')
+            ->orderBy('total_points', 'desc')
+            ->get();
+        
 
             // Agrupar manualmente en PHP
             $grouped = [];

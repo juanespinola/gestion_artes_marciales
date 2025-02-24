@@ -38,6 +38,9 @@ class OrganizationController extends Controller
         try {
             $data = Event::with('federation', 'association', 'status_event', 'type_event', 'location.city.country', 'media_event')
                 ->where('federation_id', $federation_id)
+                ->whereHas('status_event', function ($query) {
+                    $query->where('description', 'En curso');
+                })
                 ->orderBy('initial_date', 'desc')
                 ->get();
             return response()->json($data, 200);

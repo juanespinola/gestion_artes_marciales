@@ -100,9 +100,25 @@ class MinorAuthorizationController extends Controller
 
     public function uploadDocument(Request $request) {
         
-        $request->validate([
-            'file' => 'required|mimes:pdf|max:2048', // Example validation rules
-        ]);
+        // $request->validate([
+        //     'file' => 'required|mimes:pdf|max:2048', // Example validation rules
+        // ]);
+
+        $validation = Validator::make(
+            $request->all(), 
+            [
+                'file' => 'required|mimes:pdf|max:2048',
+            ],
+            [
+                'file.required' => 'El archivo es obligatorio.',       
+                'file.mimes' => 'El archivo debe ser un PDF.',       
+                'file.max' => 'El tamaño máximo permitido es 2MB.',       
+            ]
+        );
+
+        if($validation->fails()){
+            return response()->json(["messages" => $validation->errors()], 400);
+        }
 
 
         if($request->hasFile('file')) {

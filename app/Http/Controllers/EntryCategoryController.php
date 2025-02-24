@@ -219,18 +219,34 @@ class EntryCategoryController extends Controller
                     ["gender", "=", $athlete->gender],
                     ["event_id", "=", $event_id],
                 ])
+                    // ->with(['tariff_inscription.entry_category', 'belt'])
+                    ->get();
+
+
+                // $data = $entries->groupBy('belt.color')->map(function ($categories, $beltColor) {
+                //     return [
+                //         "belt" => $beltColor,
+                //         "categories" => $categories->values(),
+                //     ];
+                // })->values();
+
+
+                $entries_available = EntryCategory::where([
+                    ["event_id", "=", $event_id],
+                ])
                     ->with(['tariff_inscription.entry_category', 'belt'])
                     ->get();
 
 
-                $data = $entries->groupBy('belt.color')->map(function ($categories, $beltColor) {
+                $entryCategoryAvailable = $entries_available->groupBy('belt.color')->map(function ($categories, $beltColor) {
                     return [
                         "belt" => $beltColor,
                         "categories" => $categories->values(),
                     ];
                 })->values();
 
-                return response()->json($data, 200);
+                // return response()->json($data, 200);
+                return response()->json(['entry_athlete' => $entries, 'entry_category_available' => $entryCategoryAvailable]);
             }
         } catch (\Throwable $th) {
             throw $th;

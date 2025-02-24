@@ -23,32 +23,14 @@ class InscriptionController extends Controller
 
             if ($request->BearerToken()) {
 
-                // $data = EntryCategory::with([
-                //             'belt',
-                //             'tariff_inscription.inscriptions.athlete',
-                //             'matchBracket',        
-                //         ])
-                //         ->where('event_id', $request->input('event_id'))
-                //         ->get()
-                //         ->groupBy([
-                //             function ($item) {
-                //                 return $item->minor_category ? 'Menores' : 'Mayores';
-                //             },
-                //             'gender',
-                //             'belt.color', 
-                //             'name'
-                //         ])
-                //         ->sortByDesc('belt.color');
-
-
                 $data = EntryCategory::with([
                     'belt',
                     'tariff_inscription.inscriptions.athlete',
                     'matchBracket',
                     'event',
                 ])
-                    ->where('event_id', $request->input('event_id'))
-                    ->get();
+                ->where('event_id', $request->input('event_id'))
+                ->get();
 
 
 
@@ -148,6 +130,12 @@ class InscriptionController extends Controller
 
             foreach ($request->input('selectEntryForPayment') as $key => $value) {
 
+                
+                if(!isset($value['tariff_inscription'])) {
+                    return response()->json(["messages" => "Error en la tarifa de inscripción, avisar a soporte!"], 400);
+                }
+                
+                
                 $athlete = auth()->user();
                 $validation = Validator::make(
                     [
