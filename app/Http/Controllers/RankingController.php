@@ -82,7 +82,9 @@ class RankingController extends Controller
                 'entry_categories.id', 
                 'entry_categories.name', 
                 'rankings.athlete_id',
-                'athletes.id'
+                'athletes.id',
+                'athletes.name',
+                'athletes.profile_image',
             ])
             ->orderBy('belts.id', 'asc')
             ->orderBy('category_id', 'asc')
