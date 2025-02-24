@@ -73,6 +73,8 @@ class EventController extends Controller
                     'location_id' => 'required|integer',
                     'initial_date' => 'required|date',
                     'initial_time' => 'required|string',
+                    'final_date' => 'required|date',
+                    'final_time' => 'required|string',
                     // 'status_event_id' => 'required|integer',
                     'inscription_fee' => 'required|integer',
                     'available_slots' => 'required|integer',
@@ -83,6 +85,8 @@ class EventController extends Controller
                     'location_id.required' => ':attribute: es Obligatorio',
                     'initial_date.required' => ':attribute: es Obligatorio',
                     'initial_time.required' => ':attribute: es Obligatorio',
+                    'final_date.required' => ':attribute: es Obligatorio',
+                    'final_time.required' => ':attribute: es Obligatorio',
                     // 'status_event_id.required' => ':attribute: es Obligatorio',
                     'inscription_fee.required' => ':attribute: es Obligatorio',
                     'available_slots.required' => ':attribute: es Obligatorio',
@@ -92,6 +96,10 @@ class EventController extends Controller
 
             if ($validation->fails()) {
                 return response()->json(["messages" => $validation->errors()], 400);
+            }
+
+            if(Carbon::parse($request->input('initial_date'))->diff(Carbon::parse($request->input('final_date')))->days <= 0 ){
+                return response()->json(["messages" => "Error en fecha"], 400);
             }
 
             // queda trabajar en las fechas, en el formateo
@@ -176,6 +184,10 @@ class EventController extends Controller
 
             if ($validation->fails()) {
                 return response()->json(["messages" => $validation->errors()], 400);
+            }
+
+            if(Carbon::parse($request->input('initial_date'))->diff(Carbon::parse($request->input('final_date')))->days <= 0 ){
+                return response()->json(["messages" => "Error en fecha"], 400);
             }
 
             $obj = Event::with('entry_category.tariff_inscription', 'type_event')->findOrFail($id);
