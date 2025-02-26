@@ -19,10 +19,10 @@ class MembershipController extends Controller
             $federation_id = $request->input('federation_id');
             $association_id = $request->input('association_id');
             
-            $existMembership = Membership::where('athlete_id',$athlete_id)
+            $existMembership = Membership::where('athlete_id', $athlete_id)
                                 ->where('federation_id', $federation_id)
                                 ->where('association_id', $association_id)
-                                ->toSql();
+                                ->first();
 
             if(!$existMembership->isEmply()){
                 return response()->json(["messages" => "El atleta cuenta con Membresia"], 200);
@@ -51,8 +51,8 @@ class MembershipController extends Controller
                     $start_date_fee = $startDate->copy()->addDays($i * 30);
                     $end_date_fee = $start_date_fee->copy()->addDays(29); 
 
-                    $membership = Membership::create([
-                        'description' => "Cuota Asociación #".$i,
+                    Membership::create([
+                        'description' => "Cuota Membresia #".$i,
                         'number_fee' => $i,
                         'start_date_fee' => $start_date_fee->format('Y-m-d h:i:s'),
                         'end_date_fee' => $end_date_fee->format('Y-m-d h:i:s'),
@@ -60,7 +60,7 @@ class MembershipController extends Controller
                         'amount_fee' => $typeMembership->price,
                         'payment_date_fee' => null,
                         'type_membership_id' => $typeMembership->id,
-                        'athlete_id' => 1,
+                        'athlete_id' => $athlete_id,
                         'federation_id' => 1,
                         'association_id' => 2,
                     ]);
