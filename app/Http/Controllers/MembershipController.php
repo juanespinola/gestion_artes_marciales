@@ -61,8 +61,8 @@ class MembershipController extends Controller
                         'payment_date_fee' => null,
                         'type_membership_id' => $typeMembership->id,
                         'athlete_id' => $athlete_id,
-                        'federation_id' => 1,
-                        'association_id' => 2,
+                        'federation_id' => $federation_id,
+                        'association_id' => $association_id,
                     ]);
                 }
             } else {
