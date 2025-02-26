@@ -249,7 +249,7 @@ class RequestAutorizationController extends Controller
                     $start_date_fee = $startDate->copy()->addDays($i * 30);
                     $end_date_fee = $start_date_fee->copy()->addDays(29); 
 
-                    $membership = Membership::create([
+                    Membership::create([
                         'description' => "Cuota Asociación #".$i,
                         'number_fee' => $i,
                         'start_date_fee' => $start_date_fee->format('Y-m-d h:i:s'),
@@ -258,9 +258,9 @@ class RequestAutorizationController extends Controller
                         'amount_fee' => $typeMembership->price,
                         'payment_date_fee' => null,
                         'type_membership_id' => $typeMembership->id,
-                        'athlete_id' => 1,
-                        'federation_id' => 1,
-                        'association_id' => 2,
+                        'athlete_id' => $athlete_id,
+                        'federation_id' => $federation_id,
+                        'association_id' => $association_id,
                     ]);
                 }
             } else {
