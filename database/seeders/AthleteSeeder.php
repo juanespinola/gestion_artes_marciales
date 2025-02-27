@@ -47,7 +47,7 @@ class AthleteSeeder extends Seeder
                     'document' => '123456',
                     'phone' => '+5950981123456',
                     'gender' => 'masculino',
-                    'birthdate' => '10/19/1996',
+                    'birthdate' => '1996-12-31',
                     'belt_id' => 1
                 ],
             );
