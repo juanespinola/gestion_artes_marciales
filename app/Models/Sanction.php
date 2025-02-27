@@ -16,6 +16,11 @@ class Sanction extends Model
         'athlete_id',
         'description',
         'comments',
+        'status',
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
     ];
 
     protected $hidden = [
@@ -26,5 +31,9 @@ class Sanction extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults(); 
+    }
+
+    public function athlete(){
+        return $this->belongsTo(Athlete::class);
     }
 }

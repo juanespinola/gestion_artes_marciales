@@ -98,15 +98,17 @@ class Athlete extends Authenticatable
         return $this->belongsTo(Belt::class);
     }
 
-    public function inscriptions()
-    {
+    public function inscriptions(){
         return $this->hasMany(Inscription::class);
     }
 
-    public function matchBrackets()
-    {
+    public function matchBrackets(){
         return $this->hasMany(MatchBracket::class, 'one_athlete_id')
             ->orWhere('two_athlete_id', $this->id);
+    }
+
+    public function sanctions(){
+        return $this->hasMany(Sanction::class);
     }
 
 

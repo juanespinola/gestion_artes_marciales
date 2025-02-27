@@ -160,6 +160,12 @@ class PermissionsSeeder extends Seeder
                     'minorauthorizations.create',
                     'minorauthorizations.update',
                     'minorauthorizations.delete',
+
+                    // athlete
+                    'athlete.access',
+                    'athlete.create',
+                    'athlete.update',
+                    'athlete.delete',
                     
                 ]);
             Role::create(["name" => "association-admin"])
@@ -189,6 +195,12 @@ class PermissionsSeeder extends Seeder
                 'request.update',
                 'request.delete',
 
+                // athlete
+                'athlete.access',
+                'athlete.create',
+                'athlete.update',
+                'athlete.delete',
+                 
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
         // Role::create(["name" => "federation-admin"])->givePermissionTo(['access association','create association','update association','delete association',]);

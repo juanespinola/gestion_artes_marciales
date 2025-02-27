@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inscription;
 use App\Models\EntryCategory;
-
-
+use App\Models\Sanction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -135,7 +134,6 @@ class InscriptionController extends Controller
                     return response()->json(["messages" => "Error en la tarifa de inscripción, avisar a soporte!"], 400);
                 }
                 
-                
                 $athlete = auth()->user();
                 $validation = Validator::make(
                     [
@@ -159,7 +157,16 @@ class InscriptionController extends Controller
                 );
 
                 if ($validation->fails()) {
-                    return response()->json(["messages" => $validation->errors()], 200);
+                    return response()->json(["messages" => $validation->errors()], 400);
+                }
+
+                $athlete_has_sanction = Sanction::where([
+                    ['athlete_id', $athlete->id],
+                    ['status', true]
+                ])->first();
+
+                if($athlete_has_sanction){
+                    return response()->json(["messages" => "El atleta cuenta con Sanciones"], 400);
                 }
 
                 // 🔍 Convertir a minúsculas y eliminar espacios extra
@@ -177,7 +184,7 @@ class InscriptionController extends Controller
 
                 // 🔍 3️⃣ Si ya está inscrito en una categoría regular y quiere inscribirse en otra, lo evitamos
                 if ($hasRegularCategory && $categoryName !== 'absoluto') {
-                    return response()->json(["messages" => "Solo puedes inscribirte en una categoría regular y en absoluto.", "response" => false], 200);
+                    return response()->json(["messages" => "Solo puedes inscribirte en una categoría regular y en absoluto."], 400);
                 }
 
                 // 🔍 4️⃣ Si ya está inscrito en "absoluto" y quiere inscribirse de nuevo en "absoluto", lo evitamos
@@ -186,7 +193,7 @@ class InscriptionController extends Controller
                 })->isNotEmpty();
 
                 if ($hasAbsoluto && $categoryName === 'absoluto') {
-                    return response()->json(["messages" => "Ya estás inscrito en la categoría absoluto.", "response" => false], 200);
+                    return response()->json(["messages" => "Ya estás inscrito en la categoría absoluto."], 400);
                 }
 
 
@@ -197,7 +204,7 @@ class InscriptionController extends Controller
                     'tariff_inscription_id' => $value['tariff_inscription']['id']
                 ]);
             }
-            return response()->json(["messages" => "Registro creado Correctamente!", "response" => true], 200);
+            return response()->json(["messages" => "Registro creado Correctamente!"], 200);
         } catch (\Throwable $th) {
             throw $th;
         }

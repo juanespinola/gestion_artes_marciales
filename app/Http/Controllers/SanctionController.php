@@ -78,6 +78,7 @@ class SanctionController extends Controller
                 'athlete_id' => $request->input('athlete_id'),
                 'description' => $request->input('description'),
                 'comments' => $request->input('comments'),
+                'status' => $request->input('status'),
             ]);
 
             return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
@@ -129,6 +130,7 @@ class SanctionController extends Controller
                 'athlete_id' => $request->input('athlete_id'),
                 'description' => $request->input('description'),
                 'comments' => $request->input('comments'),
+                'status' => $request->input('status'),
             ]);
 
             return response()->json(["messages" => "Registro editado Correctamente!", "data" => $obj], 201);

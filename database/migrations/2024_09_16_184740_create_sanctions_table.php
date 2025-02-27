@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('athlete_id');
             $table->string('description');
             $table->text('comments')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
