@@ -13,7 +13,7 @@ class AthleteSeeder extends Seeder
      */
     public function run(): void
     {
-        Athlete::factory()->count(10)->create();
+        // Athlete::factory()->count(10)->create();
         // $data = [
         //     [
         //         'name' => 'athlete 1 ',
@@ -28,138 +28,29 @@ class AthleteSeeder extends Seeder
         //         'birthdate' => '10/19/1996',
         //         'belt_id' => 1
         //     ],
-        //     [
-        //         'name' => 'athlete 2',
-        //         'email' => 'athlete2@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'masculino',
-        //         'birthdate' => '10/19/1994',
-        //         // 'weight' => '80'
-        //     ],
-        //     [
-        //         'name' => 'athlete 3',
-        //         'email' => 'athlete3@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'masculino',
-        //         'birthdate' => '04/04/2024',
-        //         // 'weight' => '69.5'
-        //     ],
-        //     [
-        //         'name' => 'athlete 4',
-        //         'email' => 'athlete4@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'masculino',
-        //         'birthdate' => '04/04/2024',
-        //     ],
-        //     [
-        //         'name' => 'athlete 5',
-        //         'email' => 'athlete5@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'masculino',
-        //         'birthdate' => '04/04/2024',
-        //     ],
-        //     [
-        //         'name' => 'athlete 6',
-        //         'email' => 'athlete6@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'masculino',
-        //         'birthdate' => '04/04/2024',
-        //     ],
-        //     [
-        //         'name' => 'athlete 7',
-        //         'email' => 'athlete7@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'masculino',
-        //         'birthdate' => '04/04/2024',
-        //     ],
-        //     [
-        //         'name' => 'athlete 8',
-        //         'email' => 'athlete8@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'femenino',
-        //         'birthdate' => '04/04/2024',
-        //     ],
-        //     [
-        //         'name' => 'athlete 9',
-        //         'email' => 'athlete9@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'femenino',
-        //         'birthdate' => '04/04/2024',
-        //     ],
-        //     [
-        //         'name' => 'athlete 10',
-        //         'email' => 'athlete10@gmail.com',
-        //         'password'=> bcrypt('123456'),
-        //         // 'federation_id'=> '1',
-        //         // 'association_id'=> '2',
-        //         'country_id' => '1',
-        //         'city_id' => '1',
-        //         'type_document_id' => '1',
-        //         'document' => '123456',
-        //         'phone' => '+5950981123456',
-        //         'gender' => 'femenino',
-        //         'birthdate' => '04/04/2024',
-        //     ],
+      
         // ];
 
         // foreach ($data as $key => $item) {
         //     Athlete::create($item);
         // }
+
+        for ($i=1; $i < 11; $i++) { 
+            Athlete::create(
+                [
+                    'name' => 'athlete '.$i,
+                    'email' => "athlete{$i}@gmail.com",
+                    'password' => bcrypt('123456'),
+                    'country_id' => 1,
+                    'city_id' => 1,
+                    'type_document_id' => 1,
+                    'document' => '123456',
+                    'phone' => '+5950981123456',
+                    'gender' => 'masculino',
+                    'birthdate' => '10/19/1996',
+                    'belt_id' => 1
+                ],
+            );
+        }
     }
 }
