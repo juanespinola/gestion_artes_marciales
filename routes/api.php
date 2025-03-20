@@ -81,6 +81,7 @@ Route::get("/athleteeventmatchwinlose/{athlete_id}", [App\Http\Controllers\Organ
 Route::post("/getAthleteRanking", [App\Http\Controllers\OrganizationController::class, 'getAthleteRanking']);
 Route::get("/pastevents/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'pastEvents']);
 Route::get("/ranking", [RankingController::class, 'index']);
+Route::get("/athleteallprofile/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteAllProfile']);
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
@@ -289,11 +290,11 @@ Route::middleware('auth:sanctum')->prefix('medianew')->group(function (){
     Route::delete($idInThePath, [MediaNewController::class, 'destroy']);
 });
 
-// Route::post("/matchbracket", [MatchBracketController::class, 'index']);
+Route::post("/matchbracket", [MatchBracketController::class, 'index']);
 // Route::post("/matchbracket/nextphase", [MatchBracketController::class, 'finishMatchBracket']);
 Route::middleware('auth:sanctum')->prefix('matchbracket')->group(function (){
     $idInThePath = '/{id}';
-    Route::post("/", [MatchBracketController::class, 'index']);
+    // Route::post("/", [MatchBracketController::class, 'index']);
     Route::post("/check", [MatchBracketController::class, 'checkMathBracket']);
     Route::post("/generate", [MatchBracketController::class, 'generateMatchBrackets']);
     Route::post("/nextphase", [MatchBracketController::class, 'finishMatchBracket']);

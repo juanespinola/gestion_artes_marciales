@@ -15,7 +15,7 @@ class MatchBracketController extends Controller
     public function index(Request $request)
     {
         try {
-            if ($request->BearerToken()) {
+            // if ($request->BearerToken()) {
                 $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
                     ->where([
                         ['entry_category_id', $request->input('entry_category_id')],
@@ -35,16 +35,7 @@ class MatchBracketController extends Controller
 
                 return response()->json($data, 200);
 
-                // $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
-                //         ->where([
-                //             ['entry_category_id', $request->input('entry_category_id')],
-                //             ['event_id', $request->input('event_id')],
-                //         ])
-                //         ->orderBy('id')
-                //         ->get();
-
-                // return response()->json($data, 200);
-            }
+            // }
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -20,7 +20,7 @@ class InscriptionController extends Controller
         // este es para el listado de admin de las personas inscriptas
         try {
 
-            if ($request->BearerToken()) {
+            // if ($request->BearerToken()) {
 
                 $data = EntryCategory::with([
                     'belt',
@@ -34,7 +34,7 @@ class InscriptionController extends Controller
 
 
                 return response()->json($data, 200);
-            }
+            // }
         } catch (\Throwable $th) {
             throw $th;
         }

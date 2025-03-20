@@ -238,19 +238,19 @@ class Athlete extends Authenticatable
 
     public static function getAthleteProfileWinLose($athlete_id) {
             return  Athlete::with([
-                'country',
-                'belt',
-                'inscriptions.event',
-                'inscriptions.tariff_inscription.entry_category.matchBracket' => function ($query) use ($athlete_id) {
-                    $query->where(function ($q) use ($athlete_id) {
-                        $q->where('one_athlete_id', $athlete_id)
-                          ->orWhere('two_athlete_id', $athlete_id);
-                    });
-                },                
-                'inscriptions.tariff_inscription.entry_category.matchBracket.bracket',
-                'inscriptions.tariff_inscription.entry_category.matchBracket.typeVictory',
-                'inscriptions.tariff_inscription.entry_category.matchBracket.athleteOne',
-                'inscriptions.tariff_inscription.entry_category.matchBracket.athleteTwo',
+                // 'country',
+                // 'belt',
+                // 'inscriptions.event',
+                // 'inscriptions.tariff_inscription.entry_category.matchBracket' => function ($query) use ($athlete_id) {
+                //     $query->where(function ($q) use ($athlete_id) {
+                //         $q->where('one_athlete_id', $athlete_id)
+                //           ->orWhere('two_athlete_id', $athlete_id);
+                //     });
+                // },                
+                // 'inscriptions.tariff_inscription.entry_category.matchBracket.bracket',
+                // 'inscriptions.tariff_inscription.entry_category.matchBracket.typeVictory',
+                // 'inscriptions.tariff_inscription.entry_category.matchBracket.athleteOne',
+                // 'inscriptions.tariff_inscription.entry_category.matchBracket.athleteTwo',
                 ])    
                 
             ->findOrFail($athlete_id);

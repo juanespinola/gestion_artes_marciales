@@ -59,6 +59,14 @@ class MatchBracket extends Model
         return $this->belongsTo(EntryCategory::class);
     }
 
+    public function athleteWinner() {
+        return $this->belongsTo(Athlete::class, 'athlete_id_winner', 'id');   
+    }
+
+    public function athleteLoser() {
+        return $this->belongsTo(Athlete::class, 'athlete_id_loser', 'id');   
+    }
+
 
 
     public static function groupBrackets($event_id, $entry_category_id) {
