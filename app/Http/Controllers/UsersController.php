@@ -71,7 +71,6 @@ class UsersController extends Controller
                         'email' => 'required|string',
                         'password' => 'required|string',
                         'rol' => 'required',
-    
                     ],
                     [
                         'name.required' => ':attribute: es Obligatorio',
@@ -90,6 +89,8 @@ class UsersController extends Controller
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
                     'password' => $request->input('password'),
+                    'association_id' => auth()->user()->association_id ? auth()->user()->association_id : null,
+                    'federation_id' => auth()->user()->federation_id,
                 ]);
 
                 foreach ($request->input('rol') as $rol) {
@@ -162,6 +163,8 @@ class UsersController extends Controller
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 // 'password' => $request->input('password'),
+                'association_id' => auth()->user()->association_id ? auth()->user()->association_id : null,
+                'federation_id' => auth()->user()->federation_id,
             ]);
 
             foreach ($request->input('rol') as $rol) {
