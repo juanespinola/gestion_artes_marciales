@@ -83,6 +83,9 @@ Route::get("/pastevents/{federation_id}", [App\Http\Controllers\OrganizationCont
 Route::get("/ranking", [RankingController::class, 'index']);
 Route::get("/athleteallprofile/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteAllProfile']);
 
+Route::post("/gettotalathleteineventwithprice", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEventWithPrice']);
+Route::post("/gettotalathleteinevent", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEvent']);
+
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
     Route::get("/", [AssociationController::class, 'index']);

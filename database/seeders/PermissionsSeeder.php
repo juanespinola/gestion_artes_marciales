@@ -43,6 +43,9 @@ class PermissionsSeeder extends Seeder
             'permission',
             'rol',
             'location',
+            'payment',
+            'user_federation',
+            'user_association',
         ];
 
         $permissions = [];
@@ -116,6 +119,7 @@ class PermissionsSeeder extends Seeder
                 'belt.update',
                 'belt.delete',
 
+                'user_federation.access',
             ]);
         
             Role::create(["name" => "federation-admin"])
@@ -166,6 +170,14 @@ class PermissionsSeeder extends Seeder
                     'athlete.create',
                     'athlete.update',
                     'athlete.delete',
+
+                    'user_association.access',
+
+                    // payment
+                    'payment.access',
+                    'payment.create',
+                    'payment.update',
+                    'payment.delete',
                     
                 ]);
             Role::create(["name" => "association-admin"])
@@ -200,6 +212,12 @@ class PermissionsSeeder extends Seeder
                 'athlete.create',
                 'athlete.update',
                 'athlete.delete',
+
+                 // payment
+                'payment.access',
+                'payment.create',
+                'payment.update',
+                'payment.delete',
                  
             ]);
         // Role::create(["name" => "federation-admin"])->givePermissionTo(Permission::all());
