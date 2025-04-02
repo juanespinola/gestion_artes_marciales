@@ -40,6 +40,10 @@ class Association extends Model
         return $this->belongsTo(Federation::class);
     }
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults(); 

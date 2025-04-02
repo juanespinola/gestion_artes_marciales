@@ -11,7 +11,6 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\GroupCategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StatusEventController;
@@ -25,11 +24,13 @@ use App\Http\Controllers\MediaNewController;
 use App\Http\Controllers\MatchBracketController;
 use App\Http\Controllers\TypesVictoryController;
 use App\Http\Controllers\AcademyController;
+use App\Http\Controllers\AssociationUsersController;
 use App\Http\Controllers\AthleteController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\TypeDocumentController;
 use App\Http\Controllers\BeltHistoryController;
+use App\Http\Controllers\FederationUsersController;
 use App\Http\Controllers\RequestAutorizationController;
 use App\Http\Controllers\TypeRequestController;
 use App\Http\Controllers\MembershipController;
@@ -65,7 +66,6 @@ Route::get("/federations", [App\Http\Controllers\OrganizationController::class, 
 Route::get("/federations/{federation_id}", [App\Http\Controllers\OrganizationController::class, 'federation']);
 Route::get("/federations/{federation_id}/news", [App\Http\Controllers\OrganizationController::class, 'news']);
 Route::get("/news/{new_id}/newdetail", [App\Http\Controllers\OrganizationController::class, 'new_detail']);
-
 Route::get("/federations/{federation_id}/events", [App\Http\Controllers\OrganizationController::class, 'events']);
 Route::get("/events/{event_id}/eventdetail", [App\Http\Controllers\OrganizationController::class, 'event_detail']);
 Route::post("/events/{event_id}/matchbrackets", [App\Http\Controllers\OrganizationController::class, 'matchBrackets']);
@@ -83,8 +83,10 @@ Route::get("/pastevents/{federation_id}", [App\Http\Controllers\OrganizationCont
 Route::get("/ranking", [RankingController::class, 'index']);
 Route::get("/athleteallprofile/{athlete_id}", [App\Http\Controllers\OrganizationController::class, 'getAthleteAllProfile']);
 
-Route::post("/gettotalathleteineventwithprice", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEventWithPrice']);
-Route::post("/gettotalathleteinevent", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEvent']);
+// Route::post("/gettotalathleteineventwithprice", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEventWithPrice']);
+// Route::post("/gettotalathleteinevent", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEvent']);
+Route::post("/getreports", [App\Http\Controllers\ReportsController::class, 'getReport']);
+
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){
     $idInThePath = '/{id}';
@@ -103,6 +105,30 @@ Route::middleware('auth:sanctum')->prefix('associationauthoritie')->group(functi
     $idInThePath = '/{id}';
     Route::put($idInThePath, [AssociationController::class, 'update_authorities']);
 });
+Route::middleware('auth:sanctum')->prefix('associationusers')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [AssociationUsersController::class, 'index']);
+    Route::get($idInThePath, [AssociationUsersController::class, 'edit']);
+    Route::post("/", [AssociationUsersController::class, 'store']);
+    Route::put($idInThePath, [AssociationUsersController::class, 'update']);
+    Route::delete($idInThePath, [AssociationUsersController::class, 'destroy']);
+    
+    
+});
+
+Route::middleware('auth:sanctum')->group(function (){
+    Route::get("/associations", [AssociationUsersController::class, "getAssociations"]);
+});
+
+Route::middleware('auth:sanctum')->prefix('federationusers')->group(function (){
+    $idInThePath = '/{id}';
+    Route::get("/", [FederationUsersController::class, 'index']);
+    Route::get($idInThePath, [FederationUsersController::class, 'edit']);
+    Route::post("/", [FederationUsersController::class, 'store']);
+    Route::put($idInThePath, [FederationUsersController::class, 'update']);
+    Route::delete($idInThePath, [FederationUsersController::class, 'destroy']);
+});
+
 
 
 Route::middleware('auth:sanctum')->prefix('federation')->group(function (){
@@ -158,14 +184,6 @@ Route::middleware('auth:sanctum')->prefix('permissionsbygroup')->group(function 
     Route::get($idInThePath, [PermissionController::class, 'getPermissionsByGroupName']);
 });
 
-// Route::middleware('auth:sanctum')->prefix('sport')->group(function (){
-//     $idInThePath = '/{id}';
-//     Route::get("/", [SportController::class, 'index']);
-//     Route::get($idInThePath, [SportController::class, 'edit']);
-//     Route::post("/", [SportController::class, 'store']);
-//     Route::put($idInThePath, [SportController::class, 'update']);
-//     Route::delete($idInThePath, [SportController::class, 'destroy']);
-// });
 
 Route::middleware('auth:sanctum')->prefix('category')->group(function (){
     $idInThePath = '/{id}';
@@ -185,14 +203,6 @@ Route::middleware('auth:sanctum')->prefix('tariffinscription')->group(function (
     Route::delete($idInThePath, [TariffInscriptionController::class, 'destroy']);
 });
 
-Route::middleware('auth:sanctum')->prefix('groupcategory')->group(function (){
-    $idInThePath = '/{id}';
-    Route::get("/", [GroupCategoryController::class, 'index']);
-    Route::get($idInThePath, [GroupCategoryController::class, 'edit']);
-    Route::post("/", [GroupCategoryController::class, 'store']);
-    Route::put($idInThePath, [GroupCategoryController::class, 'update']);
-    Route::delete($idInThePath, [GroupCategoryController::class, 'destroy']);
-});
 
 Route::middleware('auth:sanctum')->prefix('event')->group(function (){
     $idInThePath = '/{id}';
@@ -489,35 +499,3 @@ Route::group(['prefix'=>'athlete'], function () {
 
 });
 
-
-
-
-
-// Route::group(['prefix'=>'user'], function () {
-//     $idInThePath = '/{id}';
-//     Route::get("/", [UsersController::class, 'index']);
-//     Route::get($idInThePath, [UsersController::class, 'show']);
-//     Route::post("/", [UsersController::class, 'store']);
-//     Route::put($idInThePath, [UsersController::class, 'update']);
-//     Route::delete($idInThePath, [UsersController::class, 'destroy']);
-// });
-
-// Route::group(['prefix'=>'association'], function () {
-//     $idInThePath = '/{id}';
-//     Route::get("/", [AssociationController::class, 'index']);
-//     Route::get($idInThePath, [AssociationController::class, 'show']);
-//     Route::post("/", [AssociationController::class, 'store']);
-//     Route::put($idInThePath, [AssociationController::class, 'update']);
-//     Route::delete($idInThePath, [AssociationController::class, 'destroy']);
-// });
-
-
-
-// Route::group(['prefix'=>'federation'], function () {
-//     $idInThePath = '/{id}';
-//     Route::get("/", [FederationController::class, 'index']);
-//     Route::get($idInThePath, [FederationController::class, 'show']);
-//     Route::post("/", [FederationController::class, 'store']);
-//     Route::put($idInThePath, [FederationController::class, 'update']);
-//     Route::delete($idInThePath, [FederationController::class, 'destroy']);
-// });

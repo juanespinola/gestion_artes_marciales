@@ -61,6 +61,7 @@ class UsersController extends Controller
         try {
             if($request->BearerToken()){
                 $user = Auth::user();
+                $association_id = $request->association_id;
                 if (!$user->hasPermissionTo("user.update")) {
                     return response()->json(['Unauthorized, you don\'t have access.'],400);
                 }
@@ -84,15 +85,26 @@ class UsersController extends Controller
                     return response()->json(["messages" => $validation->errors()], 400);
                 }
 
-                
-                $obj = User::create([
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email'),
-                    'password' => $request->input('password'),
-                    'association_id' => auth()->user()->association_id ? auth()->user()->association_id : null,
-                    'federation_id' => auth()->user()->federation_id,
-                ]);
+                if($association_id){
+                    $obj = User::create([
+                        'name' => $request->input('name'),
+                        'email' => $request->input('email'),
+                        'password' => $request->input('password'),
+                        'association_id' => $association_id,
+                        'federation_id' => auth()->user()->federation_id,
+                    ]);
+                } else {
+                    $obj = User::create([
+                        'name' => $request->input('name'),
+                        'email' => $request->input('email'),
+                        'password' => $request->input('password'),
+                        'association_id' => auth()->user()->association_id ? auth()->user()->association_id : null,
+                        'federation_id' => auth()->user()->federation_id,
+                    ]);
+    
+                }
 
+               
                 foreach ($request->input('rol') as $rol) {
                     $obj->assignRole($rol["name"]);
                 }

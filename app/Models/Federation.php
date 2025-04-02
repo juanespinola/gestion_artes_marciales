@@ -39,6 +39,10 @@ class Federation extends Model
         return $this->belongsTo(Association::class, 'id', 'federation_id');
     }
 
+    public function federation() {
+        return $this->belongsTo(User::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults(); 

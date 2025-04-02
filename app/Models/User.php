@@ -60,8 +60,12 @@ class User extends Authenticatable
     protected $with = ['roles', 'roles.permissions'];
 
 
-    private function federation() {
+    public function federation() {
         return $this->hasOne(Federation::class, 'id', 'federation_id');
+    }
+
+    public function association() {
+        return $this->hasOne(Association::class, 'id', 'association_id');
     }
 
     public function getActivitylogOptions(): LogOptions
