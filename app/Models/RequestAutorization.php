@@ -25,6 +25,7 @@ class RequestAutorization extends Model
         'response_text',
         'status',
         'athlete_id',
+        'event_id'
     ];
 
     protected $hidden = [

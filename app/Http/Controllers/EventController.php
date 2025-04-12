@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\RequestAutorization;
+use App\Models\TypeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -98,9 +100,10 @@ class EventController extends Controller
                 return response()->json(["messages" => $validation->errors()], 400);
             }
 
-            if(Carbon::parse($request->input('initial_date'))->diff(Carbon::parse($request->input('final_date')))->days <= 0 ){
+            if(Carbon::parse($request->input('initial_date'))->diff(Carbon::parse($request->input('final_date')))->days < 0 ){
                 return response()->json(["messages" => "Error en fecha"], 400);
             }
+
 
             // queda trabajar en las fechas, en el formateo
             $obj = Event::create([
@@ -108,10 +111,10 @@ class EventController extends Controller
                 'location_id' => $request->input('location_id'),
                 'initial_date' => Carbon::parse($request->input('initial_date'))->format('Y-m-d'),
                 'final_date' => $request->input('final_date') ? Carbon::parse($request->input('final_date'))->format('Y-m-d') : null,
-                'initial_time' => $request->input('initial_time'),
-                'final_time' => $request->input('final_time'),
+                'initial_time' => Carbon::parse($request->input('initial_time'))->format('h:i'),
+                'final_time' => $request->input('final_time') ? Carbon::parse($request->input('final_time'))->format('h:i') : null,
                 'type_event_id' => $request->input('type_event_id'),
-                'status_event_id' => 1, // evento estado organizando
+                'status_event_id' => (auth()->user()->federation_id && auth()->user()->association_id) ? 7 : 1, // evento estado organizando
                 'inscription_fee' => $request->input('inscription_fee'),
                 'total_participants' => $request->input('total_participants'),
                 'available_slots' => $request->input('available_slots'),
@@ -120,6 +123,20 @@ class EventController extends Controller
                 'federation_id' => auth()->user()->federation_id,
                 'association_id' => auth()->user()->association_id,
             ]);
+
+            // funcion para crear la solicitud de evento si es que el usuario es asociacion
+            if(auth()->user()->federation_id && auth()->user()->association_id &&  $request->input('type_event_id') == TypeRequest::where('description', 'like','%Torneo%')->first()->id ){
+                RequestAutorization::create([
+                    'requested_by' => auth()->user()->id, // se obtiene el id del usuario
+                    'date_request' => $request->input('initial_date') ? Carbon::parse($request->input('initial_date'))->format('Y-m-d') : null,
+                    'request_type_id' => $request->input('type_event_id'),
+                    'request_text' => "Solicitud para crear Torneo",
+                    'status' => 'pendiente',
+                    'federation_id' => auth()->user()->federation_id,
+                    'association_id' => auth()->user()->association_id,
+                    'event_id' => $obj->id,
+                ]);
+            }
 
             return response()->json(["messages" => "Registro creado Correctamente!", "data" => $obj], 201);
         } catch (\Throwable $th) {
@@ -186,9 +203,19 @@ class EventController extends Controller
                 return response()->json(["messages" => $validation->errors()], 400);
             }
 
-            if(Carbon::parse($request->input('initial_date'))->diff(Carbon::parse($request->input('final_date')))->days <= 0 ){
+            if(Carbon::parse($request->input('initial_date'))->diff(Carbon::parse($request->input('final_date')))->days < 0 ){
                 return response()->json(["messages" => "Error en fecha"], 400);
             }
+
+            if(RequestAutorization::where([
+                    ['federation_id', auth()->user()->federation_id],
+                    ['association_id', auth()->user()->association_id],
+                    ['event_id', $id],
+                    ['status', 'pendiente']
+            ])->first()){
+                return response()->json(['messages' => "El Evento aun no fue aprobado"], 400);
+            }
+
 
             $obj = Event::with('entry_category.tariff_inscription', 'type_event')->findOrFail($id);
 
@@ -206,8 +233,8 @@ class EventController extends Controller
                 'location_id' => $request->input('location_id'),
                 'initial_date' => Carbon::parse($request->input('initial_date'))->format('Y-m-d'),
                 'final_date' => $request->input('final_date') ? Carbon::parse($request->input('final_date'))->format('Y-m-d') : null,
-                'initial_time' => $request->input('initial_time'),
-                'final_time' => $request->input('final_time'),
+                'initial_time' => Carbon::parse($request->input('initial_time'))->format('h:i'),
+                'final_time' => $request->input('final_time') ? Carbon::parse($request->input('final_time'))->format('h:i') : null,
                 'type_event_id' => $request->input('type_event_id'),
                 'status_event_id' => $request->input('status_event_id'),
                 'inscription_fee' => $request->input('inscription_fee'),

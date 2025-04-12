@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\RequestAutorization;
 use App\Models\TypeMembership;
 use App\Models\Membership;
@@ -190,8 +191,15 @@ class RequestAutorizationController extends Controller
                     'request_text' => $request->input('request_text'),
                     'response_text' => $request->input('response_text'),
                     'status' => $request->input('status'),
-                    
                 ]);
+                
+                if($request->input('event_id') && $request->input('status') == 'aprobado'){
+                    Event::where('id', $request->input('event_id'))->first()
+                    ->update([
+                        'status_event_id' => 6
+                    ]);
+                }
+
                 return response()->json(["messages" => "Registro Actualizado Correctamente", "data" => $obj] , 201);
             }
 

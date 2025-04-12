@@ -25,6 +25,7 @@ return new class extends Migration
             $table->mediumText('response_text')->nullable();
             $table->enum('status', ['pendiente', 'respuesta', 'aprobado', 'rechazado'])->default('pendiente');
             $table->unsignedBigInteger('athlete_id')->nullable(); // para las solicitudes de membresia/cinturon referentes a athletas
+            $table->unsignedBigInteger('event_id')->nullable(); // para las solicitudes de eventos
             $table->timestamps();
         });
     }
