@@ -16,29 +16,122 @@ class MatchBracketController extends Controller
     {
         try {
             // if ($request->BearerToken()) {
-                $data = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
-                    ->where([
-                        ['entry_category_id', $request->input('entry_category_id')],
-                        ['event_id', $request->input('event_id')],
-                    ])
-                    ->orderBy('id')
-                    ->get()
-                    ->groupBy('bracket.number_phase') // Agrupamos por fase
-                    ->map(function ($group) {
-                        return [
-                            'number_phase' => $group->first()->bracket->number_phase,
-                            'phase' => $group->first()->bracket->phase,
-                            'matches' => $group
-                        ];
-                    })
-                    ->values();
+            $matchBrackets = MatchBracket::with('bracket', 'athleteOne', 'athleteTwo')
+                ->where([
+                    ['entry_category_id', $request->input('entry_category_id')],
+                    ['event_id', $request->input('event_id')],
+                ])
+                ->orderBy('id')
+                ->get()
+                ->groupBy('bracket.number_phase') // Agrupamos por fase
+                ->map(function ($group) {
+                    return [
+                        'number_phase' => $group->first()->bracket->number_phase,
+                        'phase' => $group->first()->bracket->phase,
+                        'matches' => $group
+                    ];
+                })
+                ->values()
+                ->toArray();
 
-                return response()->json($data, 200);
+            $threeBracket = $this->generateBracketTree($matchBrackets);
+            // $data = $this->groupTreeByPhase($threeBracket);
+
+
+            return response()->json($threeBracket, 200);
 
             // }
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+
+    function generateBracketTree(array $phases): ?array
+    {
+        $phaseMap = [];
+
+        // Indexamos por número de fase
+        foreach ($phases as $phase) {
+            $phaseMap[$phase['number_phase']] = $phase['matches'];
+        }
+
+        // Función recursiva para construir el árbol
+        $buildTree = function ($phaseNumber, $step, $parent = null) use (&$buildTree, $phaseMap) {
+            if (!isset($phaseMap[$phaseNumber])) {
+                return null;
+            }
+
+            $matches = $phaseMap[$phaseNumber];
+
+            $match = collect($matches)->first(function ($m) use ($step) {
+                return $m['bracket']['step'] === $step;
+            });
+
+            if (!$match) {
+                return null;
+            }
+
+            $name = isset($match['athlete_one'], $match['athlete_two'])
+                ? $match['athlete_one']['name'] . ' vs ' . $match['athlete_two']['name']
+                : 'Esperando ganador (Fase ' . $match['bracket']['phase'] . ')';
+
+            $children = [];
+
+            if ($phaseNumber > 1) {
+                $prevStepA = ($step - 1) * 2 + 1;
+                $prevStepB = ($step - 1) * 2 + 2;
+
+                $childA = $buildTree($phaseNumber - 1, $prevStepA, $match);
+                $childB = $buildTree($phaseNumber - 1, $prevStepB, $match);
+
+                if ($childA) $children[] = $childA;
+                if ($childB) $children[] = $childB;
+            }
+
+            return [
+                'phase' => $match['bracket']['phase'],
+                'name' => $name,
+                'match' => $match,
+                'parent' => $parent, // ← Aquí se incluye el padre
+                'children' => $children,
+            ];
+        };
+
+        $maxPhase = max(array_keys($phaseMap));
+
+        return $buildTree($maxPhase, 1);
+    }
+
+    function groupTreeByPhase(array $tree): array
+    {
+        $grouped = [];
+
+        // Función recursiva para recorrer el árbol
+        $traverse = function ($node) use (&$grouped, &$traverse) {
+            $phase = $node['phase'];
+
+            // Si no existe el grupo de esta fase, lo creamos
+            if (!isset($grouped[$phase])) {
+                $grouped[$phase] = [];
+            }
+
+            // Copiamos el nodo sin children por ahora
+            $currentNode = $node;
+            $currentNode['children'] = []; // Evitamos duplicar hijos
+
+            // Lo agregamos al grupo correspondiente
+            $grouped[$phase][] = $currentNode;
+
+            // Ahora procesamos los children de forma recursiva
+            foreach ($node['children'] as $child) {
+                $traverse($child);
+            }
+        };
+
+        $traverse($tree);
+
+        return $grouped;
     }
 
     public function checkMathBracket(Request $request)
