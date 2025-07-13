@@ -35,15 +35,29 @@ class MatchBracketController extends Controller
                 ->toArray();
 
             $threeBracket = $this->generateBracketTree($matchBrackets);
+            $countMatch = $this->countMatchesInTree($threeBracket);
             // $data = $this->groupTreeByPhase($threeBracket);
 
 
-            return response()->json($threeBracket, 200);
+            return response()->json(["matches" => $threeBracket, "count_match" => $countMatch], 200);
 
             // }
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    function countMatchesInTree(?array $tree): int
+    {
+        if (!$tree) return 0;
+
+        $count = isset($tree['match']) ? 1 : 0;
+
+        foreach ($tree['children'] as $child) {
+            $count += $this->countMatchesInTree($child);
+        }
+
+        return $count;
     }
 
 
