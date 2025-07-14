@@ -66,6 +66,7 @@ class RankingController extends Controller
                 athletes.id AS athlete_id,
                 athletes.name,
                 athletes.profile_image, 
+                countries.description AS country,
                 SUM(rankings.event_points) AS total_points, 
                 SUM(rankings.victories) AS total_victories, 
                 SUM(rankings.defeats) AS total_defeats, 
@@ -76,6 +77,7 @@ class RankingController extends Controller
             ->join('entry_categories', 'rankings.entry_category_id', '=', 'entry_categories.id')
             ->join('belts', 'entry_categories.belt_id', '=', 'belts.id')
             ->join('athletes', 'rankings.athlete_id', '=', 'athletes.id')
+            ->join('countries', 'countries.id', '=', 'athletes.country_id')
             ->groupBy([
                 'belts.id', 
                 'belts.color', 
@@ -85,6 +87,7 @@ class RankingController extends Controller
                 'athletes.id',
                 'athletes.name',
                 'athletes.profile_image',
+                'countries.description'
             ])
             ->orderBy('belts.id', 'asc')
             ->orderBy('category_id', 'asc')
@@ -124,6 +127,7 @@ class RankingController extends Controller
                             'id' => $ranking->athlete_id,
                             'name' => $ranking->name,
                             'profile_image' => $ranking->profile_image,
+                            'country' => $ranking->country
                         ],
                         'total_points' => 0,
                         'total_victories' => 0,

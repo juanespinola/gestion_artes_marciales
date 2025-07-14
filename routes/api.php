@@ -86,6 +86,7 @@ Route::get("/athleteallprofile/{athlete_id}", [App\Http\Controllers\Organization
 // Route::post("/gettotalathleteineventwithprice", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEventWithPrice']);
 // Route::post("/gettotalathleteinevent", [App\Http\Controllers\ReportsController::class, 'getTotalAthleteInEvent']);
 Route::post("/getreports", [App\Http\Controllers\ReportsController::class, 'getReport']);
+Route::get("/getauditoria", [App\Http\Controllers\ReportsController::class, 'getAuditoria']);
 
 
 Route::middleware('auth:sanctum')->prefix('association')->group(function (){

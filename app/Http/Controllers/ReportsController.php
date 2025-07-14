@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Activitylog\Models\Activity;
 use DB;
 
 class ReportsController extends Controller
@@ -69,5 +70,9 @@ class ReportsController extends Controller
         } else if ($type_report == 'getTotalAthleteInEvent') {
            return $this->getTotalAthleteInEvent($federation_id, $association_id);
         }
+    }
+
+    public function getAuditoria(){
+        return Activity::all();
     }
 }
