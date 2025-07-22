@@ -24,7 +24,7 @@ class InscriptionController extends Controller
 
                 $data = EntryCategory::with([
                     'belt',
-                    'tariff_inscription.inscriptions.athlete',
+                    'tariff_inscription.inscriptions.athlete.academy',
                     'matchBracket',
                     'event',
                 ])
