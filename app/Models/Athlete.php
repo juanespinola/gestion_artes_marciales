@@ -45,6 +45,7 @@ class Athlete extends Authenticatable
         'document',
         'gender',
         'birthdate',
+        'phone'
     ];
 
     /**

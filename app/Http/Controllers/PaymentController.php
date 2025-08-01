@@ -274,7 +274,7 @@ class PaymentController extends Controller
                     'association_id' => $association_id,
                     'athlete_id' => $athlete_id,
                 ]);
-                $payment_id = $payment->id;
+                $payment_id = $payment->id.mt_rand(1, 100);
                 // HASHEAR ID DE PEDIDO
                 $payment_id_encode = Hashids::encode($payment_id);
 
@@ -298,7 +298,7 @@ class PaymentController extends Controller
                         $data =  $bancard->getData();
                     } else {
                         $bancard_error = $bancard->getErrorData();
-                        $msj_status = '(BX002) Ocurrio un error al intentar obtener el codigo de procesamiento';
+                        $msj_status = `(BX002) Ocurrio un error al intentar obtener el codigo de procesamiento`;
                         $status = false;
                     }
                 }
@@ -396,7 +396,6 @@ class PaymentController extends Controller
     public static function confirmPaymentBancard()
     {
         // $status = 'OK';
-
         $operation = (object)request()->operation;
         $shop_process_id = $operation->shop_process_id;
         $amount = $operation->amount;
