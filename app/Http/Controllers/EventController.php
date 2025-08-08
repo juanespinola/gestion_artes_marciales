@@ -280,7 +280,7 @@ class EventController extends Controller
         try {
             $obj = Event::findOrFail($id);
             $obj->update([
-                'introduction' => $request->input('introduction'),
+                // 'introduction' => $request->input('introduction'),
                 'content' => $request->input('content'),
                 'updated_user_id' => auth()->user()->id,
             ]);
